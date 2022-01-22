@@ -10,7 +10,7 @@
   </PropertyGroup>
 
   <PropertyGroup Label="Versioning">
-    <MinVerDefaultPreReleasePhase>preview</MinVerDefaultPreReleasePhase>
+    <MinVerDefaultPreReleasePhase>alpha</MinVerDefaultPreReleasePhase>
     <MinVerVerbosity>normal</MinVerVerbosity>
   </PropertyGroup>
 

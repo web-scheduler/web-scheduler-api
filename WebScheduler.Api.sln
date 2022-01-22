@@ -5,57 +5,47 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{57BAE1BC-D418-4A95-B292-C0E9324B0A54}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{D57B72FA-A893-400C-AB2E-6919219A38D2}"
-	ProjectSection(SolutionItems) = preProject
-		WebScheduler.Api\Tests\.editorconfig = WebScheduler.Api\Tests\.editorconfig
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FBD2504D-975E-4B64-B938-7DDD19C7DB9D}"
 	ProjectSection(SolutionItems) = preProject
-		WebScheduler.Api\.dockerignore = WebScheduler.Api\.dockerignore
-		WebScheduler.Api\.editorconfig = WebScheduler.Api\.editorconfig
-		WebScheduler.Api\.gitattributes = WebScheduler.Api\.gitattributes
-		WebScheduler.Api\.gitignore = WebScheduler.Api\.gitignore
-		WebScheduler.Api\build.cake = WebScheduler.Api\build.cake
-		WebScheduler.Api\Directory.Build.props = WebScheduler.Api\Directory.Build.props
-		WebScheduler.Api\dotnet-tools.json = WebScheduler.Api\dotnet-tools.json
-		WebScheduler.Api\global.json = WebScheduler.Api\global.json
+		.dockerignore = .dockerignore
+		.editorconfig = .editorconfig
+		.gitattributes = .gitattributes
+		.gitignore = .gitignore
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documentation", "Documentation", "{60E0F62E-605A-48F2-BFCA-C63B45AB6335}"
-	ProjectSection(SolutionItems) = preProject
-		WebScheduler.Api\README.md = WebScheduler.Api\README.md
-	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Api", "WebScheduler.Api\Source\WebScheduler.Api\WebScheduler.Api.csproj", "{C5E3A89A-2656-4F1B-8D80-381F30D2C6AA}"
-EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Api.IntegrationTest", "WebScheduler.Api\Tests\WebScheduler.Api.IntegrationTest\WebScheduler.Api.IntegrationTest.csproj", "{5AD44042-4A99-4399-9678-DECB563B747F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Api.IntegrationTest", "Tests\WebScheduler.Api.IntegrationTest\WebScheduler.Api.IntegrationTest.csproj", "{5AD44042-4A99-4399-9678-DECB563B747F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{B4493FEA-D330-453B-ACDA-8CAE2F6451CC}"
 	ProjectSection(SolutionItems) = preProject
-		WebScheduler.Api\.github\dependabot.yml = WebScheduler.Api\.github\dependabot.yml
-		WebScheduler.Api\.github\release-drafter.yml = WebScheduler.Api\.github\release-drafter.yml
+		.github\dependabot.yml = .github\dependabot.yml
+		.github\release-drafter.yml = .github\release-drafter.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "workflows", "workflows", "{1CBCA0EF-D16C-4BE6-9577-A0FC67E8B5F1}"
 	ProjectSection(SolutionItems) = preProject
-		WebScheduler.Api\.github\workflows\build.yml = WebScheduler.Api\.github\workflows\build.yml
-		WebScheduler.Api\.github\workflows\codeql-analysis.yml = WebScheduler.Api\.github\workflows\codeql-analysis.yml
-		WebScheduler.Api\.github\workflows\release-drafter.yml = WebScheduler.Api\.github\workflows\release-drafter.yml
+		.github\workflows\build.yml = .github\workflows\build.yml
+		.github\workflows\codeql-analysis.yml = .github\workflows\codeql-analysis.yml
+		.github\workflows\release-drafter.yml = .github\workflows\release-drafter.yml
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".github", ".github", "{E5422D5C-ABD4-4150-BDF6-B823D746D157}"
 	ProjectSection(SolutionItems) = preProject
-		WebScheduler.Api\.github\CODE_OF_CONDUCT.md = WebScheduler.Api\.github\CODE_OF_CONDUCT.md
-		WebScheduler.Api\.github\CONTRIBUTING.md = WebScheduler.Api\.github\CONTRIBUTING.md
-		WebScheduler.Api\.github\PULL_REQUEST_TEMPLATE.md = WebScheduler.Api\.github\PULL_REQUEST_TEMPLATE.md
-		WebScheduler.Api\.github\SECURITY.md = WebScheduler.Api\.github\SECURITY.md
+		.github\CODE_OF_CONDUCT.md = .github\CODE_OF_CONDUCT.md
+		.github\CONTRIBUTING.md = .github\CONTRIBUTING.md
+		.github\PULL_REQUEST_TEMPLATE.md = .github\PULL_REQUEST_TEMPLATE.md
+		.github\SECURITY.md = .github\SECURITY.md
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEMPLATE", "{5C84BC3D-BEFC-4CC2-85B8-C3C4E286368A}"
 	ProjectSection(SolutionItems) = preProject
-		WebScheduler.Api\.github\ISSUE_TEMPLATE\BUG_REPORT.yml = WebScheduler.Api\.github\ISSUE_TEMPLATE\BUG_REPORT.yml
-		WebScheduler.Api\.github\ISSUE_TEMPLATE\FEATURE_REQUEST.yml = WebScheduler.Api\.github\ISSUE_TEMPLATE\FEATURE_REQUEST.yml
+		.github\ISSUE_TEMPLATE\BUG_REPORT.yml = .github\ISSUE_TEMPLATE\BUG_REPORT.yml
+		.github\ISSUE_TEMPLATE\FEATURE_REQUEST.yml = .github\ISSUE_TEMPLATE\FEATURE_REQUEST.yml
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Api", "Source\WebScheduler.Api\WebScheduler.Api.csproj", "{9619BB00-2BA7-4834-AABE-5DB066C5F4A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,25 +53,25 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{C5E3A89A-2656-4F1B-8D80-381F30D2C6AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{C5E3A89A-2656-4F1B-8D80-381F30D2C6AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{C5E3A89A-2656-4F1B-8D80-381F30D2C6AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{C5E3A89A-2656-4F1B-8D80-381F30D2C6AA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5AD44042-4A99-4399-9678-DECB563B747F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5AD44042-4A99-4399-9678-DECB563B747F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5AD44042-4A99-4399-9678-DECB563B747F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5AD44042-4A99-4399-9678-DECB563B747F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9619BB00-2BA7-4834-AABE-5DB066C5F4A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9619BB00-2BA7-4834-AABE-5DB066C5F4A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9619BB00-2BA7-4834-AABE-5DB066C5F4A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9619BB00-2BA7-4834-AABE-5DB066C5F4A3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{C5E3A89A-2656-4F1B-8D80-381F30D2C6AA} = {57BAE1BC-D418-4A95-B292-C0E9324B0A54}
 		{5AD44042-4A99-4399-9678-DECB563B747F} = {D57B72FA-A893-400C-AB2E-6919219A38D2}
 		{B4493FEA-D330-453B-ACDA-8CAE2F6451CC} = {FBD2504D-975E-4B64-B938-7DDD19C7DB9D}
 		{1CBCA0EF-D16C-4BE6-9577-A0FC67E8B5F1} = {B4493FEA-D330-453B-ACDA-8CAE2F6451CC}
 		{E5422D5C-ABD4-4150-BDF6-B823D746D157} = {60E0F62E-605A-48F2-BFCA-C63B45AB6335}
 		{5C84BC3D-BEFC-4CC2-85B8-C3C4E286368A} = {E5422D5C-ABD4-4150-BDF6-B823D746D157}
+		{9619BB00-2BA7-4834-AABE-5DB066C5F4A3} = {57BAE1BC-D418-4A95-B292-C0E9324B0A54}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4E464B40-8B3D-427D-BA61-053DB0B94967}
