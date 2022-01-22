@@ -101,15 +101,15 @@ jobs:
         uses: andstor/file-reader-action@v1
         with:
           path: "./Artifacts/DOCKER_TAG"
-      #- name: DigitalOcean App Platform deployment
-      #  if: github.ref == 'refs/heads/main' || github.event_name == 'release'
-      #  uses: digitalocean/app_action@main
-      #  with:
-      #    app_name: web-scheduler
-      #    token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
-      #    images: '[
-      #        {
-      #          "name": "web-scheduler-api",
-      #          "repository": "${{env.DOCKER_REGISTRY}}/${{env.DOCKER_REPOSITORY_NAME}}/${{env.DOCKER_IMAGE_NAME}}",
-      #          "tag": "${{ steps.read_file.outputs.contents }}"
-      #        }]'
+      - name: DigitalOcean App Platform deployment
+        if: github.ref == 'refs/heads/main' || github.event_name == 'release'
+        uses: digitalocean/app_action@main
+        with:
+          app_name: web-scheduler
+          token: ${{ secrets.DIGITALOCEAN_ACCESS_TOKEN }}
+          images: '[
+              {
+                "name": "web-scheduler-api",
+                "repository": "${{env.DOCKER_REGISTRY}}/${{env.DOCKER_REPOSITORY_NAME}}/${{env.DOCKER_IMAGE_NAME}}",
+                "tag": "${{ steps.read_file.outputs.contents }}"
+              }]'
