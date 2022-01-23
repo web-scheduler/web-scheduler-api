@@ -80,11 +80,12 @@ public class Startup
                 builder =>
                 {
                     builder.MapControllers().RequireCors(CorsPolicyName.AllowAny);
+                    // TODO: Make the health check path configurable.
                     builder
-                        .MapHealthChecks("/status")
+                        .MapHealthChecks("/api/status")
                         .RequireCors(CorsPolicyName.AllowAny);
                     builder
-                        .MapHealthChecks("/status/self", new HealthCheckOptions() { Predicate = _ => false })
+                        .MapHealthChecks("/api/status/self", new HealthCheckOptions() { Predicate = _ => false })
                         .RequireCors(CorsPolicyName.AllowAny);
                 })
             .UseSwagger()
