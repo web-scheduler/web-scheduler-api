@@ -17,19 +17,19 @@ public class PageOptions
     /// <summary>
     /// Gets or sets the number of items to retrieve from the end.
     /// </summary>
-    /// <example></example>
+    /// <example>10</example>
     [Range(1, 20)]
     public int? Last { get; set; }
 
     /// <summary>
     /// Gets or sets the cursor of the item after which items are requested.
     /// </summary>
-    /// <example></example>
+    /// <example>jdhoHD#9hs</example>
     public string? After { get; set; }
 
     /// <summary>
     /// Gets or sets the cursor of the item before which items are requested
     /// </summary>
-    /// <example></example>
+    /// <example>jdhoHD#9hs</example>
     public string? Before { get; set; }
 }

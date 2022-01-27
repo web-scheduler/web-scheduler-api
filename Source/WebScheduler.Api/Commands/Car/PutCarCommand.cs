@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.Commands;
+namespace WebScheduler.Api.Commands.Car;
 
 using WebScheduler.Api.Repositories;
 using WebScheduler.Api.ViewModels;

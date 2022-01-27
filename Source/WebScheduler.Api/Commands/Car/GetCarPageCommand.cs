@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.Commands;
+namespace WebScheduler.Api.Commands.Car;
 
 using WebScheduler.Api.Constants;
 using WebScheduler.Api.Repositories;
@@ -108,17 +108,12 @@ public class GetCarPageCommand
         DateTimeOffset? createdBefore,
         CancellationToken cancellationToken)
     {
-        Task<List<Models.Car>> getCarsTask;
         if (first.HasValue)
         {
-            getCarsTask = this.carRepository.GetCarsAsync(first, createdAfter, createdBefore, cancellationToken);
-        }
-        else
-        {
-            getCarsTask = this.carRepository.GetCarsReverseAsync(last, createdAfter, createdBefore, cancellationToken);
+            return this.carRepository.GetCarsAsync(first, createdAfter, createdBefore, cancellationToken);
         }
 
-        return getCarsTask;
+        return this.carRepository.GetCarsReverseAsync(last, createdAfter, createdBefore, cancellationToken);
     }
 
     private async Task<bool> GetHasNextPageAsync(

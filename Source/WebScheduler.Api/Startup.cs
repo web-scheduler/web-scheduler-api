@@ -55,7 +55,8 @@ public class Startup
             .AddProjectCommands()
             .AddProjectMappers()
             .AddProjectRepositories()
-            .AddProjectServices();
+            .AddProjectServices()
+            .AddHostedServices();
 
     /// <summary>
     /// Configures the application and HTTP request pipeline. Configure is called after ConfigureServices is

@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.Commands;
+namespace WebScheduler.Api.Commands.Car;
 
 using WebScheduler.Api.Constants;
 using WebScheduler.Api.Repositories;
