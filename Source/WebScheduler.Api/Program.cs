@@ -1,6 +1,16 @@
 namespace WebScheduler.Api;
 
+
 using WebScheduler.Api.Options;
+using Orleans;
+using Orleans.Configuration;
+using Orleans.Configuration.Internal;
+using Orleans.Configuration.Validators;
+using Orleans.Hosting;
+using Orleans.Runtime;
+using Orleans.Runtime.MembershipService;
+using Orleans.Statistics;
+using WebScheduler.Api.Constants;
 
 public class Program
 {
@@ -30,6 +40,8 @@ public class Program
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         new HostBuilder()
+
+
             .UseContentRoot(Directory.GetCurrentDirectory())
             .ConfigureHostConfiguration(
                 configurationBuilder => configurationBuilder.AddCustomBootstrapConfiguration(args))
@@ -37,7 +49,7 @@ public class Program
                 (hostingContext, configurationBuilder) =>
                 {
                     hostingContext.HostingEnvironment.ApplicationName = AssemblyInformation.Current.Product;
-                    configurationBuilder.AddCustomConfiguration(hostingContext.HostingEnvironment, args);
+                    _ = configurationBuilder.AddCustomConfiguration(hostingContext.HostingEnvironment, args);
                 })
             .UseDefaultServiceProvider(
                 (context, options) =>
@@ -46,8 +58,10 @@ public class Program
                     options.ValidateScopes = isDevelopment;
                     options.ValidateOnBuild = isDevelopment;
                 })
+
             .ConfigureWebHost(ConfigureWebHostBuilder)
             .UseConsoleLifetime();
+            
 
     private static void ConfigureWebHostBuilder(IWebHostBuilder webHostBuilder) =>
         webHostBuilder

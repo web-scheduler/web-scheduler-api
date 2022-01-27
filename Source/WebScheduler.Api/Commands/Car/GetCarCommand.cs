@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.Commands;
+namespace WebScheduler.Api.Commands.Car;
 
 using System.Globalization;
 using WebScheduler.Api.Repositories;
@@ -33,7 +33,7 @@ public class GetCarCommand
 
         var httpContext = this.actionContextAccessor.ActionContext!.HttpContext;
         var ifModifiedSince = httpContext.Request.Headers.IfModifiedSince;
-        if (ifModifiedSince.Any() &&
+        if (ifModifiedSince.Count > 0 &&
             DateTimeOffset.TryParse(ifModifiedSince, out var ifModifiedSinceDateTime) &&
             (ifModifiedSinceDateTime >= car.Modified))
         {

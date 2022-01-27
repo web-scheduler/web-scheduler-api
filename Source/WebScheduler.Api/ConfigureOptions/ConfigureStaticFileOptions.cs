@@ -29,6 +29,7 @@ public class ConfigureStaticFileOptions : IConfigureOptions<StaticFileOptions>
     /// Adds the Cache-Control and Pragma HTTP headers. The cache duration is controlled from configuration.
     /// See http://andrewlock.net/adding-cache-control-headers-to-static-files-in-asp-net-core/.
     /// </summary>
+    /// <param name="context">The StaticFileResponseContext</param>
     private void OnPrepareResponse(StaticFileResponseContext context)
     {
         if (this.cacheProfile is not null)

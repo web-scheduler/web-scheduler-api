@@ -9,10 +9,7 @@ using Moq;
 public class CustomWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint>
     where TEntryPoint : class
 {
-    public CustomWebApplicationFactory()
-    {
-        this.ClientOptions.AllowAutoRedirect = false;
-    }
+    public CustomWebApplicationFactory() => this.ClientOptions.AllowAutoRedirect = false;
 
     public ApplicationOptions ApplicationOptions { get; private set; } = default!;
 

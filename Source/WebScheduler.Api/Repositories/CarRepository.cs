@@ -83,7 +83,7 @@ public class CarRepository : ICarRepository
 
     public Task<Car?> GetAsync(int carId, CancellationToken cancellationToken)
     {
-        var car = Cars.FirstOrDefault(x => x.CarId == carId);
+        var car = Cars.Find(x => x.CarId == carId);
         return Task.FromResult(car);
     }
 
