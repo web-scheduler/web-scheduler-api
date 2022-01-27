@@ -6,6 +6,8 @@ using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
 using WebScheduler.Api.HostedServices;
 using WebScheduler.Api.Commands.ScheduledTask;
+using Orleans;
+using WebScheduler.Api.Commands.Car;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> extension methods add project services.
@@ -19,12 +21,12 @@ internal static class ProjectServiceCollectionExtensions
 {
     public static IServiceCollection AddProjectCommands(this IServiceCollection services) =>
         services
-            .AddSingleton<DeleteScheduledTaskCommand>()
-            .AddSingleton<GetScheduledTaskCommand>()
-            .AddSingleton<GetScheduledTaskPageCommand>()
-            .AddSingleton<PatchScheduledTaskCommand>()
-            .AddSingleton<PostScheduledTaskCommand>()
-            .AddSingleton<PutScheduledTaskCommand>()
+            .AddSingleton<DeleteCarCommand>()
+            .AddSingleton<GetCarCommand>()
+            .AddSingleton<GetCarPageCommand>()
+            .AddSingleton<PatchCarCommand>()
+            .AddSingleton<PostCarCommand>()
+            .AddSingleton<PutCarCommand>()
             .AddSingleton<DeleteScheduledTaskCommand>()
             .AddSingleton<GetScheduledTaskCommand>()
             .AddSingleton<GetScheduledTaskPageCommand>()
@@ -34,24 +36,26 @@ internal static class ProjectServiceCollectionExtensions
 
     public static IServiceCollection AddProjectMappers(this IServiceCollection services) =>
         services
-            .AddSingleton<IMapper<Models.ScheduledTask, ScheduledTask>, ScheduledTaskToScheduledTaskMapper>()
-            .AddSingleton<IMapper<Models.ScheduledTask, SaveScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>()
-            .AddSingleton<IMapper<SaveScheduledTask, Models.ScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>()
+            .AddSingleton<IMapper<Models.Car, Car>, CarToCarMapper>()
+            .AddSingleton<IMapper<Models.Car, SaveCar>, CarToSaveCarMapper>()
+            .AddSingleton<IMapper<SaveCar, Models.Car>, CarToSaveCarMapper>()
             .AddSingleton<IMapper<Models.ScheduledTask, ScheduledTask>, ScheduledTaskToScheduledTaskMapper>()
             .AddSingleton<IMapper<Models.ScheduledTask, SaveScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>()
             .AddSingleton<IMapper<SaveScheduledTask, Models.ScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>();
 
     public static IServiceCollection AddProjectRepositories(this IServiceCollection services) =>
         services
-            .AddSingleton<IScheduledTaskRepository, ScheduledTaskRepository>()
-        .AddSingleton<IScheduledTaskRepository, ScheduledTaskRepository>();
+            .AddSingleton<ICarRepository, CarRepository>()
+            .AddSingleton<IScheduledTaskRepository, ScheduledTaskRepository>();
 
     public static IServiceCollection AddProjectServices(this IServiceCollection services) =>
         services
             .AddSingleton<IClockService, ClockService>();
 
     public static IServiceCollection AddHostedServices(this IServiceCollection services) =>
-     services.AddSingleton<ClusterClientHostedService>()
-            .AddSingleton<IHostedService>(_ => _.GetRequiredService<ClusterClientHostedService>())
+     services
+            .AddTransient<IClientBuilder, ClientBuilder>()
+            .AddSingleton<ClusterClientHostedService>()
+            .AddSingleton<IHostedService, ClusterClientHostedService>(_ => _.GetRequiredService<ClusterClientHostedService>())
             .AddSingleton(_ => _.GetRequiredService<ClusterClientHostedService>().Client);
 }

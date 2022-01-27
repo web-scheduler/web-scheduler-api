@@ -5,6 +5,13 @@ using WebScheduler.Api.Repositories;
 using WebScheduler.Api.Services;
 using Microsoft.AspNetCore.Mvc.Testing;
 using Moq;
+using WebScheduler.Api.HostedServices;
+using Orleans;
+using Microsoft.Extensions.Options;
+using System.Threading.Tasks;
+using System.Threading;
+using Microsoft.Extensions.Logging;
+using FakeItEasy;
 
 public class CustomWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TEntryPoint>
     where TEntryPoint : class
@@ -37,10 +44,13 @@ public class CustomWebApplicationFactory<TEntryPoint> : WebApplicationFactory<TE
 
     protected virtual void ConfigureServices(IServiceCollection services)
     {
+
+
         services.AddDistributedMemoryCache();
         services
             .AddSingleton(this.CarRepositoryMock.Object)
-            .AddSingleton(this.ClockServiceMock.Object);
+            .AddSingleton(this.ClockServiceMock.Object)
+            .AddTransient(_ => A.Fake<IClientBuilder>());
     }
 
     protected override void Dispose(bool disposing)

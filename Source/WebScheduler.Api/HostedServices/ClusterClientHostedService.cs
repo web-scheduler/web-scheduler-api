@@ -7,17 +7,17 @@ using Orleans.Hosting;
 using WebScheduler.Abstractions.Constants;
 using WebScheduler.Api.Options;
 
-public sealed class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDisposable
+public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDisposable
 {
     private readonly ILogger<ClusterClientHostedService> logger;
     private readonly ApplicationOptions options;
 
-    public ClusterClientHostedService(ILoggerFactory loggerFactory, IOptions<ApplicationOptions> options)
+    public ClusterClientHostedService(ILoggerFactory loggerFactory, IOptions<ApplicationOptions> options, IClientBuilder clientBuilder)
     {
         this.logger = loggerFactory.CreateLogger<ClusterClientHostedService>();
         this.options = options.Value;
 
-        this.Client = new ClientBuilder()
+        this.Client = clientBuilder
             .ConfigureServices(services =>
             {
                 // Add logging from the host's container.
@@ -97,9 +97,17 @@ public sealed class ClusterClientHostedService : IHostedService, IAsyncDisposabl
         _ = await Task.WhenAny(this.Client.Close(), cancellation.Task).ConfigureAwait(false);
     }
 
-    public void Dispose() => this.Client?.Dispose();
+    public void Dispose()
+    {
+        GC.SuppressFinalize(this);
+        this.Client?.Dispose();
+    }
 
 #pragma warning disable VSTHRD110 // Observe result of async calls
-    public ValueTask DisposeAsync() => this.Client?.DisposeAsync() ?? default;
+    public ValueTask DisposeAsync()
+    {
+        GC.SuppressFinalize(this);
+        return this.Client?.DisposeAsync() ?? default;
+    }
 #pragma warning restore VSTHRD110 // Observe result of async calls
 }
