@@ -68,7 +68,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
 
             if (++attempt < maxAttempts)
             {
-                this.logger.LogWarning(error, "Failed to connect to Orleans cluster on attempt {Attempt} of {MaxAttempts}.", attempt, maxAttempts);
+                this.logger.FailedToConnectToOrleansCluster(error, attempt, maxAttempts);
 
                 try
                 {
@@ -82,7 +82,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
                 return true;
             }
 
-            this.logger.LogError(error, "Failed to connect to Orleans cluster on attempt {Attempt} of {MaxAttempts}.", attempt, maxAttempts);
+            this.logger.FailedToConnectToOrleansCluster(error, attempt, maxAttempts);
 
             return false;
         });
@@ -90,7 +90,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
 
     public async Task StopAsync(CancellationToken cancellationToken)
     {
-        this.logger.LogInformation("Shutting down silo connection.");
+        this.logger.ShuttingDownSiloGracefully();
 
         var cancellation = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         _ = cancellationToken.Register(() => cancellation.TrySetCanceled(cancellationToken));
