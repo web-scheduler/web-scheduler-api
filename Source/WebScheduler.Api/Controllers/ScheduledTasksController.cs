@@ -4,12 +4,14 @@ using WebScheduler.Api.ViewModels;
 using Boxed.AspNetCore;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.Net.Http.Headers;
 using Swashbuckle.AspNetCore.Annotations;
 using WebScheduler.Api.Commands.ScheduledTask;
 using WebScheduler.Abstractions.Grains.Scheduler;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 [Route("[controller]")]
+[Authorize]
 [ApiController]
 [ApiVersion(ApiVersionName.V1)]
 [SwaggerResponse(
@@ -21,45 +23,45 @@ using WebScheduler.Abstractions.Grains.Scheduler;
 #pragma warning disable CA1062 // Validate arguments of public methods
 public class ScheduledTasksController : ControllerBase
 {
-    /// <summary>
-    /// Returns an Allow HTTP header with the allowed HTTP methods.
-    /// </summary>
-    /// <returns>A 200 OK response.</returns>
-    [HttpOptions(Name = ScheduledTasksControllerRoute.OptionsScheduledTasks)]
-    [SwaggerResponse(StatusCodes.Status200OK, "The allowed HTTP methods.")]
-    public IActionResult Options()
-    {
-        this.HttpContext.Response.Headers.AppendCommaSeparatedValues(
-            HeaderNames.Allow,
-            HttpMethods.Get,
-            HttpMethods.Head,
-            HttpMethods.Options,
-            HttpMethods.Post);
-        return this.Ok();
-    }
+//    /// <summary>
+//    /// Returns an Allow HTTP header with the allowed HTTP methods.
+//    /// </summary>
+//    /// <returns>A 200 OK response.</returns>
+//    [HttpOptions(Name = ScheduledTasksControllerRoute.OptionsScheduledTasks)]
+//    [SwaggerResponse(StatusCodes.Status200OK, "The allowed HTTP methods.")]
+//    public IActionResult Options()
+//    {
+//        this.HttpContext.Response.Headers.AppendCommaSeparatedValues(
+//            HeaderNames.Allow,
+//            HttpMethods.Get,
+//            HttpMethods.Head,
+//            HttpMethods.Options,
+//            HttpMethods.Post);
+//        return this.Ok();
+//    }
 
-    /// <summary>
-    /// Returns an Allow HTTP header with the allowed HTTP methods for a ScheduledTask with the specified unique identifier.
-    /// </summary>
-    /// <param name="scheduledTaskId">The ScheduledTasks unique identifier.</param>
-    /// <returns>A 200 OK response.</returns>
-    [HttpOptions("{ScheduledTaskId}", Name = ScheduledTasksControllerRoute.OptionsScheduledTask)]
-    [SwaggerResponse(StatusCodes.Status200OK, "The allowed HTTP methods.")]
-#pragma warning disable IDE0060, CA1801, RCS1163 // Remove unused parameter
-    public IActionResult Options(Guid scheduledTaskId)
-#pragma warning restore IDE0060, CA1801, RCS1163 // Remove unused parameter
-    {
-        this.HttpContext.Response.Headers.AppendCommaSeparatedValues(
-            HeaderNames.Allow,
-            HttpMethods.Delete,
-            HttpMethods.Get,
-            HttpMethods.Head,
-            HttpMethods.Options,
-            HttpMethods.Patch,
-            HttpMethods.Post,
-            HttpMethods.Put);
-        return this.Ok();
-    }
+//    /// <summary>
+//    /// Returns an Allow HTTP header with the allowed HTTP methods for a ScheduledTask with the specified unique identifier.
+//    /// </summary>
+//    /// <param name="scheduledTaskId">The ScheduledTasks unique identifier.</param>
+//    /// <returns>A 200 OK response.</returns>
+//    [HttpOptions("{ScheduledTaskId}", Name = ScheduledTasksControllerRoute.OptionsScheduledTask)]
+//    [SwaggerResponse(StatusCodes.Status200OK, "The allowed HTTP methods.")]
+//#pragma warning disable IDE0060, CA1801, RCS1163 // Remove unused parameter
+//    public IActionResult Options(Guid scheduledTaskId)
+//#pragma warning restore IDE0060, CA1801, RCS1163 // Remove unused parameter
+//    {
+//        this.HttpContext.Response.Headers.AppendCommaSeparatedValues(
+//            HeaderNames.Allow,
+//            HttpMethods.Delete,
+//            HttpMethods.Get,
+//            HttpMethods.Head,
+//            HttpMethods.Options,
+//            HttpMethods.Patch,
+//            HttpMethods.Post,
+//            HttpMethods.Put);
+//        return this.Ok();
+//    }
 
     /// <summary>
     /// Deletes the ScheduledTask with the specified unique identifier.

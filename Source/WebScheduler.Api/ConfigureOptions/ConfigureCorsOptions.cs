@@ -16,7 +16,8 @@ public class ConfigureCorsOptions : IConfigureOptions<CorsOptions>
         options.AddPolicy(
             CorsPolicyName.AllowAny,
             x => x
-                .AllowAnyOrigin()
+                .WithOrigins("https://localhost:7099")
                 .AllowAnyMethod()
-                .AllowAnyHeader());
+                .AllowAnyHeader()
+                .AllowCredentials());
 }
