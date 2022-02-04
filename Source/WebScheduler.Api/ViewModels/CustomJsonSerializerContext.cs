@@ -8,6 +8,9 @@ using System.Text.Json.Serialization;
 [JsonSerializable(typeof(Car[]))]
 [JsonSerializable(typeof(Connection<Car>[]))]
 [JsonSerializable(typeof(SaveCar[]))]
+[JsonSerializable(typeof(ScheduledTask[]))]
+[JsonSerializable(typeof(Connection<ScheduledTask>[]))]
+[JsonSerializable(typeof(SaveScheduledTask[]))]
 internal partial class CustomJsonSerializerContext : JsonSerializerContext
 {
 }
