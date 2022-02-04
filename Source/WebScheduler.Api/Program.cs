@@ -85,6 +85,6 @@ public class Program
             .Enrich.WithProperty("Application", context.HostingEnvironment.ApplicationName)
             .Enrich.WithProperty("Environment", context.HostingEnvironment.EnvironmentName)
             .WriteTo.Conditional(
-                _ => context.HostingEnvironment.IsDevelopment() && Environment.GetEnvironmentVariable("CANCEL_DEBUG") != "",
+                _ => context.HostingEnvironment.IsDevelopment(),
                 x => x.Console().WriteTo.Debug());
 }
