@@ -80,8 +80,8 @@ public class Startup
                 {
                     OnAuthenticationFailed = async (context) =>
                         {
-            await Task.FromResult(string.Empty);
-        }
+                            await Task.FromResult(string.Empty);
+                        }
                 };
             });
 
