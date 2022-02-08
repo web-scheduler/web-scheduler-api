@@ -41,7 +41,7 @@ public class Startup
         services
             .ConfigureOptions<ConfigureRequestLoggingOptions>()
             .AddStackExchangeRedisCache(_ => { })
-            .AddCors()
+            .AddCors(c => c.AddDefaultPolicy(c => c.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader()))
             .AddResponseCompression()
             .AddRouting();
         // Do we need this? I think so.
