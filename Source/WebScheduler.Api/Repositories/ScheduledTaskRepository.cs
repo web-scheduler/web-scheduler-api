@@ -48,7 +48,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         var scheduledTask = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(false);
         if (scheduledTask == null)
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         return new ScheduledTask()
