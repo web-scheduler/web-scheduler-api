@@ -6,14 +6,9 @@ using WebScheduler.Api.Models;
 
 public class ScheduledTaskRepository : IScheduledTaskRepository
 {
-    private readonly ILogger<ScheduledTaskRepository> logger;
     private readonly IClusterClient clusterClient;
 
-    public ScheduledTaskRepository(ILogger<ScheduledTaskRepository> logger, IClusterClient clusterClient)
-    {
-        this.logger = logger;
-        this.clusterClient = clusterClient;
-    }
+    public ScheduledTaskRepository(IClusterClient clusterClient) => this.clusterClient = clusterClient;
 
     public async Task<ScheduledTask> AddAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken)
     {

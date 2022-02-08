@@ -7,9 +7,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebScheduler.ConfigureOptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.IdentityModel.Tokens.Jwt;
 using WebScheduler.Api.Policies;
-
 
 /// <summary>
 /// The main start-up class for the application.
@@ -42,7 +40,7 @@ public class Startup
     {
         services
             .ConfigureOptions<ConfigureRequestLoggingOptions>()
-            .AddStackExchangeRedisCache(options => { })
+            .AddStackExchangeRedisCache(_ => { })
             .AddCors()
             .AddResponseCompression()
             .AddRouting();
@@ -108,9 +106,7 @@ public class Startup
     /// called by the ASP.NET runtime.
     /// </summary>
     /// <param name="application">The application builder.</param>
-    public virtual void Configure(IApplicationBuilder application)
-    {
-        application
+    public virtual void Configure(IApplicationBuilder application) => _ = application
             .UseSerilogRequestLogging()
             .UseIf(
                 this.webHostEnvironment.IsDevelopment(),
@@ -121,8 +117,6 @@ public class Startup
             .UseAuthentication()
             .UseAuthorization()
 
-
-
         .UseResponseCaching()
         .UseResponseCompression()
         .UseIf(
@@ -132,7 +126,6 @@ public class Startup
         .UseEndpoints(
             builder =>
             {
-
                 builder.MapControllers().RequireCors(CorsPolicyName.AllowAny)
                     .RequireAuthorization();
                 builder
@@ -146,5 +139,4 @@ public class Startup
         .UseIf(
             this.webHostEnvironment.IsDevelopment(),
             x => x.UseSwaggerUI());
-    }
 }

@@ -48,6 +48,5 @@ public class GetScheduledTaskCommand
         {
             return new NotFoundResult();
         }
-
     }
 }

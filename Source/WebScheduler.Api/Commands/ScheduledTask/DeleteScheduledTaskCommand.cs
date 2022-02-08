@@ -17,7 +17,6 @@ public class DeleteScheduledTaskCommand
         this.scheduledTaskMapper = scheduledTaskMapper;
     }
 
-
     public async Task<IActionResult> ExecuteAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {
         try
