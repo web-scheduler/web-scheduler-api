@@ -49,6 +49,7 @@ Task("Build")
 
 Task("Test")
     .Description("Runs unit tests and outputs test results to the Artifacts directory.")
+    .IsDependentOn("Build")
     .DoesForEach(GetFiles("./Tests/**/*.csproj"), project =>
     {
         DotNetTest(
@@ -69,15 +70,46 @@ Task("Test")
             });
     });
 
+
+
+Task("Pack")
+    .Description("Creates NuGet packages and outputs them to the artifacts directory.")
+    .IsDependentOn("Publish")
+    .DoesForEach(GetFiles("./Source/**/*.csproj"), project =>
+    {
+        DotNetPack(
+            project.ToString(),
+            new DotNetPackSettings()
+            {
+
+                Configuration = configuration,
+                IncludeSymbols = true,
+                MSBuildSettings = new DotNetMSBuildSettings()
+                {
+                    ContinuousIntegrationBuild = !BuildSystem.IsLocalBuild,
+                },
+                NoBuild = true,
+                NoRestore = true,
+                OutputDirectory = ArtifactsDirectory + Directory("Pack"),
+            });
+    });
+
+
 Task("Publish")
     .Description("Publishes the solution.")
+    .IsDependentOn("Test")
     .DoesForEach(GetFiles("./Source/**/*.csproj"), project =>
     {
         DotNetPublish(
             project.ToString(),
             new DotNetPublishSettings()
             {
+
                 Configuration = configuration,
+                       MSBuildSettings = new DotNetMSBuildSettings()
+                {
+                    ContinuousIntegrationBuild = !BuildSystem.IsLocalBuild,
+                },
                 NoBuild = true,
                 NoRestore = true,
                 OutputDirectory = ArtifactsDirectory + Directory("Publish"),
@@ -170,9 +202,11 @@ Task("DockerBuild")
     });
 
 Task("Default")
-    .Description("Cleans, restores NuGet packages, builds the solution, runs unit tests and then builds a Docker image.")
+    .Description("Cleans, restores NuGet packages, builds the solution, runs unit tests and then builds a Docker image, then publishes packages.")
     .IsDependentOn("Build")
     .IsDependentOn("Test")
+    .IsDependentOn("Pack")
+    .IsDependentOn("Publish")
     .IsDependentOn("DockerBuild");
 
 
