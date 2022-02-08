@@ -1,8 +1,8 @@
 namespace WebScheduler.Api.Mappers;
 
-using WebScheduler.Api.Services;
 using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
+using WebScheduler.Abstractions.Services;
 
 public class CarToSaveCarMapper : IMapper<Models.Car, SaveCar>, IMapper<SaveCar, Models.Car>
 {

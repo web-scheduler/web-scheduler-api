@@ -6,9 +6,9 @@ public interface IScheduledTaskRepository
 {
     Task<ScheduledTask> AddAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken);
 
-    Task DeleteAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken);
+    Task<ScheduledTask> DeleteAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken);
 
-    Task<ScheduledTask?> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken);
+    Task<ScheduledTask> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken);
 
     Task<List<ScheduledTask>> GetScheduledTasksAsync(
         int? first,

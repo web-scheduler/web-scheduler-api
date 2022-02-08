@@ -1,7 +1,4 @@
 namespace WebScheduler.Api.ViewModels;
-
-using System.ComponentModel.DataAnnotations;
-
 /// <summary>
 /// A make and model of car.
 /// </summary>

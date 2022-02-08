@@ -6,14 +6,9 @@ using WebScheduler.Api.Models;
 
 public class ScheduledTaskRepository : IScheduledTaskRepository
 {
-    private readonly ILogger<ScheduledTaskRepository> logger;
     private readonly IClusterClient clusterClient;
 
-    public ScheduledTaskRepository(ILogger<ScheduledTaskRepository> logger, IClusterClient clusterClient)
-    {
-        this.logger = logger;
-        this.clusterClient = clusterClient;
-    }
+    public ScheduledTaskRepository(IClusterClient clusterClient) => this.clusterClient = clusterClient;
 
     public async Task<ScheduledTask> AddAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken)
     {
@@ -33,23 +28,34 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             Modified = scheduledTask.Modified,
         }).ConfigureAwait(false);
 
-        if (result)
+        return new()
         {
-            return scheduledTask;
-        }
-
-        throw new NotImplementedException();
+            Description = result.Description,
+            IsEnabled = result.IsEnabled,
+            Name = result.Name,
+            Created = result.Created,
+            Modified = result.Modified,
+        };
     }
 
-    public Task DeleteAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken) => Task.CompletedTask;
-
-    public async Task<ScheduledTask?> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
+    public async Task<ScheduledTask> DeleteAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken)
     {
-        var scheduledTask = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(false);
-        if (scheduledTask == null)
+        var scheduledTaskGrain = this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ScheduledTaskId.ToString());
+        var result = await scheduledTaskGrain.DeleteAsync().ConfigureAwait(false);
+        return new()
         {
-            return null;
-        }
+            Description = result.Description,
+            IsEnabled = result.IsEnabled,
+            Name = result.Name,
+            Created = result.Created,
+            Modified = result.Modified,
+        };
+    }
+
+    public async Task<ScheduledTask> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
+    {
+        var scheduledTask = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString())
+            .GetAsync().ConfigureAwait(false);
 
         return new ScheduledTask()
         {

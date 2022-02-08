@@ -12,17 +12,14 @@ public class ConfigureCorsOptions : IConfigureOptions<CorsOptions>
 {
     private readonly IConfiguration configuration;
 
-    public ConfigureCorsOptions(IConfiguration configuration)
-    {
-        this.configuration = configuration;
-    }
+    public ConfigureCorsOptions(IConfiguration configuration) => this.configuration = configuration;
     public void Configure(CorsOptions options) =>
         // Create named CORS policies here which you can consume using application.UseCors("PolicyName")
         // or a [EnableCors("PolicyName")] attribute on your controller or action.
         options.AddPolicy(
             CorsPolicyName.AllowAny,
             x => x
-                .SetIsOriginAllowed(c=> c == this.configuration["Cors:Origin"])
+                .SetIsOriginAllowed(c => c == this.configuration["Cors:Origin"])
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

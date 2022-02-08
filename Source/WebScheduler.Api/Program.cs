@@ -2,9 +2,10 @@ namespace WebScheduler.Api;
 
 using Serilog;
 using WebScheduler.Api.Options;
-using Serilog.Extensions.Hosting;
 
+#pragma warning disable RCS1102 // Make class static.
 public class Program
+#pragma warning restore RCS1102 // Make class static.
 {
     public static async Task<int> Main(string[] args)
     {
@@ -76,7 +77,7 @@ public class Program
     /// <param name="services">The services.</param>
     /// <param name="configuration">The configuration.</param>
     private static void ConfigureReloadableLogger(
-        Microsoft.Extensions.Hosting.HostBuilderContext context,
+        HostBuilderContext context,
         IServiceProvider services,
         LoggerConfiguration configuration) =>
         configuration

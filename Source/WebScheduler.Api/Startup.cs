@@ -7,12 +7,7 @@ using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebScheduler.ConfigureOptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using System.IdentityModel.Tokens.Jwt;
 using WebScheduler.Api.Policies;
-using ITfoxtec.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
-
 
 /// <summary>
 /// The main start-up class for the application.
@@ -45,11 +40,12 @@ public class Startup
     {
         services
             .ConfigureOptions<ConfigureRequestLoggingOptions>()
-            .AddStackExchangeRedisCache(options => { })
+            .AddStackExchangeRedisCache(_ => { })
             .AddCors()
             .AddResponseCompression()
             .AddRouting();
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        // Do we need this? I think so.
+        //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -74,21 +70,15 @@ public class Startup
                     ClockSkew = TimeSpan.Zero,// It forces tokens to expire exactly at token expiration time instead of 5 minutes later
                     //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Identity:ClientSecret"]))
                 };
-                options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
-                options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
+                options.TokenValidationParameters.NameClaimType = "sub";
+                options.TokenValidationParameters.RoleClaimType = "role";
                 options.Events = new JwtBearerEvents
                 {
-                    OnAuthenticationFailed = async (context) =>
-                        {
-                            await Task.FromResult(string.Empty);
-                        }
+                    OnAuthenticationFailed = async (_) => await Task.FromResult(string.Empty).ConfigureAwait(false)
                 };
             });
 
-        services.AddAuthorization(options =>
-        {
-            AccessPolicyAttribute.AddPolicy(options);
-        });
+        services.AddAuthorization(options => AccessPolicyAttribute.AddPolicy(options));
 
         services.AddResponseCaching()
         .AddCustomHealthChecks(this.webHostEnvironment, this.configuration)
@@ -116,9 +106,7 @@ public class Startup
     /// called by the ASP.NET runtime.
     /// </summary>
     /// <param name="application">The application builder.</param>
-    public virtual void Configure(IApplicationBuilder application)
-    {
-        application
+    public virtual void Configure(IApplicationBuilder application) => _ = application
             .UseSerilogRequestLogging()
             .UseIf(
                 this.webHostEnvironment.IsDevelopment(),
@@ -129,8 +117,6 @@ public class Startup
             .UseAuthentication()
             .UseAuthorization()
 
-
-
         .UseResponseCaching()
         .UseResponseCompression()
         .UseIf(
@@ -140,7 +126,6 @@ public class Startup
         .UseEndpoints(
             builder =>
             {
-
                 builder.MapControllers().RequireCors(CorsPolicyName.AllowAny)
                     .RequireAuthorization();
                 builder
@@ -154,5 +139,4 @@ public class Startup
         .UseIf(
             this.webHostEnvironment.IsDevelopment(),
             x => x.UseSwaggerUI());
-    }
 }

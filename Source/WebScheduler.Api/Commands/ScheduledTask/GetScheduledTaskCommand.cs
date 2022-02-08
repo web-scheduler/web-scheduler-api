@@ -6,6 +6,7 @@ using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
+using WebScheduler.Abstractions.Grains.Scheduler;
 
 public class GetScheduledTaskCommand
 {
@@ -25,23 +26,27 @@ public class GetScheduledTaskCommand
 
     public async Task<IActionResult> ExecuteAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {
-        var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(false);
-        if (scheduledTask is null)
+        try
+        {
+            var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(false);
+
+            var httpContext = this.actionContextAccessor.ActionContext!.HttpContext;
+            var ifModifiedSince = httpContext.Request.Headers.IfModifiedSince;
+            if (ifModifiedSince.Count > 0 &&
+                DateTimeOffset.TryParse(ifModifiedSince, out var ifModifiedSinceDateTime) &&
+                (ifModifiedSinceDateTime >= scheduledTask.Modified))
+            {
+                return new StatusCodeResult(StatusCodes.Status304NotModified);
+            }
+
+            var scheduledTaskViewModel = this.scheduledTaskMapper.Map(scheduledTask);
+            httpContext.Response.Headers.LastModified = scheduledTask.Modified.ToString("R", CultureInfo.InvariantCulture);
+
+            return new OkObjectResult(scheduledTaskViewModel);
+        }
+        catch (ScheduledTaskNotFoundException)
         {
             return new NotFoundResult();
         }
-
-        var httpContext = this.actionContextAccessor.ActionContext!.HttpContext;
-        var ifModifiedSince = httpContext.Request.Headers.IfModifiedSince;
-        if (ifModifiedSince.Count > 0 &&
-            DateTimeOffset.TryParse(ifModifiedSince, out var ifModifiedSinceDateTime) &&
-            (ifModifiedSinceDateTime >= scheduledTask.Modified))
-        {
-            return new StatusCodeResult(StatusCodes.Status304NotModified);
-        }
-
-        var scheduledTaskViewModel = this.scheduledTaskMapper.Map(scheduledTask);
-        httpContext.Response.Headers.LastModified = scheduledTask.Modified.ToString("R", CultureInfo.InvariantCulture);
-        return new OkObjectResult(scheduledTaskViewModel);
     }
 }

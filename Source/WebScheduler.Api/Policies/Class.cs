@@ -3,19 +3,11 @@ namespace WebScheduler.Api.Policies;
 using ITfoxtec.Identity;
 using Microsoft.AspNetCore.Authorization;
 
-    public class AccessPolicyAttribute : AuthorizeAttribute
-    {
-        private static string _name = nameof(AccessPolicyAttribute);
+public class AccessPolicyAttribute : AuthorizeAttribute
+{
+    private const string Name = nameof(AccessPolicyAttribute);
 
-        public AccessPolicyAttribute() : base(_name)
-        { }
+    public AccessPolicyAttribute() : base(Name) { }
 
-        public static void AddPolicy(AuthorizationOptions options)
-        {
-            options.AddPolicy(_name, configurePolicy =>
-            {
-                //TODO: Require scoep
-                configurePolicy.RequireScope("sub");
-            });
-        }
-    }
+    public static void AddPolicy(AuthorizationOptions options) => options.AddPolicy(Name, configurePolicy => configurePolicy.RequireScope("sub"));
+}
