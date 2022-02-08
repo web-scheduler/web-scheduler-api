@@ -10,7 +10,6 @@ using WebScheduler.Abstractions.Grains.Scheduler;
 using Microsoft.AspNetCore.Authorization;
 
 [Route("[controller]")]
-[Authorize]
 [ApiController]
 [ApiVersion(ApiVersionName.V1)]
 [SwaggerResponse(

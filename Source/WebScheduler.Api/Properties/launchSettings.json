@@ -23,7 +23,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "",
-      "applicationUrl": "http://localhost:5000",
+      "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
@@ -33,7 +33,7 @@
       "dotnetRunMessages": true,
       "launchBrowser": true,
       "launchUrl": "",
-      "applicationUrl": "http://localhost:5000",
+      "applicationUrl": "https://localhost:5001",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Production"
       }
@@ -76,9 +76,9 @@
     "WSL": {
       "commandName": "WSL2",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5000",
+      "launchUrl": "https://localhost:5001",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "http://localhost:5000",
+        "ASPNETCORE_URLS": "https://localhost:5001",
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "distributionName": ""
@@ -86,9 +86,9 @@
     "WSL Production": {
       "commandName": "WSL2",
       "launchBrowser": true,
-      "launchUrl": "http://localhost:5000",
+      "launchUrl": "https://localhost:5001",
       "environmentVariables": {
-        "ASPNETCORE_URLS": "http://localhost:5000",
+        "ASPNETCORE_URLS": "https://localhost:5001",
         "ASPNETCORE_ENVIRONMENT": "Production"
       },
       "distributionName": ""

@@ -20,7 +20,6 @@ public class ConfigureSwaggerUIOptions : IConfigureOptions<SwaggerUIOptions>
 
         options.DisplayOperationId();
         options.DisplayRequestDuration();
-
         foreach (var apiVersionDescription in this.apiVersionDescriptionProvider
             .ApiVersionDescriptions
             .OrderByDescending(x => x.ApiVersion))

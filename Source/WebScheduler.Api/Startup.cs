@@ -48,8 +48,12 @@ public class Startup
         //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+       .AddAuthentication(option =>
+       {
+           option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+           option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+       }).AddJwtBearer(options =>
             {
                 options.Authority = this.configuration["Identity:Authority"];
                 //options.Audience = this.configuration["Identity:ResourceId"];
@@ -112,9 +116,10 @@ public class Startup
                 this.webHostEnvironment.IsDevelopment(),
                 x => x.UseServerTiming())
             .UseForwardedHeaders()
-            .UseRouting()
-            .UseCors(CorsPolicyName.AllowAny)
             .UseAuthentication()
+                    .UseRouting()
+                    .UseCors(CorsPolicyName.AllowAny)
+
             .UseAuthorization()
 
         .UseResponseCaching()
@@ -126,8 +131,9 @@ public class Startup
         .UseEndpoints(
             builder =>
             {
-                builder.MapControllers().RequireCors(CorsPolicyName.AllowAny)
-                    .RequireAuthorization();
+                builder.MapControllers()
+                .RequireCors(CorsPolicyName.AllowAny)
+                .RequireAuthorization();
                 builder
                     .MapHealthChecks("/status")
                     .RequireCors(CorsPolicyName.AllowAny);

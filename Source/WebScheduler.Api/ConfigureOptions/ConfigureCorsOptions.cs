@@ -10,7 +10,6 @@ using Microsoft.Extensions.Options;
 /// </summary>
 public class ConfigureCorsOptions : IConfigureOptions<CorsOptions>
 {
-
     public ConfigureCorsOptions() { }
     public void Configure(CorsOptions options) =>
         // Create named CORS policies here which you can consume using application.UseCors("PolicyName")
