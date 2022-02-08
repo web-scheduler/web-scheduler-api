@@ -36,7 +36,7 @@ ENV DOTNET_CLI_TELEMETRY_OPTOUT=true \
 WORKDIR /src
 COPY "WebScheduler.Api.sln" "."
 COPY "Source/WebScheduler.Api/*.csproj" "Source/WebScheduler.Api/"
-COPY "Source/WebScheduler.Api.Models/*.csproj" "Source/WebScheduler.Api.Models/WebScheduler.Api.Models/"
+COPY "Source/WebScheduler.Api.Models/*.csproj" "Source/WebScheduler.Api.Models/"
 COPY "Tests/WebScheduler.Api.IntegrationTest/*.csproj" "Tests/WebScheduler.Api.IntegrationTest/"
 # Run the restore and cache the packages on the host for faster subsequent builds.
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
