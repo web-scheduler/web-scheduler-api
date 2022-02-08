@@ -22,7 +22,7 @@ public class ConfigureCorsOptions : IConfigureOptions<CorsOptions>
         options.AddPolicy(
             CorsPolicyName.AllowAny,
             x => x
-                .SetIsOriginAllowed(c=> c == this.configuration["Cors:Origin"])
+                .SetIsOriginAllowed(c => c == this.configuration["Cors:Origin"])
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

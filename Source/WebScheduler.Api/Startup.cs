@@ -9,9 +9,6 @@ using WebScheduler.ConfigureOptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using System.IdentityModel.Tokens.Jwt;
 using WebScheduler.Api.Policies;
-using ITfoxtec.Identity;
-using Microsoft.IdentityModel.Tokens;
-using System.Text;
 
 
 /// <summary>
@@ -49,7 +46,8 @@ public class Startup
             .AddCors()
             .AddResponseCompression()
             .AddRouting();
-        JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
+        // Do we need this? I think so.
+        //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         services
             .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -74,21 +72,15 @@ public class Startup
                     ClockSkew = TimeSpan.Zero,// It forces tokens to expire exactly at token expiration time instead of 5 minutes later
                     //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Identity:ClientSecret"]))
                 };
-                options.TokenValidationParameters.NameClaimType = JwtClaimTypes.Subject;
-                options.TokenValidationParameters.RoleClaimType = JwtClaimTypes.Role;
+                options.TokenValidationParameters.NameClaimType = "sub";
+                options.TokenValidationParameters.RoleClaimType = "role";
                 options.Events = new JwtBearerEvents
                 {
-                    OnAuthenticationFailed = async (context) =>
-                        {
-                            await Task.FromResult(string.Empty);
-                        }
+                    OnAuthenticationFailed = async (_) => await Task.FromResult(string.Empty).ConfigureAwait(false)
                 };
             });
 
-        services.AddAuthorization(options =>
-        {
-            AccessPolicyAttribute.AddPolicy(options);
-        });
+        services.AddAuthorization(options => AccessPolicyAttribute.AddPolicy(options));
 
         services.AddResponseCaching()
         .AddCustomHealthChecks(this.webHostEnvironment, this.configuration)

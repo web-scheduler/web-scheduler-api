@@ -1,8 +1,7 @@
 namespace WebScheduler.Api.Mappers;
-
-using WebScheduler.Api.Services;
 using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
+using WebScheduler.Abstractions.Services;
 
 public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTask, SaveScheduledTask>, IMapper<SaveScheduledTask, Models.ScheduledTask>
 {

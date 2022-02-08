@@ -2,6 +2,7 @@ namespace WebScheduler.Api.ViewModels;
 
 using System.ComponentModel.DataAnnotations;
 
+
 /// <summary>
 ///  The ScheduledTask.
 /// </summary>
