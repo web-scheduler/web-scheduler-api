@@ -8,6 +8,8 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebScheduler.ConfigureOptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebScheduler.Api.Policies;
+using IdentityServerHost.Data;
+using Microsoft.EntityFrameworkCore;
 
 /// <summary>
 /// The main start-up class for the application.
@@ -38,6 +40,20 @@ public class Startup
     /// <param name="services">The services.</param>
     public virtual void ConfigureServices(IServiceCollection services)
     {
+
+        services.AddDbContext<DataProtectionKeysDbContext>(b =>
+        {
+            _ = b.UseMySql(this.configuration.GetConnectionString("DataProtectionConnectionString"), ServerVersion.AutoDetect(this.configuration.GetConnectionString("DataProtectionConnectionString")),
+                dbOpts => dbOpts.MigrationsAssembly(typeof(Program).Assembly.FullName)
+                    .EnableRetryOnFailure());
+            if (this.webHostEnvironment.IsDevelopment())
+            {
+                _ = b.LogTo(Console.WriteLine, LogLevel.Information)
+                .EnableSensitiveDataLogging()
+                .EnableDetailedErrors();
+            }
+        });
+
         services
             .ConfigureOptions<ConfigureRequestLoggingOptions>()
             .AddStackExchangeRedisCache(_ => { })
@@ -110,7 +126,9 @@ public class Startup
     /// called by the ASP.NET runtime.
     /// </summary>
     /// <param name="application">The application builder.</param>
-    public virtual void Configure(IApplicationBuilder application) => _ = application
+    public virtual void Configure(IApplicationBuilder application)
+    {
+        var app = application
             .UseSerilogRequestLogging()
             .UseIf(
                 this.webHostEnvironment.IsDevelopment(),
@@ -122,13 +140,13 @@ public class Startup
 
             .UseAuthorization()
 
-        .UseResponseCaching()
-        .UseResponseCompression()
-        .UseIf(
+            .UseResponseCaching()
+            .UseResponseCompression()
+            .UseIf(
             this.webHostEnvironment.IsDevelopment(),
             x => x.UseDeveloperExceptionPage())
-        .UseStaticFiles()
-        .UseEndpoints(
+            .UseStaticFiles()
+            .UseEndpoints(
             builder =>
             {
                 builder.MapControllers()
@@ -141,8 +159,15 @@ public class Startup
                     .MapHealthChecks("/status/self", new HealthCheckOptions() { Predicate = _ => false })
                     .RequireCors(CorsPolicyName.AllowAny);
             })
-        .UseSwagger()
-        .UseIf(
+            .UseSwagger()
+            .UseIf(
             this.webHostEnvironment.IsDevelopment(),
             x => x.UseSwaggerUI());
+
+        using (var scope = app.ApplicationServices.CreateScope())
+        {
+            var db = scope.ServiceProvider.GetRequiredService<DataProtectionKeysDbContext>();
+            db.Database.Migrate();
+        }
+    }
 }
