@@ -1,6 +1,5 @@
 namespace WebScheduler.Api.Policies;
 
-using ITfoxtec.Identity;
 using Microsoft.AspNetCore.Authorization;
 
 public class AccessPolicyAttribute : AuthorizeAttribute
@@ -9,5 +8,5 @@ public class AccessPolicyAttribute : AuthorizeAttribute
 
     public AccessPolicyAttribute() : base(Name) { }
 
-    public static void AddPolicy(AuthorizationOptions options) => options.AddPolicy(Name, configurePolicy => configurePolicy.RequireScope("sub"));
+    public static void AddPolicy(AuthorizationOptions options) => options.AddPolicy(Name, configurePolicy => configurePolicy.RequireClaim("sub"));
 }

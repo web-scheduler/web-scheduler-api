@@ -41,15 +41,19 @@ public class Startup
         services
             .ConfigureOptions<ConfigureRequestLoggingOptions>()
             .AddStackExchangeRedisCache(_ => { })
-            .AddCors(c => c.AddDefaultPolicy(c => c.SetIsOriginAllowed(x=> true).AllowAnyMethod().AllowAnyHeader().AllowCredentials()))
+            .AddCors()
             .AddResponseCompression()
             .AddRouting();
         // Do we need this? I think so.
         //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         services
-            .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-            .AddJwtBearer(options =>
+       .AddAuthentication(option =>
+       {
+           option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+           option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+
+       }).AddJwtBearer(options =>
             {
                 options.Authority = this.configuration["Identity:Authority"];
                 //options.Audience = this.configuration["Identity:ResourceId"];
@@ -112,9 +116,10 @@ public class Startup
                 this.webHostEnvironment.IsDevelopment(),
                 x => x.UseServerTiming())
             .UseForwardedHeaders()
-            .UseRouting()
-            .UseCors(CorsPolicyName.AllowAny)
             .UseAuthentication()
+                    .UseRouting()
+                    .UseCors(CorsPolicyName.AllowAny)
+
             .UseAuthorization()
 
         .UseResponseCaching()
@@ -126,8 +131,9 @@ public class Startup
         .UseEndpoints(
             builder =>
             {
-                builder.MapControllers().RequireCors(CorsPolicyName.AllowAny)
-                    .RequireAuthorization();
+                builder.MapControllers()
+                .RequireCors(CorsPolicyName.AllowAny)
+                .RequireAuthorization();
                 builder
                     .MapHealthChecks("/status")
                     .RequireCors(CorsPolicyName.AllowAny);

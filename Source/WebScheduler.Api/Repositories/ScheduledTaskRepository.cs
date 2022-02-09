@@ -35,6 +35,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             Name = result.Name,
             Created = result.Created,
             Modified = result.Modified,
+            ScheduledTaskId = scheduledTask.ScheduledTaskId,
         };
     }
 
