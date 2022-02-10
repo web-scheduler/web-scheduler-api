@@ -97,7 +97,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         }
         if (first != null)
         {
-            sql += $" ORDER BY tt.Created LIMIT {first}, 10";
+            sql += $" ORDER BY tt.Created ASC LIMIT {first}, 10";
         }
 
         object parameters = new CreatedBeforeAndAfterClause(createdAfter, createdBefore) switch
@@ -143,7 +143,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
-        var sql = @"SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m JOIN 
+        var sql = @"SELECT * FROM (SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m JOIN 
                     JSON_TABLE(
                       m.PayloadJson, 
                       '$' 
@@ -171,7 +171,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         }
         if (last != null)
         {
-            sql += $" ORDER BY tt.Created LIMIT {last}, 10";
+            sql += $" ORDER BY tt.Created DESC LIMIT {last}, 20) x ORDER BY tt.Created ASC";
         }
 
         object parameters = new CreatedBeforeAndAfterClause(createdAfter, createdBefore) switch
