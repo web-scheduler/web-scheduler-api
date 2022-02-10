@@ -209,12 +209,12 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
     public async Task<bool> GetHasNextPageAsync(
         int? first,
         DateTimeOffset? createdAfter,
-        CancellationToken cancellationToken) => (await this.GetTotalCountAsync(cancellationToken)) > (first ?? 0);
+        CancellationToken cancellationToken) => (await this.GetTotalCountAsync(cancellationToken).ConfigureAwait(false)) > (first ?? 0);
 
     public async Task<bool> GetHasPreviousPageAsync(
         int? last,
         DateTimeOffset? createdBefore,
-        CancellationToken cancellationToken) => (await this.GetTotalCountAsync(cancellationToken)) < (last ?? 0);
+        CancellationToken cancellationToken) => (await this.GetTotalCountAsync(cancellationToken).ConfigureAwait(false)) < (last ?? 0);
 
     public async Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
     {
