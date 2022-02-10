@@ -9,7 +9,7 @@ using Microsoft.AspNetCore.Mvc;
 
 public class GetScheduledTaskPageCommand
 {
-    private const int DefaultPageSize = 3;
+    private const int DefaultPageSize = 10;
     private readonly IScheduledTaskRepository scheduledTaskRepository;
     private readonly IMapper<Models.ScheduledTask, ScheduledTask> scheduledTaskMapper;
     private readonly IHttpContextAccessor httpContextAccessor;
@@ -31,7 +31,7 @@ public class GetScheduledTaskPageCommand
     {
         ArgumentNullException.ThrowIfNull(pageOptions);
 
-        pageOptions.First = !pageOptions.First.HasValue && !pageOptions.Last.HasValue ? DefaultPageSize : pageOptions.First;
+        pageOptions.First = !pageOptions.First.HasValue && !pageOptions.Last.HasValue ? 1 : pageOptions.First;
         var createdAfter = Cursor.FromCursor<DateTimeOffset?>(pageOptions.After);
         var createdBefore = Cursor.FromCursor<DateTimeOffset?>(pageOptions.Before);
 
