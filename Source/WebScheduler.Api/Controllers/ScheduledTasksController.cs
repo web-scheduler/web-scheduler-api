@@ -129,7 +129,7 @@ public class ScheduledTasksController : ControllerBase
     [SwaggerResponse(
         StatusCodes.Status200OK,
         "A collection of ScheduledTasks for the specified page.",
-        typeof(Connection<ScheduledTask>),
+        typeof(PagedCollection<ScheduledTask>),
         ContentType.RestfulJson,
         ContentType.Json)]
     [SwaggerResponse(

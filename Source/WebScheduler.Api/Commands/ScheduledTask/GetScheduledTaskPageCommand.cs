@@ -55,7 +55,7 @@ public class GetScheduledTaskPageCommand
         var scheduledTaskViewModels = this.scheduledTaskMapper.MapList(scheduledTasks);
 
         var httpContext = this.httpContextAccessor.HttpContext!;
-        var connection = new Connection<ScheduledTask>()
+        var connection = new PagedCollection<ScheduledTask>()
         {
             PageInfo = new PageInfo()
             {

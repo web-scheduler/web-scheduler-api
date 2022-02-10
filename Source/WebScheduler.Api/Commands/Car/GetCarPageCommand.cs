@@ -55,7 +55,7 @@ public class GetCarPageCommand
         var carViewModels = this.carMapper.MapList(cars);
 
         var httpContext = this.httpContextAccessor.HttpContext!;
-        var connection = new Connection<Car>()
+        var connection = new PagedCollection<Car>()
         {
             PageInfo = new PageInfo()
             {

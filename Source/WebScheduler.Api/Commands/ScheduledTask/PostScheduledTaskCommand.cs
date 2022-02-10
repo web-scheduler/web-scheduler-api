@@ -25,6 +25,12 @@ public class PostScheduledTaskCommand
     public async Task<IActionResult> ExecuteAsync(SaveScheduledTask saveScheduledTask, CancellationToken cancellationToken)
     {
         var scheduledTask = this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask);
+
+        if (scheduledTask.ScheduledTaskId == Guid.Empty)
+        {
+            scheduledTask.ScheduledTaskId = Guid.NewGuid();
+        }
+
         scheduledTask = await this.scheduledTaskRepository.AddAsync(scheduledTask, cancellationToken).ConfigureAwait(false);
         var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
 
