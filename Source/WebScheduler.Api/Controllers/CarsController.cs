@@ -129,7 +129,7 @@ public class CarsController : ControllerBase
     [SwaggerResponse(
         StatusCodes.Status200OK,
         "A collection of cars for the specified page.",
-        typeof(Connection<Car>),
+        typeof(PagedCollection<Car>),
         ContentType.RestfulJson,
         ContentType.Json)]
     [SwaggerResponse(

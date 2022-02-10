@@ -21,15 +21,9 @@ public class DeleteScheduledTaskCommand
     {
         try
         {
-            var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(false);
+            await this.scheduledTaskRepository.DeleteAsync(scheduledTaskId, cancellationToken).ConfigureAwait(false);
 
-            var result = await this.scheduledTaskRepository.DeleteAsync(scheduledTask, cancellationToken).ConfigureAwait(false);
-            var scheduledTaskViewModel = this.scheduledTaskMapper.Map(result);
-
-            return new ObjectResult(scheduledTaskViewModel)
-            {
-                StatusCode = StatusCodes.Status410Gone
-            };
+            return new NoContentResult();
         }
         catch (ScheduledTaskNotFoundException)
         {

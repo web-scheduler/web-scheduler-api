@@ -4,9 +4,9 @@ namespace WebScheduler.Api.ViewModels;
 /// A paged collection of items.
 /// </summary>
 /// <typeparam name="T">The type of the items.</typeparam>
-public class Connection<T>
+public class PagedCollection<T>
 {
-    public Connection() => this.Items = new List<T>();
+    public PagedCollection() => this.Items = new List<T>();
 
     /// <summary>
     /// Gets or sets the total count of items.

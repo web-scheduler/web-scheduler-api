@@ -8,6 +8,7 @@ using WebScheduler.Api.Commands.ScheduledTask;
 using Orleans;
 using WebScheduler.Api.Commands.Car;
 using WebScheduler.Abstractions.Services;
+using WebScheduler.Abstractions.Grains.Scheduler;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> extension methods add project services.
@@ -41,7 +42,9 @@ internal static class ProjectServiceCollectionExtensions
             .AddSingleton<IMapper<SaveCar, Models.Car>, CarToSaveCarMapper>()
             .AddSingleton<IMapper<Models.ScheduledTask, ScheduledTask>, ScheduledTaskToScheduledTaskMapper>()
             .AddSingleton<IMapper<Models.ScheduledTask, SaveScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>()
-            .AddSingleton<IMapper<SaveScheduledTask, Models.ScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>();
+            .AddSingleton<IMapper<SaveScheduledTask, Models.ScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>()
+            .AddSingleton<IMapper<GuidIdWrapper<ScheduledTaskMetadata>, Models.ScheduledTask>, ScheduledTaskMetaDataToScheduledTaskMapper>()
+            .AddSingleton<IMapper<Models.ScheduledTask, GuidIdWrapper<ScheduledTaskMetadata>>, ScheduledTaskMetaDataToScheduledTaskMapper>();
 
     public static IServiceCollection AddProjectRepositories(this IServiceCollection services) =>
         services

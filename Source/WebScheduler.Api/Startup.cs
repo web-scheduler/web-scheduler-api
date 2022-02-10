@@ -60,8 +60,6 @@ public class Startup
             .AddCors()
             .AddResponseCompression()
             .AddRouting();
-        // Do we need this? I think so.
-        //JwtSecurityTokenHandler.DefaultInboundClaimTypeMap.Clear();
 
         services
        .AddAuthentication(option =>
