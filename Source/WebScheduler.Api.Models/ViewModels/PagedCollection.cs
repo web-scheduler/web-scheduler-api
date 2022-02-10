@@ -3,7 +3,7 @@ namespace WebScheduler.Api.ViewModels;
 /// <summary>
 /// A paged collection of items.
 /// </summary>
-/// <typeparam name="T">The type of the items.</typeparam>
+/// <typeparam name="T">The type of the items in the list.</typeparam>
 public class PagedCollection<T>
 {
     public PagedCollection() => this.Items = new List<T>();
