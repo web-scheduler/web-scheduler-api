@@ -33,14 +33,14 @@ public class GetScheduledTaskCommand
             var httpContext = this.actionContextAccessor.ActionContext!.HttpContext;
             var ifModifiedSince = httpContext.Request.Headers.IfModifiedSince;
             if (ifModifiedSince.Count > 0 &&
-                DateTimeOffset.TryParse(ifModifiedSince, out var ifModifiedSinceDateTime) &&
-                (ifModifiedSinceDateTime >= scheduledTask.Modified))
+                DateTime.TryParse(ifModifiedSince, out var ifModifiedSinceDateTime) &&
+                (ifModifiedSinceDateTime >= scheduledTask.ModifiedAt))
             {
                 return new StatusCodeResult(StatusCodes.Status304NotModified);
             }
 
             var scheduledTaskViewModel = this.scheduledTaskMapper.Map(scheduledTask);
-            httpContext.Response.Headers.LastModified = scheduledTask.Modified.ToString("R", CultureInfo.InvariantCulture);
+            httpContext.Response.Headers.LastModified = scheduledTask.ModifiedAt.ToString("R", CultureInfo.InvariantCulture);
 
             return new OkObjectResult(scheduledTaskViewModel);
         }

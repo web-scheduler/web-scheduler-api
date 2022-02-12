@@ -30,4 +30,10 @@ public class ScheduledTask
     /// </summary>
     /// <example>/scheduledtask/1</example>
     public Uri Url { get; set; } = default!;
+
+    public DateTime? LastRunAt { get; set; }
+    public DateTime? NextRunAt { get; set; }
+    public DateTime ModifiedAt{ get; set; }
+    public DateTime CreatedAt { get; set; }
+    public string CronExpression { get; set; } = "* * * * *";
 }

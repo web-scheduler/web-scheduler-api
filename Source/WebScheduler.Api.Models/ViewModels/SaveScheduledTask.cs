@@ -27,4 +27,10 @@ public class SaveScheduledTask
     /// </summary>
     [Display(Name = "Enabled", Description = "Determines if the task is schedulable.", ShortName = "Enabled")]
     public bool IsEnabled { get; set; }
+
+    public DateTime? LastRunAt { get; set; }
+    public DateTime? NextRunAt { get; set; }
+    public string CronExpression { get; set; } = "* * * * *";
+
+
 }

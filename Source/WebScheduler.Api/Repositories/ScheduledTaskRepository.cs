@@ -33,8 +33,11 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             Description = scheduledTask.Description,
             IsEnabled = scheduledTask.IsEnabled,
             Name = scheduledTask.Name,
-            Created = scheduledTask.Created,
-            Modified = scheduledTask.Modified,
+            CreatedAt = scheduledTask.CreatedAt,
+            ModifiedAt = scheduledTask.ModifiedAt,
+            LastRunAt = scheduledTask.LastRunAt,
+            NextRunAt = scheduledTask.NextRunAt,
+            CronExpression = scheduledTask.CronExpression,
         }).ConfigureAwait(false);
 
         return scheduledTask;
@@ -50,12 +53,15 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         var result = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(false);
         return new()
         {
-            Created = result.Created,
-            Modified = result.Modified,
+            CreatedAt = result.CreatedAt,
+            ModifiedAt = result.ModifiedAt,
             Description = result.Description,
             Name = result.Name,
             IsEnabled = result.IsEnabled,
             ScheduledTaskId = scheduledTaskId,
+            LastRunAt = result.LastRunAt,
+            NextRunAt = result.NextRunAt,
+            CronExpression = result.CronExpression,
         };
     }
 
@@ -95,11 +101,14 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             }
             buffer.Add(new()
             {
-                Created = result.Created,
-                Modified = result.Modified,
+                CreatedAt = result.CreatedAt,
+                ModifiedAt = result.ModifiedAt,
                 Description = result.Description,
                 Name = result.Name,
                 IsEnabled = result.IsEnabled,
+                LastRunAt = result.LastRunAt,
+                NextRunAt = result.NextRunAt,
+                CronExpression = result.CronExpression,
                 ScheduledTaskId = reader.GetGuid(0),
             });
         }
