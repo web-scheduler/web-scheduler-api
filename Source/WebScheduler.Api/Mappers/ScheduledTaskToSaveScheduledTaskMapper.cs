@@ -18,6 +18,7 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
         destination.IsEnabled = source.IsEnabled;
         destination.Description = source.Description;
         destination.Name = source.Name;
+        destination.CronExpression = source.CronExpression;
     }
 
     public void Map(SaveScheduledTask source, Models.ScheduledTask destination)
@@ -27,13 +28,13 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
 
         var now = this.clockService.UtcNow;
 
-        if (destination.Created == DateTimeOffset.MinValue)
+        if (destination.CreatedAt == DateTime.MinValue)
         {
-            destination.Created = now;
+            destination.CreatedAt = now;
         }
         destination.IsEnabled = source.IsEnabled;
         destination.Description = source.Description;
         destination.Name = source.Name;
-        destination.Modified = now;
+        destination.CronExpression = source.CronExpression;
     }
 }

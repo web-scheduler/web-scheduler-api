@@ -40,7 +40,7 @@ public class GetScheduledTaskPageCommand
             return new NotFoundResult();
         }
 
-        var (startCursor, endCursor) = Cursor.GetFirstAndLastCursor(scheduledTasks, x => x.Created);
+        var (startCursor, endCursor) = Cursor.GetFirstAndLastCursor(scheduledTasks, x => x.CreatedAt);
         var scheduledTaskViewModels = this.scheduledTaskMapper.MapList(scheduledTasks);
 
         var collection = new PageResults<ScheduledTask>()
