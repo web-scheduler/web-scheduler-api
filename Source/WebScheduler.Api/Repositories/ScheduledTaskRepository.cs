@@ -37,7 +37,6 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             Modified = scheduledTask.Modified,
         }).ConfigureAwait(false);
 
-
         return scheduledTask;
     }
 
@@ -61,15 +60,14 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
     }
 
     public async Task<List<ScheduledTask>> GetScheduledTasksAsync(
-        int? first,
-        DateTimeOffset? createdAfter,
-        DateTimeOffset? createdBefore,
+        int offset,
+        int pageSize,
        CancellationToken cancellationToken)
     {
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
-        
-        var sql = @"SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m JOIN 
+
+        var sql = @$"SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m JOIN 
                     JSON_TABLE(
                       m.PayloadJson, 
                       '$' 
@@ -77,39 +75,16 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
                         Created varchar(100) PATH '$.created' DEFAULT '0' ON EMPTY
                       )
                     ) AS tt
-                    ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'";
-        if (createdAfter != null || createdBefore != null)
-        {
-            sql += @"
-                    AND ";
-            if (createdAfter != null)
-            {
-                sql += "tt.Created < @createdAfter";
-            }
-            if (createdAfter != null && createdBefore != null)
-            {
-                sql += " AND ";
-            }
-            if (createdAfter != null)
-            {
-                sql += "tt.Created > @createdbefore ";
-            }
-        }
-        if (first != null)
-        {
-            sql += $" ORDER BY tt.Created ASC LIMIT {first}, 10";
-        }
+                    ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata' 
+          ORDER BY tt.Created ASC LIMIT @Offset, @PageSize";
 
-        object parameters = new CreatedBeforeAndAfterClause(createdAfter, createdBefore) switch
+        using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
-            (CreatedAfter: null, CreatedBefore: null) => new { },
-            (CreatedAfter: not null, CreatedBefore: not null) => new { CreatedAfter = createdAfter, CreatedBefore = createdBefore },
-            (CreatedAfter: not null, CreatedBefore: null) => new { CreatedAfter = createdAfter },
-            (CreatedAfter: null, CreatedBefore: not null) => new { CreatedBefore = createdBefore },
-        };
-        using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, cancellationToken: cancellationToken)).ConfigureAwait(false);
+            Offset = offset,
+            PageSize = pageSize
+        }, cancellationToken: cancellationToken)).ConfigureAwait(false);
 
-        var buffer = new List<ScheduledTask>(10);
+        var buffer = new List<ScheduledTask>(pageSize);
         while (await reader.ReadAsync(cancellationToken).ConfigureAwait(false))
         {
             var result = JsonSerializer.Deserialize<ScheduledTaskMetadata>(reader.GetString(1), new JsonSerializerOptions(JsonSerializerDefaults.Web));
@@ -131,91 +106,6 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
 
         return buffer;
     }
-    private record struct CreatedBeforeAndAfterClause(DateTimeOffset? CreatedAfter, DateTimeOffset? CreatedBefore);
-
-    public async Task<List<ScheduledTask>> GetScheduledTasksReverseAsync(
-        int? last,
-        DateTimeOffset? createdAfter,
-        DateTimeOffset? createdBefore,
-        CancellationToken cancellationToken)
-    {
-
-        // TODO: Figure out connection pooling
-        using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
-
-        var sql = @"SELECT * FROM (SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m JOIN 
-                    JSON_TABLE(
-                      m.PayloadJson, 
-                      '$' 
-                      COLUMNS(
-                        Created varchar(100) PATH '$.created' DEFAULT '0' ON EMPTY
-                      )
-                    ) AS tt
-                    ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'";
-        if (createdAfter != null || createdBefore != null)
-        {
-            sql += @"
-                    AND ";
-            if (createdAfter != null)
-            {
-                sql += "tt.Created < @createdAfter";
-            }
-            if (createdAfter != null && createdBefore != null)
-            {
-                sql += " AND ";
-            }
-            if (createdAfter != null)
-            {
-                sql += "tt.Created > @createdbefore ";
-            }
-        }
-        if (last != null)
-        {
-            sql += $" ORDER BY tt.Created DESC LIMIT {last}, 20) x ORDER BY tt.Created ASC";
-        }
-
-        object parameters = new CreatedBeforeAndAfterClause(createdAfter, createdBefore) switch
-        {
-            (CreatedAfter: null, CreatedBefore: null) => new { },
-            (CreatedAfter: not null, CreatedBefore: not null) => new { CreatedAfter = createdAfter, CreatedBefore = createdBefore },
-            (CreatedAfter: not null, CreatedBefore: null) => new { CreatedAfter = createdAfter },
-            (CreatedAfter: null, CreatedBefore: not null) => new { CreatedBefore = createdBefore },
-        };
-        using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, cancellationToken: cancellationToken)).ConfigureAwait(false);
-
-        var buffer = new List<ScheduledTask>(10);
-        while (await reader.ReadAsync(cancellationToken).ConfigureAwait(false))
-        {
-            var result = JsonSerializer.Deserialize<ScheduledTaskMetadata>(reader.GetString(1), new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            if (result == null)
-            {
-                // TODO: handle this
-                continue;
-            }
-            buffer.Add(new()
-            {
-                Created = result.Created,
-                Modified = result.Modified,
-                Description = result.Description,
-                Name = result.Name,
-                IsEnabled = result.IsEnabled,
-                ScheduledTaskId = reader.GetGuid(0),
-            });
-        }
-
-        return buffer;
-    }
-
-    public async Task<bool> GetHasNextPageAsync(
-        int? first,
-        DateTimeOffset? createdAfter,
-        CancellationToken cancellationToken) => (await this.GetTotalCountAsync(cancellationToken).ConfigureAwait(false)) > (first ?? 0);
-
-    public async Task<bool> GetHasPreviousPageAsync(
-        int? last,
-        DateTimeOffset? createdBefore,
-        CancellationToken cancellationToken) => (await this.GetTotalCountAsync(cancellationToken).ConfigureAwait(false)) < (last ?? 0);
-
     public async Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
     {
         // TODO: Figure out connection pooling

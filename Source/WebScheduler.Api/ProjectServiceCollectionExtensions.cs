@@ -6,7 +6,6 @@ using Boxed.Mapping;
 using WebScheduler.Api.HostedServices;
 using WebScheduler.Api.Commands.ScheduledTask;
 using Orleans;
-using WebScheduler.Api.Commands.Car;
 using WebScheduler.Abstractions.Services;
 using WebScheduler.Abstractions.Grains.Scheduler;
 
@@ -22,12 +21,6 @@ internal static class ProjectServiceCollectionExtensions
 {
     public static IServiceCollection AddProjectCommands(this IServiceCollection services) =>
         services
-            .AddSingleton<DeleteCarCommand>()
-            .AddSingleton<GetCarCommand>()
-            .AddSingleton<GetCarPageCommand>()
-            .AddSingleton<PatchCarCommand>()
-            .AddSingleton<PostCarCommand>()
-            .AddSingleton<PutCarCommand>()
             .AddSingleton<DeleteScheduledTaskCommand>()
             .AddSingleton<GetScheduledTaskCommand>()
             .AddSingleton<GetScheduledTaskPageCommand>()
@@ -37,9 +30,6 @@ internal static class ProjectServiceCollectionExtensions
 
     public static IServiceCollection AddProjectMappers(this IServiceCollection services) =>
         services
-            .AddSingleton<IMapper<Models.Car, Car>, CarToCarMapper>()
-            .AddSingleton<IMapper<Models.Car, SaveCar>, CarToSaveCarMapper>()
-            .AddSingleton<IMapper<SaveCar, Models.Car>, CarToSaveCarMapper>()
             .AddSingleton<IMapper<Models.ScheduledTask, ScheduledTask>, ScheduledTaskToScheduledTaskMapper>()
             .AddSingleton<IMapper<Models.ScheduledTask, SaveScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>()
             .AddSingleton<IMapper<SaveScheduledTask, Models.ScheduledTask>, ScheduledTaskToSaveScheduledTaskMapper>()
@@ -48,7 +38,6 @@ internal static class ProjectServiceCollectionExtensions
 
     public static IServiceCollection AddProjectRepositories(this IServiceCollection services) =>
         services
-            .AddSingleton<ICarRepository, CarRepository>()
             .AddSingleton<IScheduledTaskRepository, ScheduledTaskRepository>();
 
     public static IServiceCollection AddProjectServices(this IServiceCollection services) =>
