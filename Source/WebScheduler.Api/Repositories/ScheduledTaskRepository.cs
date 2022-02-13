@@ -78,7 +78,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
                       m.PayloadJson, 
                       '$' 
                       COLUMNS(
-                        CreatedAt varchar(100) PATH '$.createdAt' DEFAULT '2022-02-13 14:50:28' ON EMPTY
+                        CreatedAt varchar(100) PATH '$.createdAt' DEFAULT '0' ON EMPTY
                       )
                     ) AS tt
                     ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata' 
