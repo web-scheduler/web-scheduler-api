@@ -73,12 +73,12 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
-        var sql = @$"SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m JOIN 
+        const string sql = @"SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m JOIN 
                     JSON_TABLE(
                       m.PayloadJson, 
                       '$' 
                       COLUMNS(
-                        CreatedAt varchar(100) PATH '$.createdAt' DEFAULT '2020-01-01 12:13:13' ON EMPTY
+                        CreatedAt varchar(100) PATH '$.createdAt' DEFAULT '2022-02-13 14:50:28' ON EMPTY
                       )
                     ) AS tt
                     ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata' 
