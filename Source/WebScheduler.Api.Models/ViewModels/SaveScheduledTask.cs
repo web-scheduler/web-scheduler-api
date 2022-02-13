@@ -30,7 +30,7 @@ public class SaveScheduledTask
 
     public DateTime? LastRunAt { get; set; }
     public DateTime? NextRunAt { get; set; }
-    public string CronExpression { get; set; } = "* * * * *";
+    public string CronExpression { get; set; } => "30 */2 * * * *";
 
 
 }
