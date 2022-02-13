@@ -8,6 +8,11 @@ using System.ComponentModel.DataAnnotations;
 /// </summary>
 public class SaveScheduledTask
 {
+    static Random rng = new Random();
+    public SaveScheduledTask ()
+    {
+      this.CronExpression = $"{rng.Next(0, 59)} */1 * * * *";
+    }
     /// <summary>
     /// Gets or sets the name of the scheduled task.
     /// </summary>
@@ -30,7 +35,7 @@ public class SaveScheduledTask
 
     public DateTime? LastRunAt { get; set; }
     public DateTime? NextRunAt { get; set; }
-    public string CronExpression { get; set; } = "* * * * *";
+    public string CronExpression { get; set; }
 
 
 }
