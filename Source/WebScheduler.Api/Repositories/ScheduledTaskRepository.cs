@@ -78,11 +78,11 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
                       m.PayloadJson, 
                       '$' 
                       COLUMNS(
-                        Created varchar(100) PATH '$.created' DEFAULT '0' ON EMPTY
+                        CreatedAr varchar(100) PATH '$.createdAt' DEFAULT '2020-01-01 12:13:13' ON EMPTY
                       )
                     ) AS tt
                     ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata' 
-          ORDER BY tt.Created ASC LIMIT @Offset, @PageSize";
+          ORDER BY tt.CreatedAt ASC LIMIT @Offset, @PageSize";
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
