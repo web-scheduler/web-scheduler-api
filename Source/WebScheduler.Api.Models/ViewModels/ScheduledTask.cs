@@ -36,4 +36,6 @@ public class ScheduledTask
     public DateTime ModifiedAt{ get; set; }
     public DateTime CreatedAt { get; set; }
     public string CronExpression { get; set; } = "* * * * *";
+
+    public ScheduledTask ShallowCopy() => (ScheduledTask)this.MemberwiseClone();
 }

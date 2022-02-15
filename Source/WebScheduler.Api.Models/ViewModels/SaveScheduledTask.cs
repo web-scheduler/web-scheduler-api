@@ -30,5 +30,7 @@ public class SaveScheduledTask
 
     [Required]
     [Display(Name = "Schedule", Description = "The schedule to run the task on.")]
-    public string CronExpression { get; set; } = "* * * * * * ";
+    public string CronExpression { get; set; } = "* * * * * ";
+
+    public SaveScheduledTask ShallowCopy() => (SaveScheduledTask)this.MemberwiseClone();
 }
