@@ -8,11 +8,6 @@ using System.ComponentModel.DataAnnotations;
 /// </summary>
 public class SaveScheduledTask
 {
-    static Random rng = new Random();
-    public SaveScheduledTask ()
-    {
-      this.CronExpression = $"{rng.Next(0, 59)} */1 * * * *";
-    }
     /// <summary>
     /// Gets or sets the name of the scheduled task.
     /// </summary>
@@ -33,9 +28,9 @@ public class SaveScheduledTask
     [Display(Name = "Enabled", Description = "Determines if the task is schedulable.", ShortName = "Enabled")]
     public bool IsEnabled { get; set; }
 
-    public DateTime? LastRunAt { get; set; }
-    public DateTime? NextRunAt { get; set; }
-    public string CronExpression { get; set; }
+    [Required]
+    [Display(Name = "Schedule", Description = "The schedule to run the task on.")]
+    public string CronExpression { get; set; } = "* * * * * ";
 
-
+    public SaveScheduledTask ShallowCopy() => (SaveScheduledTask)this.MemberwiseClone();
 }
