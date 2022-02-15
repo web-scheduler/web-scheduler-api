@@ -120,7 +120,7 @@ jobs:
     needs: build
     environment:
       name: "GitHub Packages"
-      url: https://github.com/web-scheduler/web-scheduler/packages
+      url: https://github.com/web-scheduler/web-scheduler-api/packages
     permissions:
       packages: write
     runs-on: windows-latest
@@ -130,7 +130,7 @@ jobs:
         with:
           name: "ubuntu-latest"
       - name: "Dotnet NuGet Add Source"
-        run: dotnet nuget add source https://nuget.pkg.github.com/web-scheduler/index.json --name GitHub --username web-scheduler --password ${{secrets.GITHUB_TOKEN}}
+        run: dotnet nuget add source https://nuget.pkg.github.com/web-scheduler-api/index.json --name GitHub --username web-scheduler-api --password ${{secrets.GITHUB_TOKEN}}
         shell: pwsh
       - name: "Dotnet NuGet Push"
         run: dotnet nuget push .\**\*.nupkg --api-key ${{ github.token }} --source GitHub --skip-duplicate
