@@ -2,9 +2,9 @@ namespace WebScheduler.Api.Commands.ScheduledTask;
 
 using WebScheduler.Api.Constants;
 using WebScheduler.Api.Repositories;
-using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
 using Microsoft.AspNetCore.Mvc;
+using WebScheduler.Api.Models.ViewModels;
 
 public class PostScheduledTaskCommand
 {

@@ -21,8 +21,8 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
             .ConfigureServices(services =>
             {
                 // Add logging from the host's container.
-                services.AddSingleton(loggerFactory);
-                services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
+                _ = services.AddSingleton(loggerFactory);
+                _ = services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             })
             //.AddClusterConnectionLostHandler(async (object sender, EventArgs e) => await this.ConnectionHandler().ConfigureAwait(false))
             .UseAdoNetClustering(options =>

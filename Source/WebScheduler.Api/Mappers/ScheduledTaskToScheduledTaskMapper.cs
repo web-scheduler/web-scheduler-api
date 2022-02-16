@@ -1,8 +1,8 @@
 namespace WebScheduler.Api.Mappers;
 
 using WebScheduler.Api.Constants;
-using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
+using WebScheduler.Api.Models.ViewModels;
 
 public class ScheduledTaskToScheduledTaskMapper : IMapper<Models.ScheduledTask, ScheduledTask>
 {
@@ -26,7 +26,7 @@ public class ScheduledTaskToScheduledTaskMapper : IMapper<Models.ScheduledTask, 
         destination.IsEnabled = source.IsEnabled;
         destination.Description = source.Description;
         destination.Name = source.Name;
-        destination.CreatedAt= source.CreatedAt;
+        destination.CreatedAt = source.CreatedAt;
         destination.ModifiedAt = source.ModifiedAt;
         destination.CronExpression = source.CronExpression;
         destination.NextRunAt = source.NextRunAt;

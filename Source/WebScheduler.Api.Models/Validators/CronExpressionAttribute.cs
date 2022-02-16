@@ -1,8 +1,7 @@
-namespace WebScheduler.Api.Validators;
+namespace WebScheduler.Api.Models.Validators;
 
 using System.ComponentModel.DataAnnotations;
 using Cronos;
-
 
 /// <summary>
 /// Validates if a given value is a valid cron expression

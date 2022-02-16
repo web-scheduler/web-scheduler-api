@@ -3,8 +3,8 @@ namespace WebScheduler.Api.Commands.ScheduledTask;
 using WebScheduler.Api.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using Boxed.Mapping;
-using WebScheduler.Api.ViewModels;
 using WebScheduler.Abstractions.Grains.Scheduler;
+using WebScheduler.Api.Models.ViewModels;
 
 public class DeleteScheduledTaskCommand
 {

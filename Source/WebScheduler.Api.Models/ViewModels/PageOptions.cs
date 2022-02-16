@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.ViewModels;
+namespace WebScheduler.Api.Models.ViewModels;
 
 using System.ComponentModel.DataAnnotations;
 

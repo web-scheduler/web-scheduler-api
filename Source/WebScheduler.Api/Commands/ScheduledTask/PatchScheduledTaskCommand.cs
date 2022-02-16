@@ -1,12 +1,12 @@
 namespace WebScheduler.Api.Commands.ScheduledTask;
 
 using WebScheduler.Api.Repositories;
-using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using WebScheduler.Api.Models.ViewModels;
 
 public class PatchScheduledTaskCommand
 {

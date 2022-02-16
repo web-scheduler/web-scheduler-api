@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.ViewModels;
+namespace WebScheduler.Api.Models.ViewModels;
 /// <summary>
 /// A make and model of car.
 /// </summary>
@@ -33,7 +33,7 @@ public class ScheduledTask
 
     public DateTime? LastRunAt { get; set; }
     public DateTime? NextRunAt { get; set; }
-    public DateTime ModifiedAt{ get; set; }
+    public DateTime ModifiedAt { get; set; }
     public DateTime CreatedAt { get; set; }
 
     /// <summary>

@@ -1,9 +1,8 @@
-namespace WebScheduler.Api.ViewModels;
+namespace WebScheduler.Api.Models.ViewModels;
 
 using System.ComponentModel.DataAnnotations;
 using Cronos;
-using WebScheduler.Api.Validators;
-
+using WebScheduler.Api.Models.Validators;
 
 /// <summary>
 ///  The ScheduledTask.

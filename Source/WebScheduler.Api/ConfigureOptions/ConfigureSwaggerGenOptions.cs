@@ -1,4 +1,6 @@
+#pragma warning disable IDE0130 // Namespace does not match folder structure
 namespace WebScheduler.Api;
+#pragma warning restore IDE0130 // Namespace does not match folder structure
 
 using WebScheduler.Api.OperationFilters;
 using Boxed.AspNetCore.Swagger;
@@ -22,7 +24,7 @@ public class ConfigureSwaggerGenOptions : IConfigureOptions<SwaggerGenOptions>
         options.EnableAnnotations();
 
         // Add the XML comment file for this assembly, so its contents can be displayed.
-        options.IncludeXmlCommentsIfExists(typeof(Startup).Assembly);
+        _ = options.IncludeXmlCommentsIfExists(typeof(Startup).Assembly);
 
         options.OperationFilter<ApiVersionOperationFilter>();
         options.OperationFilter<ClaimsOperationFilter>();
@@ -52,7 +54,7 @@ public class ConfigureSwaggerGenOptions : IConfigureOptions<SwaggerGenOptions>
                                     Id = "Bearer"
                                 }
                             },
-                            new string[] {}
+                            Array.Empty<string>()
 
                     }
         });
