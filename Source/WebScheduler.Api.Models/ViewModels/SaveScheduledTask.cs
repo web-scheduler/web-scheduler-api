@@ -1,6 +1,8 @@
 namespace WebScheduler.Api.ViewModels;
 
 using System.ComponentModel.DataAnnotations;
+using Cronos;
+using WebScheduler.Api.Validators;
 
 
 /// <summary>
@@ -28,9 +30,16 @@ public class SaveScheduledTask
     [Display(Name = "Enabled", Description = "Determines if the task is schedulable.", ShortName = "Enabled")]
     public bool IsEnabled { get; set; }
 
-    [Required]
+    /// <summary>
+    /// The cron expression to use for the task schedule. We only want users to input expressions with per-minute granularity, hence the <seealso cref="CronFormat.Standard"/>.
+    /// </summary>
     [Display(Name = "Schedule", Description = "The schedule to run the task on.")]
+    [CronExpression(CronFormat.Standard)]
     public string CronExpression { get; set; } = "* * * * * ";
 
+    /// <summary>
+    /// Creates a shallow copy of the object instance.
+    /// </summary>
+    /// <returns>The copy.</returns>
     public SaveScheduledTask ShallowCopy() => (SaveScheduledTask)this.MemberwiseClone();
 }
