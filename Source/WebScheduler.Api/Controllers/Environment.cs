@@ -24,6 +24,6 @@ public class EnvironmentController : Controller
                 Template = x?.AttributeRouteInfo?.Template ?? "n/a",
                 Method = x?.ActionConstraints?.OfType<HttpMethodActionConstraint>().FirstOrDefault()?.HttpMethods.First()
             }).ToList();
-        return Ok(routes);
+        return this.Ok(routes);
     }
 }

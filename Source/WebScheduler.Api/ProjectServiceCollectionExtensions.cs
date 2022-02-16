@@ -3,9 +3,7 @@ using WebScheduler.Api.Mappers;
 using WebScheduler.Api.Repositories;
 using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
-using WebScheduler.Api.HostedServices;
 using WebScheduler.Api.Commands.ScheduledTask;
-using Orleans;
 using WebScheduler.Abstractions.Services;
 using WebScheduler.Abstractions.Grains.Scheduler;
 
@@ -43,11 +41,4 @@ internal static class ProjectServiceCollectionExtensions
     public static IServiceCollection AddProjectServices(this IServiceCollection services) =>
         services
             .AddSingleton<IClockService, ClockService>();
-
-    public static IServiceCollection AddHostedServices(this IServiceCollection services) =>
-     services
-            .AddTransient<IClientBuilder, ClientBuilder>()
-            .AddSingleton<ClusterClientHostedService>()
-            .AddSingleton<IHostedService, ClusterClientHostedService>(_ => _.GetRequiredService<ClusterClientHostedService>())
-            .AddSingleton(_ => _.GetRequiredService<ClusterClientHostedService>().Client);
 }

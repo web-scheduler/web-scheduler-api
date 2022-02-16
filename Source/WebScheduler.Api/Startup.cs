@@ -40,7 +40,6 @@ public class Startup
     /// <param name="services">The services.</param>
     public virtual void ConfigureServices(IServiceCollection services)
     {
-
         services.AddDbContext<DataProtectionKeysDbContext>(b =>
         {
             _ = b.UseMySql(this.configuration.GetConnectionString("DataProtectionConnectionString"), ServerVersion.AutoDetect(this.configuration.GetConnectionString("DataProtectionConnectionString")),
@@ -66,7 +65,6 @@ public class Startup
        {
            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
        }).AddJwtBearer(options =>
             {
                 options.Authority = this.configuration["Identity:Authority"];
@@ -115,8 +113,7 @@ public class Startup
         .AddProjectCommands()
         .AddProjectMappers()
         .AddProjectRepositories()
-        .AddProjectServices()
-        .AddHostedServices();
+        .AddProjectServices();
     }
 
     /// <summary>

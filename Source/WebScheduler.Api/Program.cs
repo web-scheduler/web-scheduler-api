@@ -1,5 +1,10 @@
 namespace WebScheduler.Api;
 
+using Orleans;
+using Orleans.Configuration;
+using Orleans.Hosting;
+using Orleans.Messaging;
+using Orleans.Runtime.Membership;
 using Serilog;
 using WebScheduler.Api.Options;
 
@@ -31,6 +36,8 @@ public class Program
         }
     }
 
+    private static IConfiguration? configuration;
+
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         new HostBuilder()
 
@@ -47,11 +54,25 @@ public class Program
             .UseDefaultServiceProvider(
                 (context, options) =>
                 {
+                    configuration = context.Configuration;
                     var isDevelopment = context.HostingEnvironment.IsDevelopment();
                     options.ValidateScopes = isDevelopment;
                     options.ValidateOnBuild = isDevelopment;
                 })
 
+            .UseOrleansClient(clientBuilder =>
+                clientBuilder.Services.Configure<AdoNetClusteringClientOptions>(options =>
+                {
+                    options.Invariant = configuration?["Storage:Invariant"];
+                    options.ConnectionString = configuration?["Storage:ConnectionString"];
+                })
+            .AddSingleton<IGatewayListProvider, AdoNetGatewayListProvider>()
+            .AddSingleton<IConfigurationValidator, AdoNetClusteringClientOptionsValidator>()
+               .Configure<ClusterOptions>(options =>
+               {
+                   options.ClusterId = configuration?["Cluster:ClusterId"];
+                    options.ServiceId = configuration?["Cluster:ServiceId"];
+               }))
             .ConfigureWebHost(ConfigureWebHostBuilder)
             .UseConsoleLifetime();
 
@@ -65,8 +86,6 @@ public class Program
                         builderContext.Configuration.GetRequiredSection(nameof(ApplicationOptions.Kestrel)),
                         reloadOnChange: false);
                 })
-            // Used for IIS and IIS Express for in-process hosting. Use UseIISIntegration for out-of-process hosting.
-            .UseIIS()
             .UseStartup<Startup>();
 
     /// <summary>

@@ -103,23 +103,23 @@ internal static class CustomServiceCollectionExtensions
                                 if (obj is HttpRequest request)
                                 {
                                     var context = request.HttpContext;
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.Flavor, GetHttpFlavour(request.Protocol));
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.Scheme, request.Scheme);
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.ClientIP, context.Connection.RemoteIpAddress);
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.RequestContentLength, request.ContentLength);
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.RequestContentType, request.ContentType);
+                                    activity.AddTag(OpenTelemetryAttributeName.Http.Flavor, GetHttpFlavour(request.Protocol))
+                                        .AddTag(OpenTelemetryAttributeName.Http.Scheme, request.Scheme)
+                                        .AddTag(OpenTelemetryAttributeName.Http.ClientIP, context.Connection.RemoteIpAddress)
+                                        .AddTag(OpenTelemetryAttributeName.Http.RequestContentLength, request.ContentLength)
+                                        .AddTag(OpenTelemetryAttributeName.Http.RequestContentType, request.ContentType);
 
                                     var user = context.User;
                                     if (user.Identity?.Name is not null)
                                     {
-                                        activity.AddTag(OpenTelemetryAttributeName.EndUser.Id, user.Identity.Name);
-                                        activity.AddTag(OpenTelemetryAttributeName.EndUser.Scope, string.Join(',', user.Claims.Select(x => x.Value)));
+                                        activity.AddTag(OpenTelemetryAttributeName.EndUser.Id, user.Identity.Name)
+                                            .AddTag(OpenTelemetryAttributeName.EndUser.Scope, string.Join(',', user.Claims.Select(x => x.Value)));
                                     }
                                 }
                                 else if (obj is HttpResponse response)
                                 {
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentLength, response.ContentLength);
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentType, response.ContentType);
+                                    activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentLength, response.ContentLength)
+                                        .AddTag(OpenTelemetryAttributeName.Http.ResponseContentType, response.ContentType);
                                 }
 
                                 static string GetHttpFlavour(string protocol)

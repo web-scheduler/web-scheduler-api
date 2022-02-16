@@ -7,7 +7,6 @@ using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebScheduler.Api.Commands.ScheduledTask;
 using WebScheduler.Abstractions.Grains.Scheduler;
-using Microsoft.AspNetCore.Authorization;
 
 [Route("[controller]")]
 [ApiController]
