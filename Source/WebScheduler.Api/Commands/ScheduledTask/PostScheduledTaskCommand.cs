@@ -2,15 +2,17 @@ namespace WebScheduler.Api.Commands.ScheduledTask;
 
 using WebScheduler.Api.Constants;
 using WebScheduler.Api.Repositories;
-using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
 using Microsoft.AspNetCore.Mvc;
+using WebScheduler.Api.Models.ViewModels;
 
 public class PostScheduledTaskCommand
 {
     private readonly IScheduledTaskRepository scheduledTaskRepository;
     private readonly IMapper<Models.ScheduledTask, ScheduledTask> scheduledTaskToScheduledTaskMapper;
     private readonly IMapper<SaveScheduledTask, Models.ScheduledTask> saveScheduledTaskToScheduledTaskMapper;
+
+    private static readonly Random RandomNumber = new();
 
     public PostScheduledTaskCommand(
         IScheduledTaskRepository scheduledTaskRepository,
@@ -30,6 +32,9 @@ public class PostScheduledTaskCommand
         {
             scheduledTask.ScheduledTaskId = Guid.NewGuid();
         }
+
+        // Append a seconds to stagger the task times
+        scheduledTask.CronExpression = $"{RandomNumber.Next(0, 59)} {scheduledTask.CronExpression}";
 
         scheduledTask = await this.scheduledTaskRepository.AddAsync(scheduledTask, cancellationToken).ConfigureAwait(false);
         var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);

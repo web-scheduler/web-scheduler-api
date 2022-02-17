@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.ViewModels;
+namespace WebScheduler.Api.Models.ViewModels;
 
 /// <summary>
 /// A paged collection of items.

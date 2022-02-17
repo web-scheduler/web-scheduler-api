@@ -43,8 +43,8 @@ public class ConfigureMvcOptions : IConfigureOptions<MvcOptions>
             .SupportedMediaTypes;
 
         // Remove JSON text (text/json) media type from the JSON input and output formatters.
-        jsonInputFormatterMediaTypes.Remove("text/json");
-        jsonOutputFormatterMediaTypes.Remove("text/json");
+        _ = jsonInputFormatterMediaTypes.Remove("text/json");
+        _ = jsonOutputFormatterMediaTypes.Remove("text/json");
 
         // Add ProblemDetails media type (application/problem+json) to the output formatters.
         // See https://tools.ietf.org/html/rfc7807

@@ -80,7 +80,7 @@ internal static class CustomServiceCollectionExtensions
         services.AddOpenTelemetryTracing(
             builder =>
             {
-                builder
+                _ = builder
                     .SetResourceBuilder(ResourceBuilder
                         .CreateEmpty()
                         .AddService(
@@ -103,23 +103,23 @@ internal static class CustomServiceCollectionExtensions
                                 if (obj is HttpRequest request)
                                 {
                                     var context = request.HttpContext;
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.Flavor, GetHttpFlavour(request.Protocol));
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.Scheme, request.Scheme);
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.ClientIP, context.Connection.RemoteIpAddress);
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.RequestContentLength, request.ContentLength);
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.RequestContentType, request.ContentType);
+                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.Flavor, GetHttpFlavour(request.Protocol));
+                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.Scheme, request.Scheme);
+                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.ClientIP, context.Connection.RemoteIpAddress);
+                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.RequestContentLength, request.ContentLength);
+                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.RequestContentType, request.ContentType);
 
                                     var user = context.User;
                                     if (user.Identity?.Name is not null)
                                     {
-                                        activity.AddTag(OpenTelemetryAttributeName.EndUser.Id, user.Identity.Name);
-                                        activity.AddTag(OpenTelemetryAttributeName.EndUser.Scope, string.Join(',', user.Claims.Select(x => x.Value)));
+                                        _ = activity.AddTag(OpenTelemetryAttributeName.EndUser.Id, user.Identity.Name);
+                                        _ = activity.AddTag(OpenTelemetryAttributeName.EndUser.Scope, string.Join(',', user.Claims.Select(x => x.Value)));
                                     }
                                 }
                                 else if (obj is HttpResponse response)
                                 {
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentLength, response.ContentLength);
-                                    activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentType, response.ContentType);
+                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentLength, response.ContentLength);
+                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentType, response.ContentType);
                                 }
 
                                 static string GetHttpFlavour(string protocol)
@@ -147,11 +147,11 @@ internal static class CustomServiceCollectionExtensions
 
                             options.RecordException = true;
                         });
-                builder.AddRedisInstrumentation();
+                _ = builder.AddRedisInstrumentation();
 
                 if (webHostEnvironment.IsDevelopment())
                 {
-                    builder.AddConsoleExporter(
+                    _ = builder.AddConsoleExporter(
                         options => options.Targets = ConsoleExporterOutputTargets.Console | ConsoleExporterOutputTargets.Debug);
                 }
 

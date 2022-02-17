@@ -40,33 +40,31 @@ public class Startup
     /// <param name="services">The services.</param>
     public virtual void ConfigureServices(IServiceCollection services)
     {
+        _ = services.AddDbContext<DataProtectionKeysDbContext>(b =>
+          {
+              _ = b.UseMySql(this.configuration.GetConnectionString("DataProtectionConnectionString"), ServerVersion.AutoDetect(this.configuration.GetConnectionString("DataProtectionConnectionString")),
+                  dbOpts => dbOpts.MigrationsAssembly(typeof(Program).Assembly.FullName)
+                      .EnableRetryOnFailure());
+              if (this.webHostEnvironment.IsDevelopment())
+              {
+                  _ = b.LogTo(Console.WriteLine, LogLevel.Information)
+                  .EnableSensitiveDataLogging()
+                  .EnableDetailedErrors();
+              }
+          });
 
-        services.AddDbContext<DataProtectionKeysDbContext>(b =>
-        {
-            _ = b.UseMySql(this.configuration.GetConnectionString("DataProtectionConnectionString"), ServerVersion.AutoDetect(this.configuration.GetConnectionString("DataProtectionConnectionString")),
-                dbOpts => dbOpts.MigrationsAssembly(typeof(Program).Assembly.FullName)
-                    .EnableRetryOnFailure());
-            if (this.webHostEnvironment.IsDevelopment())
-            {
-                _ = b.LogTo(Console.WriteLine, LogLevel.Information)
-                .EnableSensitiveDataLogging()
-                .EnableDetailedErrors();
-            }
-        });
-
-        services
+        _ = services
             .ConfigureOptions<ConfigureRequestLoggingOptions>()
             .AddStackExchangeRedisCache(_ => { })
             .AddCors()
             .AddResponseCompression()
             .AddRouting();
 
-        services
+        _ = services
        .AddAuthentication(option =>
        {
            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-
        }).AddJwtBearer(options =>
             {
                 options.Authority = this.configuration["Identity:Authority"];
@@ -96,9 +94,9 @@ public class Startup
                 };
             });
 
-        services.AddAuthorization(options => AccessPolicyAttribute.AddPolicy(options));
+        _ = services.AddAuthorization(options => AccessPolicyAttribute.AddPolicy(options));
 
-        services.AddResponseCaching()
+        _ = services.AddResponseCaching()
         .AddCustomHealthChecks(this.webHostEnvironment, this.configuration)
         .AddCustomOpenTelemetryTracing(this.webHostEnvironment)
         .AddSwaggerGen()
@@ -147,13 +145,13 @@ public class Startup
             .UseEndpoints(
             builder =>
             {
-                builder.MapControllers()
+                _ = builder.MapControllers()
                 .RequireCors(CorsPolicyName.AllowAny)
                 .RequireAuthorization();
-                builder
+                _ = builder
                     .MapHealthChecks("/status")
                     .RequireCors(CorsPolicyName.AllowAny);
-                builder
+                _ = builder
                     .MapHealthChecks("/status/self", new HealthCheckOptions() { Predicate = _ => false })
                     .RequireCors(CorsPolicyName.AllowAny);
             })
@@ -162,10 +160,8 @@ public class Startup
             this.webHostEnvironment.IsDevelopment(),
             x => x.UseSwaggerUI());
 
-        using (var scope = app.ApplicationServices.CreateScope())
-        {
-            var db = scope.ServiceProvider.GetRequiredService<DataProtectionKeysDbContext>();
-            db.Database.Migrate();
-        }
+        using var scope = app.ApplicationServices.CreateScope();
+        var db = scope.ServiceProvider.GetRequiredService<DataProtectionKeysDbContext>();
+        db.Database.Migrate();
     }
 }

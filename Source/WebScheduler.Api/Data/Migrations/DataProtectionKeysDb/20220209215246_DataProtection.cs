@@ -9,10 +9,10 @@ public partial class DataProtection : Migration
 {
     protected override void Up(MigrationBuilder migrationBuilder)
     {
-        migrationBuilder.AlterDatabase()
+        _ = migrationBuilder.AlterDatabase()
             .Annotation("MySql:CharSet", "utf8mb4");
 
-        migrationBuilder.CreateTable(
+        _ = migrationBuilder.CreateTable(
             name: "DataProtectionKeys",
             columns: table => new
             {

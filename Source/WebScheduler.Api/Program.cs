@@ -21,9 +21,7 @@ public class Program
 
             return 0;
         }
-#pragma warning disable CA1031 // Do not catch general exception types
         catch (Exception exception)
-#pragma warning restore CA1031 // Do not catch general exception types
         {
             host!.LogApplicationTerminatedUnexpectedly(exception);
 
@@ -61,7 +59,7 @@ public class Program
                 (builderContext, options) =>
                 {
                     options.AddServerHeader = false;
-                    options.Configure(
+                    _ = options.Configure(
                         builderContext.Configuration.GetRequiredSection(nameof(ApplicationOptions.Kestrel)),
                         reloadOnChange: false);
                 })

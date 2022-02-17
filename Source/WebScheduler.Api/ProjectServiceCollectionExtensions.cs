@@ -1,13 +1,13 @@
 namespace WebScheduler.Api;
 using WebScheduler.Api.Mappers;
 using WebScheduler.Api.Repositories;
-using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
 using WebScheduler.Api.HostedServices;
 using WebScheduler.Api.Commands.ScheduledTask;
 using Orleans;
 using WebScheduler.Abstractions.Services;
 using WebScheduler.Abstractions.Grains.Scheduler;
+using WebScheduler.Api.Models.ViewModels;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> extension methods add project services.

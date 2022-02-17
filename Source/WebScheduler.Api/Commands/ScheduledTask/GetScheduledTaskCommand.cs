@@ -2,11 +2,11 @@ namespace WebScheduler.Api.Commands.ScheduledTask;
 
 using System.Globalization;
 using WebScheduler.Api.Repositories;
-using WebScheduler.Api.ViewModels;
 using Boxed.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebScheduler.Abstractions.Grains.Scheduler;
+using WebScheduler.Api.Models.ViewModels;
 
 public class GetScheduledTaskCommand
 {

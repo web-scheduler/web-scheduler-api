@@ -34,7 +34,7 @@ public class ConfigureStaticFileOptions : IConfigureOptions<StaticFileOptions>
     {
         if (this.cacheProfile is not null)
         {
-            context.Context.ApplyCacheProfile(this.cacheProfile);
+            _ = context.Context.ApplyCacheProfile(this.cacheProfile);
         }
     }
 }

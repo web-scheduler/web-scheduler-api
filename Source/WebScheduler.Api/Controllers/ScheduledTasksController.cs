@@ -1,13 +1,12 @@
 namespace WebScheduler.Api.Controllers;
 using WebScheduler.Api.Constants;
-using WebScheduler.Api.ViewModels;
 using Boxed.AspNetCore;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Swashbuckle.AspNetCore.Annotations;
 using WebScheduler.Api.Commands.ScheduledTask;
 using WebScheduler.Abstractions.Grains.Scheduler;
-using Microsoft.AspNetCore.Authorization;
+using WebScheduler.Api.Models.ViewModels;
 
 [Route("[controller]")]
 [ApiController]
@@ -17,8 +16,6 @@ using Microsoft.AspNetCore.Authorization;
     "The MIME type in the Accept HTTP header is not acceptable.",
     typeof(ProblemDetails),
     ContentType.ProblemJson)]
-#pragma warning disable CA1822 // Mark members as static
-#pragma warning disable CA1062 // Validate arguments of public methods
 public class ScheduledTasksController : ControllerBase
 {
     //    /// <summary>
@@ -271,5 +268,3 @@ public class ScheduledTasksController : ControllerBase
         [FromBody] SaveScheduledTask scheduledTask,
         CancellationToken cancellationToken) => command.ExecuteAsync(scheduledTaskId, scheduledTask, cancellationToken);
 }
-#pragma warning restore CA1062 // Validate arguments of public methods
-#pragma warning restore CA1822 // Mark members as static

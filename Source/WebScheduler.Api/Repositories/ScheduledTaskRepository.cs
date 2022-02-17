@@ -1,13 +1,9 @@
 namespace WebScheduler.Api.Repositories;
-
-using System.Runtime.CompilerServices;
 using System.Text.Json;
-using Boxed.Mapping;
 using Dapper;
 using MySqlConnector;
 using Orleans;
 using WebScheduler.Abstractions.Grains.Scheduler;
-using WebScheduler.Api.Mappers;
 using WebScheduler.Api.Models;
 using WebScheduler.Server.Options;
 
@@ -28,7 +24,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
 
         var scheduledTaskGrain = this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ScheduledTaskId.ToString());
 
-        var result = await scheduledTaskGrain.CreateAsync(new ScheduledTaskMetadata()
+        _ = await scheduledTaskGrain.CreateAsync(new ScheduledTaskMetadata()
         {
             Description = scheduledTask.Description,
             IsEnabled = scheduledTask.IsEnabled,
@@ -43,10 +39,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         return scheduledTask;
     }
 
-    public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken)
-    {
-        _ = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync().ConfigureAwait(false);
-    }
+    public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken) => _ = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync().ConfigureAwait(false);
 
     public async Task<ScheduledTask> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {
@@ -120,7 +113,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
-        var sql = @"SELECT COUNT(*) from OrleansStorage
+        const string sql = @"SELECT COUNT(*) from OrleansStorage
                     where GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'";
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, cancellationToken: cancellationToken)).ConfigureAwait(false);

@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.ViewModels;
+namespace WebScheduler.Api.Models.ViewModels;
 /// <summary>
 /// A make and model of car.
 /// </summary>
@@ -33,9 +33,17 @@ public class ScheduledTask
 
     public DateTime? LastRunAt { get; set; }
     public DateTime? NextRunAt { get; set; }
-    public DateTime ModifiedAt{ get; set; }
+    public DateTime ModifiedAt { get; set; }
     public DateTime CreatedAt { get; set; }
-    public string CronExpression { get; set; } = "* * * * *";
 
+    /// <summary>
+    /// The cron expression to use for the task schedule.
+    /// </summary>
+    public string CronExpression { get; set; } = string.Empty;
+
+    /// <summary>
+    /// Creates a shallow copy of the object instance.
+    /// </summary>
+    /// <returns>The copy.</returns>
     public ScheduledTask ShallowCopy() => (ScheduledTask)this.MemberwiseClone();
 }
