@@ -83,7 +83,6 @@
     <ProjectReference Include="..\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj" />
   </ItemGroup>
   <ItemGroup Label="Project References, Local Dev" Condition=" '$(Configuration)' == 'Debug' ">
-    <ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />
     <ProjectReference Include="..\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj" />
   </ItemGroup>
 

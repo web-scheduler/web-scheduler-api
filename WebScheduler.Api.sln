@@ -50,8 +50,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Api", "Source\
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Api.Models", "Source\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj", "{A6B8CBAD-3284-4E4D-8444-32D968EB8A3B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Abstractions", "..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj", "{FB89E2C0-2DB0-464E-A452-C0F23A363D01}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,10 +68,6 @@ Global
 		{A6B8CBAD-3284-4E4D-8444-32D968EB8A3B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A6B8CBAD-3284-4E4D-8444-32D968EB8A3B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A6B8CBAD-3284-4E4D-8444-32D968EB8A3B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{FB89E2C0-2DB0-464E-A452-C0F23A363D01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{FB89E2C0-2DB0-464E-A452-C0F23A363D01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{FB89E2C0-2DB0-464E-A452-C0F23A363D01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{FB89E2C0-2DB0-464E-A452-C0F23A363D01}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -86,7 +80,6 @@ Global
 		{5C84BC3D-BEFC-4CC2-85B8-C3C4E286368A} = {E5422D5C-ABD4-4150-BDF6-B823D746D157}
 		{9619BB00-2BA7-4834-AABE-5DB066C5F4A3} = {57BAE1BC-D418-4A95-B292-C0E9324B0A54}
 		{A6B8CBAD-3284-4E4D-8444-32D968EB8A3B} = {57BAE1BC-D418-4A95-B292-C0E9324B0A54}
-		{FB89E2C0-2DB0-464E-A452-C0F23A363D01} = {57BAE1BC-D418-4A95-B292-C0E9324B0A54}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4E464B40-8B3D-427D-BA61-053DB0B94967}
