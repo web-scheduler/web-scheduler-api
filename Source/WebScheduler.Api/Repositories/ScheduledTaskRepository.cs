@@ -23,7 +23,6 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         ArgumentNullException.ThrowIfNull(scheduledTask);
 
         var scheduledTaskGrain = this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ScheduledTaskId.ToString());
-
         _ = await scheduledTaskGrain.CreateAsync(new ScheduledTaskMetadata()
         {
             Description = scheduledTask.Description,
@@ -78,7 +77,8 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
                         CreatedAt varchar(100) PATH '$.createdAt' DEFAULT '0' ON EMPTY
                       )
                     ) AS tt
-                    ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata' 
+                    ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'
+            AND 
           ORDER BY tt.CreatedAt ASC LIMIT @Offset, @PageSize";
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new

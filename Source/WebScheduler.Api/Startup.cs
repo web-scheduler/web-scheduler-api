@@ -137,7 +137,7 @@ public class Startup
                     .UseCors(CorsPolicyName.AllowAny)
 
             .UseAuthorization()
-
+            
             .UseResponseCaching()
             .UseResponseCompression()
             .UseIf(
