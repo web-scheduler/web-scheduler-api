@@ -1,4 +1,7 @@
 namespace WebScheduler.Api.Models.ViewModels;
+
+using WebScheduler.Abstractions.Grains.Scheduler;
+
 /// <summary>
 /// A make and model of car.
 /// </summary>
@@ -40,6 +43,16 @@ public class ScheduledTask
     /// The cron expression to use for the task schedule.
     /// </summary>
     public string CronExpression { get; set; } = string.Empty;
+
+    /// <summary>
+    /// The task trigger type.
+    /// </summary>
+    public TaskTriggerType TriggerType { get; set; }
+
+    /// <summary>
+    /// The properties required to support a <see cref="TriggerType"/> implementation.
+    /// </summary>
+    public Dictionary<string, object> TriggerProperties { get; set; } = new();
 
     /// <summary>
     /// Creates a shallow copy of the object instance.

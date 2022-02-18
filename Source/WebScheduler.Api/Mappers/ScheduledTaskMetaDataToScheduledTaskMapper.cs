@@ -17,6 +17,7 @@ public class ScheduledTaskMetaDataToScheduledTaskMapper : IMapper<GuidIdWrapper<
         this.linkGenerator = linkGenerator;
     }
 
+    // TODO: this is broken
     public void Map(GuidIdWrapper<ScheduledTaskMetadata> source, Models.ScheduledTask destination)
     {
         ArgumentNullException.ThrowIfNull(source);

@@ -1,5 +1,6 @@
 namespace WebScheduler.Api.Mappers;
 using Boxed.Mapping;
+using WebScheduler.Abstractions.Grains.Scheduler;
 using WebScheduler.Abstractions.Services;
 using WebScheduler.Api.Models.ViewModels;
 
@@ -19,6 +20,15 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
         destination.Description = source.Description;
         destination.Name = source.Name;
         destination.CronExpression = source.CronExpression;
+        destination.TriggerType = source.TriggerType;
+        switch (source.TriggerType)
+        {
+            case TaskTriggerType.HttpTrigger:
+                destination.HttpTriggerProperties = HttpTriggerProperties.FromKeyValuePair(source.TriggerProperties);
+                break;
+            default:
+                throw new NotImplementedException($"Trigger type of: {nameof(source.TriggerType)}.");
+        }
     }
 
     public void Map(SaveScheduledTask source, Models.ScheduledTask destination)
@@ -36,5 +46,12 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
         destination.Description = source.Description;
         destination.Name = source.Name;
         destination.CronExpression = source.CronExpression;
+        destination.TriggerType = source.TriggerType;
+
+        destination.TriggerProperties = source.TriggerType switch
+        {
+            TaskTriggerType.HttpTrigger => source.HttpTriggerProperties.GetKeyValuePairs(),
+            _ => throw new NotImplementedException($"Trigger type of: {nameof(source.TriggerType)}."),
+        };
     }
 }

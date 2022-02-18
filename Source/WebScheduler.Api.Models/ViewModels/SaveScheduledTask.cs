@@ -2,6 +2,7 @@ namespace WebScheduler.Api.Models.ViewModels;
 
 using System.ComponentModel.DataAnnotations;
 using Cronos;
+using WebScheduler.Abstractions.Grains.Scheduler;
 using WebScheduler.Api.Models.Validators;
 
 /// <summary>
@@ -35,6 +36,20 @@ public class SaveScheduledTask
     [Display(Name = "Schedule", Description = "The schedule to run the task on.")]
     [CronExpression(CronFormat.Standard)]
     public string CronExpression { get; set; } = "* * * * * ";
+
+    /// <summary>
+    /// The task trigger type.
+    /// </summary>
+    [Display(Name = "Trigger Type", Description = "The type of trigger to use for the task.")]
+    [Required]
+    public TaskTriggerType TriggerType { get; set; }
+
+    /// <summary>
+    /// The properties required to support a <see cref="TriggerType"/> value of <seealso cref="TaskTriggerType.HttpTrigger"/>
+    /// </summary>
+    [RequiredIf(nameof(TriggerType), TaskTriggerType.HttpTrigger)]
+    [Display(Name = "Http Trigger Properties", Description = "Properties for the HttpTrigger")]
+    public HttpTriggerProperties HttpTriggerProperties { get; set; } = new(new());
 
     /// <summary>
     /// Creates a shallow copy of the object instance.
