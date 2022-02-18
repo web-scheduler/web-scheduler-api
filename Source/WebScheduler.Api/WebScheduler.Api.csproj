@@ -79,7 +79,7 @@
     <PackageReference Include="WebScheduler.Abstractions" Version="0.1.18" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Label="Project References" Condition=" '$(Configuration)' == 'Debug' ">
     <ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />
     <ProjectReference Include="..\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj" />
   </ItemGroup>

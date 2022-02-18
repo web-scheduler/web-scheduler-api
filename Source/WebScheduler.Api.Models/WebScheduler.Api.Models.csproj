@@ -1,4 +1,4 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -30,7 +30,7 @@
     <PackageReference Include="WebScheduler.Abstractions" Version="0.1.18" />
 
   </ItemGroup>
-  <ItemGroup>
+  <ItemGroup Label="Project References" Condition=" '$(Configuration)' == 'Debug' ">
     <ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />
   </ItemGroup>
 
