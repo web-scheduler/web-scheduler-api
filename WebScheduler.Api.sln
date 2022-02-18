@@ -48,7 +48,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "ISSUE_TEMPLATE", "ISSUE_TEM
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Api", "Source\WebScheduler.Api\WebScheduler.Api.csproj", "{9619BB00-2BA7-4834-AABE-5DB066C5F4A3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebScheduler.Api.Models", "Source\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj", "{A6B8CBAD-3284-4E4D-8444-32D968EB8A3B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "WebScheduler.Api.Models", "Source\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj", "{A6B8CBAD-3284-4E4D-8444-32D968EB8A3B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

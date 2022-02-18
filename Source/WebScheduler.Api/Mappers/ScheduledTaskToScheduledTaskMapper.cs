@@ -3,6 +3,7 @@ namespace WebScheduler.Api.Mappers;
 using WebScheduler.Api.Constants;
 using Boxed.Mapping;
 using WebScheduler.Api.Models.ViewModels;
+using WebScheduler.Abstractions.Grains.Scheduler;
 
 public class ScheduledTaskToScheduledTaskMapper : IMapper<Models.ScheduledTask, ScheduledTask>
 {
@@ -28,12 +29,14 @@ public class ScheduledTaskToScheduledTaskMapper : IMapper<Models.ScheduledTask, 
         destination.Name = source.Name;
         destination.CreatedAt = source.CreatedAt;
         destination.ModifiedAt = source.ModifiedAt;
-        destination.CronExpression = source.CronExpression;
-        destination.NextRunAt = source.NextRunAt;
+         destination.NextRunAt = source.NextRunAt;
         destination.LastRunAt = source.LastRunAt;
         destination.Url = new Uri(this.linkGenerator.GetUriByRouteValues(
             this.httpContextAccessor.HttpContext!,
             ScheduledTasksControllerRoute.GetScheduledTask,
             new { source.ScheduledTaskId })!);
+        destination.CronExpression = source.CronExpression;
+        destination.TriggerType = source.TriggerType;
+        destination.HttpTriggerProperties = source.HttpTriggerProperties;
     }
 }

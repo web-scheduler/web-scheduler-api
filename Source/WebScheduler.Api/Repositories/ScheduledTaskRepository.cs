@@ -34,6 +34,8 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             LastRunAt = scheduledTask.LastRunAt,
             NextRunAt = scheduledTask.NextRunAt,
             CronExpression = scheduledTask.CronExpression,
+            TriggerType = scheduledTask.TriggerType,
+            HttpTriggerProperties = scheduledTask.HttpTriggerProperties
         }).ConfigureAwait(false);
 
         return scheduledTask;
@@ -55,6 +57,8 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             LastRunAt = result.LastRunAt,
             NextRunAt = result.NextRunAt,
             CronExpression = result.CronExpression,
+            TriggerType = result.TriggerType,
+            HttpTriggerProperties= result.HttpTriggerProperties,
         };
     }
 

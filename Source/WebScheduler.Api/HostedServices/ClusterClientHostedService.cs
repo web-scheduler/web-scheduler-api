@@ -37,7 +37,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
            })
            .ConfigureApplicationParts(
                parts => parts
-                   .AddApplicationPart(typeof(Abstractions.Grains.HealthChecks.ILocalHealthCheckGrain).Assembly)
+                   .AddApplicationPart(typeof(Abstractions.Grains.Scheduler.IScheduledTaskGrain).Assembly)
                    .WithReferences())
            .AddSimpleMessageStreamProvider(StreamProviderName.Default)
             //.UseTls(

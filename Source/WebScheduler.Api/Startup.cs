@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebScheduler.Api.Policies;
 using IdentityServerHost.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.DataProtection;
 
 /// <summary>
 /// The main start-up class for the application.
@@ -51,7 +52,8 @@ public class Startup
                   .EnableSensitiveDataLogging()
                   .EnableDetailedErrors();
               }
-          });
+          })
+            .AddDataProtection().PersistKeysToDbContext<DataProtectionKeysDbContext>();
 
         _ = services
             .ConfigureOptions<ConfigureRequestLoggingOptions>()

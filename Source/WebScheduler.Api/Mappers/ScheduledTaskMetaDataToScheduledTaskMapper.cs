@@ -17,6 +17,7 @@ public class ScheduledTaskMetaDataToScheduledTaskMapper : IMapper<GuidIdWrapper<
         this.linkGenerator = linkGenerator;
     }
 
+    // TODO: this is broken
     public void Map(GuidIdWrapper<ScheduledTaskMetadata> source, Models.ScheduledTask destination)
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -31,6 +32,8 @@ public class ScheduledTaskMetaDataToScheduledTaskMapper : IMapper<GuidIdWrapper<
         destination.CronExpression = source.Value.CronExpression;
         destination.NextRunAt = source.Value.NextRunAt;
         destination.LastRunAt = source.Value.LastRunAt;
+        destination.HttpTriggerProperties = source.Value.HttpTriggerProperties;
+        destination.TriggerType = source.Value.TriggerType;
         destination.Url = new Uri(this.linkGenerator.GetUriByRouteValues(
             this.httpContextAccessor.HttpContext!,
             ScheduledTasksControllerRoute.GetScheduledTask,
