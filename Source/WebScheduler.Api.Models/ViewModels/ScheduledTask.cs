@@ -50,9 +50,9 @@ public class ScheduledTask
     public TaskTriggerType TriggerType { get; set; }
 
     /// <summary>
-    /// The properties required to support a <see cref="TriggerType"/> implementation.
+    /// The properties required to support a <see cref="TriggerType"/> value of <seealso cref="TaskTriggerType.HttpTrigger"/>
     /// </summary>
-    public Dictionary<string, object> TriggerProperties { get; set; } = new();
+    public HttpTriggerProperties HttpTriggerProperties { get; set; } = new();
 
     /// <summary>
     /// Creates a shallow copy of the object instance.

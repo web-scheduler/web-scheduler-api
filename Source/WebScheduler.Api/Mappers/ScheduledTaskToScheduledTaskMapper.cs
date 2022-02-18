@@ -37,6 +37,6 @@ public class ScheduledTaskToScheduledTaskMapper : IMapper<Models.ScheduledTask, 
             new { source.ScheduledTaskId })!);
         destination.CronExpression = source.CronExpression;
         destination.TriggerType = source.TriggerType;
-        destination.TriggerProperties = source.TriggerProperties;
+        destination.HttpTriggerProperties = source.HttpTriggerProperties;
     }
 }

@@ -49,7 +49,7 @@ public class SaveScheduledTask
     /// </summary>
     [RequiredIf(nameof(TriggerType), TaskTriggerType.HttpTrigger)]
     [Display(Name = "Http Trigger Properties", Description = "Properties for the HttpTrigger")]
-    public HttpTriggerProperties HttpTriggerProperties { get; set; } = new(new());
+    public HttpTriggerProperties HttpTriggerProperties { get; set; } = new();
 
     /// <summary>
     /// Creates a shallow copy of the object instance.

@@ -32,6 +32,8 @@ public class ScheduledTaskMetaDataToScheduledTaskMapper : IMapper<GuidIdWrapper<
         destination.CronExpression = source.Value.CronExpression;
         destination.NextRunAt = source.Value.NextRunAt;
         destination.LastRunAt = source.Value.LastRunAt;
+        destination.HttpTriggerProperties = source.Value.HttpTriggerProperties;
+        destination.TriggerType = source.Value.TriggerType;
         destination.Url = new Uri(this.linkGenerator.GetUriByRouteValues(
             this.httpContextAccessor.HttpContext!,
             ScheduledTasksControllerRoute.GetScheduledTask,

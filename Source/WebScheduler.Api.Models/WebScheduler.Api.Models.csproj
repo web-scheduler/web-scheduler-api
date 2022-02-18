@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -27,7 +27,11 @@
   </PropertyGroup>
   <ItemGroup Label="Package References">
     <PackageReference Include="Cronos" Version="0.7.1" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.19-alpha.0.1" />
+    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.18" />
+
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />
   </ItemGroup>
 
   <PropertyGroup Label="Signing" Condition="'$(Sign)' == 'true'">
