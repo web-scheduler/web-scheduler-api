@@ -3,6 +3,8 @@ using System.Text.Json;
 using Dapper;
 using MySqlConnector;
 using Orleans;
+using Orleans.Runtime;
+using WebScheduler.Abstractions.Constants;
 using WebScheduler.Abstractions.Grains.Scheduler;
 using WebScheduler.Api.Models;
 using WebScheduler.Server.Options;
@@ -57,7 +59,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             NextRunAt = result.NextRunAt,
             CronExpression = result.CronExpression,
             TriggerType = result.TriggerType,
-            HttpTriggerProperties= result.HttpTriggerProperties,
+            HttpTriggerProperties = result.HttpTriggerProperties,
         };
     }
 
@@ -69,7 +71,11 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
-        const string sql = @"SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m JOIN 
+        const string sql = @"SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m
+
+        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenentState' AND JSON_EXTRACT(t.PayloadJson, '$.tenentId') = @TenentId
+
+JOIN 
                     JSON_TABLE(
                       m.PayloadJson, 
                       '$' 
@@ -78,13 +84,14 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
                       )
                     ) AS tt
                     ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'
-            AND 
+            
           ORDER BY tt.CreatedAt ASC LIMIT @Offset, @PageSize";
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
             Offset = offset,
-            PageSize = pageSize
+            PageSize = pageSize,
+            TenentId = RequestContext.Get(RequestContextKeys.TenentId)
         }, cancellationToken: cancellationToken)).ConfigureAwait(false);
 
         var buffer = new List<ScheduledTask>(pageSize);
@@ -117,10 +124,15 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
-        const string sql = @"SELECT COUNT(*) from OrleansStorage
-                    where GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'";
+        const string sql = @"SELECT COUNT(*) from   OrleansStorage AS m
 
-        using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, cancellationToken: cancellationToken)).ConfigureAwait(false);
+        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenentState' AND  JSON_EXTRACT(t.PayloadJson, '$.tenentId') = @TenentId AND
+                    m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'";
+
+        using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
+        {
+            TenentId = RequestContext.Get(RequestContextKeys.TenentId)
+        }, cancellationToken: cancellationToken)).ConfigureAwait(false);
 
         var buffer = new List<ScheduledTask>(10);
         while (await reader.ReadAsync(cancellationToken).ConfigureAwait(false))

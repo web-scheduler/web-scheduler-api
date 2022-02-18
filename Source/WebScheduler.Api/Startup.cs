@@ -11,6 +11,7 @@ using WebScheduler.Api.Policies;
 using IdentityServerHost.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.DataProtection;
+using WebScheduler.Api.Middleware;
 
 /// <summary>
 /// The main start-up class for the application.
@@ -137,7 +138,7 @@ public class Startup
                     .UseCors(CorsPolicyName.AllowAny)
 
             .UseAuthorization()
-            
+            .UseMiddleware<OrleansRequestContextAuthorization>()
             .UseResponseCaching()
             .UseResponseCompression()
             .UseIf(
