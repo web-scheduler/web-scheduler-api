@@ -1,6 +1,5 @@
 namespace WebScheduler.Api.Mappers;
 using Boxed.Mapping;
-using WebScheduler.Abstractions.Grains.Scheduler;
 using WebScheduler.Abstractions.Services;
 using WebScheduler.Api.Models.ViewModels;
 
