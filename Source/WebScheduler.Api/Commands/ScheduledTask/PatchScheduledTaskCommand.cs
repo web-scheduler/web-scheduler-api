@@ -1,12 +1,12 @@
 namespace WebScheduler.Api.Commands.ScheduledTask;
 
-using WebScheduler.Api.Repositories;
 using Boxed.Mapping;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using WebScheduler.Api.Models.ViewModels;
+using WebScheduler.Api.Repositories;
 
 public class PatchScheduledTaskCommand
 {
@@ -43,10 +43,10 @@ public class PatchScheduledTaskCommand
         {
             return new NotFoundResult();
         }
-
         var saveScheduledTask = this.scheduledTaskToSaveScheduledTaskMapper.Map(scheduledTask);
         var modelState = this.actionContextAccessor.ActionContext!.ModelState;
         patch.ApplyTo(saveScheduledTask, modelState);
+
         this.objectModelValidator.Validate(
             this.actionContextAccessor.ActionContext,
             validationState: null,
@@ -58,7 +58,16 @@ public class PatchScheduledTaskCommand
             return new BadRequestObjectResult(modelState);
         }
 
+        // Preserve current seconds
+        var currentSeconds = scheduledTask.CronExpression[..scheduledTask.CronExpression.IndexOf(' ')];
+
         this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask, scheduledTask);
+
+        if (scheduledTask.CronExpression[(currentSeconds.Length + 1)..] != saveScheduledTask.CronExpression)
+        {
+            scheduledTask.CronExpression = $"{currentSeconds} {saveScheduledTask.CronExpression}";
+        }
+
         _ = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken).ConfigureAwait(false);
         var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
 

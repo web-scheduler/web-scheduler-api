@@ -18,7 +18,7 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
         destination.IsEnabled = source.IsEnabled;
         destination.Description = source.Description;
         destination.Name = source.Name;
-        destination.CronExpression = source.CronExpression;
+        destination.CronExpression = source.CronExpression[(source.CronExpression.IndexOf(' ') + 1)..]; // Strip off seconds
         destination.TriggerType = source.TriggerType;
         destination.HttpTriggerProperties = source.HttpTriggerProperties;
     }
