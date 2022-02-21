@@ -76,7 +76,7 @@
     <PackageReference Include="Serilog.Enrichers.Span" Version="2.1.0" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.0.0" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.23" />
+    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.24" />
   </ItemGroup>
 
   <ItemGroup Label="Project References">
