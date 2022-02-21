@@ -34,6 +34,11 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
         {
             destination.CreatedAt = now;
         }
+
+        if (destination.ModifiedAt == DateTime.MinValue)
+        {
+            destination.ModifiedAt = now;
+        }
         destination.IsEnabled = source.IsEnabled;
         destination.Description = source.Description;
         destination.Name = source.Name;

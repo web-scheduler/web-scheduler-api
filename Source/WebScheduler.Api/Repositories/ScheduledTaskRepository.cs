@@ -142,14 +142,25 @@ JOIN
         return 0;
     }
 
-    public Task<ScheduledTask> UpdateAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken)
+    public async Task<ScheduledTask> UpdateAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(scheduledTask);
 
-        //var existingScheduledTask = ScheduledTasks.First(x => x.ScheduledTaskId == ScheduledTask.ScheduledTaskId);
-        //existingScheduledTask.Description = ScheduledTask.Description;
-        //existingScheduledTask.Name = ScheduledTask.Name;
-        //existingScheduledTask.IsEnabled = ScheduledTask.Model;
-        return Task.FromResult(scheduledTask);
+        var scheduledTaskGrain = this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ScheduledTaskId.ToString());
+        _ = await scheduledTaskGrain.UpdateAsync(new ScheduledTaskMetadata()
+        {
+            Description = scheduledTask.Description,
+            IsEnabled = scheduledTask.IsEnabled,
+            Name = scheduledTask.Name,
+            CreatedAt = scheduledTask.CreatedAt,
+            ModifiedAt = scheduledTask.ModifiedAt,
+            LastRunAt = scheduledTask.LastRunAt,
+            NextRunAt = scheduledTask.NextRunAt,
+            CronExpression = scheduledTask.CronExpression,
+            TriggerType = scheduledTask.TriggerType,
+            HttpTriggerProperties = scheduledTask.HttpTriggerProperties
+        }).ConfigureAwait(false);
+
+        return scheduledTask;
     }
 }

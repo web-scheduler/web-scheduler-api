@@ -10,6 +10,7 @@ public class PutScheduledTaskCommand
     private readonly IScheduledTaskRepository scheduledTaskRepository;
     private readonly IMapper<Models.ScheduledTask, ScheduledTask> scheduledTaskToScheduledTaskMapper;
     private readonly IMapper<SaveScheduledTask, Models.ScheduledTask> saveScheduledTaskToScheduledTaskMapper;
+    private static readonly Random RandomNumber = new();
 
     public PutScheduledTaskCommand(
         IScheduledTaskRepository scheduledTaskRepository,
@@ -23,13 +24,12 @@ public class PutScheduledTaskCommand
 
     public async Task<IActionResult> ExecuteAsync(Guid scheduledTaskId, SaveScheduledTask saveScheduledTask, CancellationToken cancellationToken)
     {
-        var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(false);
-        if (scheduledTask is null)
-        {
-            return new NotFoundResult();
-        }
+        var scheduledTask = this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask);
+        scheduledTask.ScheduledTaskId = scheduledTaskId;
 
-        this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask, scheduledTask);
+        // Append a seconds to stagger the task times
+        scheduledTask.CronExpression = $"{RandomNumber.Next(0, 59)} {scheduledTask.CronExpression}";
+
         scheduledTask = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken).ConfigureAwait(false);
         var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
 
