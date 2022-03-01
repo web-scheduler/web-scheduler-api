@@ -31,7 +31,7 @@
   </ItemGroup>
 
   <ItemGroup Label="Package References">
-    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="6.0.1" />
+    <PackageReference Include="AspNetCore.HealthChecks.Redis" Version="6.0.2" />
     <PackageReference Include="Boxed.AspNetCore" Version="8.0.0" />
     <PackageReference Include="Boxed.AspNetCore.Swagger" Version="10.0.0" />
     <PackageReference Include="Boxed.Mapping" Version="6.0.0" />
