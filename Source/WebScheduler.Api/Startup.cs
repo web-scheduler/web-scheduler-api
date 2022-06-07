@@ -75,7 +75,7 @@ public class Startup
                 options.SaveToken = true;
                 options.RequireHttpsMetadata = true;
                 options.MetadataAddress = new Uri(new Uri(this.configuration["Identity:Authority"]), "/.well-known/openid-configuration").ToString();
-                options.TokenValidationParameters = new Microsoft.IdentityModel.Tokens.TokenValidationParameters()
+                options.TokenValidationParameters = new()
                 {
                     ValidateIssuer = true,
                     //ValidateAudience = true,
