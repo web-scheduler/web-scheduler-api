@@ -1,6 +1,7 @@
 namespace WebScheduler.Api.ViewModels;
 
 using System.Text.Json.Serialization;
+using WebScheduler.Abstractions.Grains.Scheduler;
 using WebScheduler.Api.Models.ViewModels;
 
 /// <summary>
@@ -12,6 +13,8 @@ using WebScheduler.Api.Models.ViewModels;
 [JsonSerializable(typeof(PageOptions[]))]
 [JsonSerializable(typeof(PageOptions))]
 [JsonSerializable(typeof(PageResults<ScheduledTask>))]
+[JsonSerializable(typeof(List<Header>))]
+[JsonSerializable(typeof(Header))]
 internal partial class CustomJsonSerializerContext : JsonSerializerContext
 {
 }

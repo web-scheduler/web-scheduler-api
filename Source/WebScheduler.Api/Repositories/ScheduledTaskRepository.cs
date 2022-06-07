@@ -71,21 +71,13 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
-        const string sql = @"SELECT m.GrainIdExtensionString, m.PayloadJson FROM OrleansStorage AS m
+        const string sql = @"SELECT m.GrainIdExtensionString FROM OrleansStorage AS m
 
-        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenentState' AND JSON_EXTRACT(t.PayloadJson, '$.tenentId') = @TenentId
+        
+        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenentState' AND  JSON_EXTRACT(t.PayloadJson, '$.tenentId') = @TenentId AND
+                    m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'
 
-JOIN 
-                    JSON_TABLE(
-                      m.PayloadJson, 
-                      '$' 
-                      COLUMNS(
-                        CreatedAt varchar(100) PATH '$.createdAt' DEFAULT '0' ON EMPTY
-                      )
-                    ) AS tt
-                    ON m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'
-            
-          ORDER BY tt.CreatedAt ASC LIMIT @Offset, @PageSize";
+          ORDER BY JSON_EXTRACT(t.PayloadJson, '$.createdAt') ASC LIMIT @Offset, @PageSize";
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
@@ -97,23 +89,23 @@ JOIN
         var buffer = new List<ScheduledTask>(pageSize);
         while (await reader.ReadAsync(cancellationToken).ConfigureAwait(false))
         {
-            var result = JsonSerializer.Deserialize<ScheduledTaskMetadata>(reader.GetString(1), new JsonSerializerOptions(JsonSerializerDefaults.Web));
-            if (result == null)
-            {
-                // TODO: handle this
-                continue;
-            }
+            var scheduledTaskId = reader.GetGuid(0);
+            // TODO: Batch parallelize this
+            var value = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(false);
+
             buffer.Add(new()
             {
-                CreatedAt = result.CreatedAt,
-                ModifiedAt = result.ModifiedAt,
-                Description = result.Description,
-                Name = result.Name,
-                IsEnabled = result.IsEnabled,
-                LastRunAt = result.LastRunAt,
-                NextRunAt = result.NextRunAt,
-                CronExpression = result.CronExpression,
-                ScheduledTaskId = reader.GetGuid(0),
+                ScheduledTaskId = scheduledTaskId,
+                CreatedAt = value.CreatedAt,
+                ModifiedAt = value.ModifiedAt,
+                Description = value.Description,
+                Name = value.Name,
+                IsEnabled = value.IsEnabled,
+                LastRunAt = value.LastRunAt,
+                NextRunAt = value.NextRunAt,
+                CronExpression = value.CronExpression,
+                TriggerType = value.TriggerType,
+                HttpTriggerProperties = value.HttpTriggerProperties,
             });
         }
 
