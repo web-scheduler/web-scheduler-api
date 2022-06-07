@@ -2,20 +2,13 @@ namespace WebScheduler.Api.Commands.ScheduledTask;
 
 using WebScheduler.Api.Repositories;
 using Microsoft.AspNetCore.Mvc;
-using Boxed.Mapping;
 using WebScheduler.Abstractions.Grains.Scheduler;
-using WebScheduler.Api.Models.ViewModels;
 
 public class DeleteScheduledTaskCommand
 {
     private readonly IScheduledTaskRepository scheduledTaskRepository;
-    private readonly IMapper<Models.ScheduledTask, ScheduledTask> scheduledTaskMapper;
 
-    public DeleteScheduledTaskCommand(IScheduledTaskRepository scheduledTaskRepository, IMapper<Models.ScheduledTask, ScheduledTask> scheduledTaskMapper)
-    {
-        this.scheduledTaskRepository = scheduledTaskRepository;
-        this.scheduledTaskMapper = scheduledTaskMapper;
-    }
+    public DeleteScheduledTaskCommand(IScheduledTaskRepository scheduledTaskRepository) => this.scheduledTaskRepository = scheduledTaskRepository;
 
     public async Task<IActionResult> ExecuteAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {

@@ -1,5 +1,4 @@
 namespace WebScheduler.Api.Repositories;
-using System.Text.Json;
 using Dapper;
 using MySqlConnector;
 using Orleans;
