@@ -72,8 +72,8 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
 
         const string sql = @"SELECT m.GrainIdExtensionString FROM OrleansStorage AS m
 
-        
-        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenentState' AND  JSON_EXTRACT(t.PayloadJson, '$.tenentId') = @TenentId AND
+
+        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenantState' AND  JSON_EXTRACT(t.PayloadJson, '$.tenantId') = @TenantId AND
                     m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'
 
           ORDER BY JSON_EXTRACT(t.PayloadJson, '$.createdAt') ASC LIMIT @Offset, @PageSize";
@@ -82,7 +82,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         {
             Offset = offset,
             PageSize = pageSize,
-            TenentId = RequestContext.Get(RequestContextKeys.TenentId)
+            TenantId = RequestContext.Get(RequestContextKeys.TenantId)
         }, cancellationToken: cancellationToken)).ConfigureAwait(false);
 
         var buffer = new List<ScheduledTask>(pageSize);
@@ -117,12 +117,12 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
 
         const string sql = @"SELECT COUNT(*) from   OrleansStorage AS m
 
-        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenentState' AND  JSON_EXTRACT(t.PayloadJson, '$.tenentId') = @TenentId AND
+        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenantState' AND  JSON_EXTRACT(t.PayloadJson, '$.tenantId') = @TenantId AND
                     m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'";
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
-            TenentId = RequestContext.Get(RequestContextKeys.TenentId)
+            TenantId = RequestContext.Get(RequestContextKeys.TenantId)
         }, cancellationToken: cancellationToken)).ConfigureAwait(false);
 
         var buffer = new List<ScheduledTask>(10);
