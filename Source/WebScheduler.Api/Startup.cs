@@ -87,10 +87,9 @@ public class Startup
                     RequireSignedTokens = true,
                     ValidateIssuerSigningKey = true,
                     ClockSkew = TimeSpan.Zero,// It forces tokens to expire exactly at token expiration time instead of 5 minutes later
-                    //IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(this.configuration["Identity:ClientSecret"]))
+                    NameClaimType = "sub",
+                    RoleClaimType = "role"
                 };
-                options.TokenValidationParameters.NameClaimType = "sub";
-                options.TokenValidationParameters.RoleClaimType = "role";
                 options.Events = new JwtBearerEvents
                 {
                     OnAuthenticationFailed = async (_) => await Task.FromResult(string.Empty).ConfigureAwait(false)

@@ -5,7 +5,7 @@
 
 # Base image used by Visual Studio at development time
 # (See https://docs.microsoft.com/en-us/visualstudio/containers/container-msbuild-properties)
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine AS base
+FROM mcr.microsoft.com/dotnet/aspnet:6.0.5-alpine3.15-amd64 AS base
 # Open Container Initiative (OCI) labels (See https://github.com/opencontainers/image-spec/blob/master/annotations.md).
 LABEL org.opencontainers.image.title="Web Scheduler API" \
     org.opencontainers.image.description="The API for the Web Scheduler" \
@@ -28,7 +28,7 @@ WORKDIR /app
 EXPOSE 80
 
 # SDK image used to build and publish the application
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS sdk
+FROM mcr.microsoft.com/dotnet/sdk:6.0.300-alpine3.15-amd64 AS sdk
 # To use the debug build configuration pass --build-arg Configuration=Debug
 ARG Configuration=Release
 ENV DOTNET_CLI_TELEMETRY_OPTOUT=true \
@@ -50,8 +50,18 @@ RUN dotnet test --configuration $Configuration --no-build
 RUN --mount=type=cache,id=nuget,target=/root/.nuget/packages \
     dotnet publish "Source/WebScheduler.Api/WebScheduler.Api.csproj" --configuration $Configuration --no-build --output /app
 
+# Install desired .NET CLI diagnostics tools
+RUN dotnet tool install --tool-path /tools dotnet-trace
+RUN dotnet tool install --tool-path /tools dotnet-counters
+RUN dotnet tool install --tool-path /tools dotnet-dump
+
 # Runtime image used to run the application
 FROM base AS runtime
 WORKDIR /app
 COPY --from=sdk /app .
+
+# Copy diagnostics tools
+
+COPY --from=sdk /tools /root/.dotnet/tools
+
 ENTRYPOINT ["dotnet", "WebScheduler.Api.dll"]
