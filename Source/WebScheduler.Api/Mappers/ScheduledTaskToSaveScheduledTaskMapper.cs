@@ -21,6 +21,7 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
         destination.CronExpression = source.CronExpression[(source.CronExpression.IndexOf(' ') + 1)..]; // Strip off seconds
         destination.TriggerType = source.TriggerType;
         destination.HttpTriggerProperties = source.HttpTriggerProperties;
+        destination.ScheduledTaskId = source.ScheduledTaskId;
     }
 
     public void Map(SaveScheduledTask source, Models.ScheduledTask destination)
@@ -44,7 +45,7 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
         destination.Name = source.Name;
         destination.CronExpression = source.CronExpression;
         destination.TriggerType = source.TriggerType;
-
+        destination.ScheduledTaskId = source.ScheduledTaskId;
         destination.HttpTriggerProperties = source.HttpTriggerProperties;
     }
 }

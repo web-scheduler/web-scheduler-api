@@ -221,6 +221,11 @@ public class ScheduledTasksController : ControllerBase
         "The MIME type in the Content-Type HTTP header is unsupported.",
         typeof(ProblemDetails),
         ContentType.ProblemJson)]
+    [SwaggerResponse(
+        StatusCodes.Status409Conflict,
+        "The ScheduledTask with the specified id already exists.",
+        typeof(ProblemDetails),
+        ContentType.ProblemJson)]
     public Task<IActionResult> PostAsync(
         [FromServices] PostScheduledTaskCommand command,
         [FromBody] SaveScheduledTask scheduledTask,
