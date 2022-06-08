@@ -11,6 +11,13 @@ using WebScheduler.Api.Models.Validators;
 public class SaveScheduledTask
 {
     /// <summary>
+    /// Gets or sets the id of the scheduled task.
+    /// </summary>
+    [Required]
+    [Display(Name = "Scheduled Task Id", Description = "The Id of the Scheduled Task to create.", ShortName = "Id")]
+    public Guid ScheduledTaskId { get; set; } = Guid.Empty;
+
+    /// <summary>
     /// Gets or sets the name of the scheduled task.
     /// </summary>
     [Required]
