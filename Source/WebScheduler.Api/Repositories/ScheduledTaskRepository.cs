@@ -41,7 +41,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         return scheduledTask;
     }
 
-    public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken) => _ = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync().ConfigureAwait(false);
+    public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken) => await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync().ConfigureAwait(false);
 
     public async Task<ScheduledTask> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {
@@ -70,13 +70,11 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
-        const string sql = @"SELECT m.GrainIdExtensionString FROM OrleansStorage AS m
-
-
-        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenantState' AND  JSON_EXTRACT(t.PayloadJson, '$.tenantId') = @TenantId AND
-                    m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'
-
-          ORDER BY JSON_EXTRACT(t.PayloadJson, '$.createdAt') ASC LIMIT @Offset, @PageSize";
+        // TODO: after everything migrates, delete the or clause for ScheduledTaskMetadata
+        const string sql = @"SELECT GrainIdExtensionString FROM OrleansStorage WHERE  JSON_EXTRACT(PayloadJson, '$.tenantId') = @TenantId AND IFNULL(JSON_EXTRACT(PayloadJson, '$.isDeleted'), 0)=0
+        AND GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskState'
+        AND JSON_EXTRACT(PayloadJson, '$.isDeleted') is null
+          ORDER BY JSON_EXTRACT(PayloadJson, '$.createdAt') ASC LIMIT @Offset, @PageSize";
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
@@ -115,10 +113,10 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
-        const string sql = @"SELECT COUNT(*) from   OrleansStorage AS m
-
-        JOIN OrleansStorage t on t.GrainIdExtensionString = m.GrainIdExtensionString AND t.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.TenantState' AND  JSON_EXTRACT(t.PayloadJson, '$.tenantId') = @TenantId AND
-                    m.GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskMetadata'";
+        const string sql = @"SELECT COUNT(*) from OrleansStorage
+         WHERE  JSON_EXTRACT(PayloadJson, '$.tenantId') = @TenantId AND IFNULL(JSON_EXTRACT(PayloadJson, '$.isDeleted'), 0)=0
+        AND GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskState'
+        AND JSON_EXTRACT(PayloadJson, '$.isDeleted') is null";
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
