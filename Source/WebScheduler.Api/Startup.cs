@@ -92,7 +92,7 @@ public class Startup
                 };
                 options.Events = new JwtBearerEvents
                 {
-                    OnAuthenticationFailed = async (_) => await Task.FromResult(string.Empty).ConfigureAwait(false)
+                    OnAuthenticationFailed = async (_) => await Task.FromResult(string.Empty).ConfigureAwait(true)
                 };
             });
 

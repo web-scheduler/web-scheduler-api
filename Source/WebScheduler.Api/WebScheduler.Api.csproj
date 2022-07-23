@@ -76,11 +76,11 @@
     <PackageReference Include="Serilog.Enrichers.Span" Version="2.3.0+build.305" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.3.0+build.654" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.30" />
+    <!--<PackageReference Include="WebScheduler.Abstractions" Version="0.1.32" />-->
   </ItemGroup>
 
   <ItemGroup Label="Project References">
-    <!--<ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />-->
+    <ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />
     <ProjectReference Include="..\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj" />
   </ItemGroup>
 

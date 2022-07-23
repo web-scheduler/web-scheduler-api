@@ -38,7 +38,7 @@ public class PatchScheduledTaskCommand
         JsonPatchDocument<SaveScheduledTask> patch,
         CancellationToken cancellationToken)
     {
-        var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(false);
+        var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(true);
         if (scheduledTask is null)
         {
             return new NotFoundResult();
@@ -68,7 +68,7 @@ public class PatchScheduledTaskCommand
             scheduledTask.CronExpression = $"{currentSeconds} {saveScheduledTask.CronExpression}";
         }
 
-        _ = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken).ConfigureAwait(false);
+        _ = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken).ConfigureAwait(true);
         var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
 
         return new OkObjectResult(scheduledTaskViewModel);

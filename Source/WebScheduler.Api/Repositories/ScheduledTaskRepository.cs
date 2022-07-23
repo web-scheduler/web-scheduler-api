@@ -12,11 +12,12 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
 {
     private readonly IClusterClient clusterClient;
     private readonly StorageOptions storageOptions;
-
-    public ScheduledTaskRepository(IClusterClient clusterClient, StorageOptions storageOptions)
+    private readonly ILogger<ScheduledTaskRepository> logger;
+    public ScheduledTaskRepository(IClusterClient clusterClient, StorageOptions storageOptions, ILogger<ScheduledTaskRepository> logger)
     {
         this.clusterClient = clusterClient;
         this.storageOptions = storageOptions;
+        this.logger = logger;
     }
 
     public async Task<ScheduledTask> AddAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken)
@@ -36,16 +37,16 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             CronExpression = scheduledTask.CronExpression,
             TriggerType = scheduledTask.TriggerType,
             HttpTriggerProperties = scheduledTask.HttpTriggerProperties
-        }).ConfigureAwait(false);
+        }).ConfigureAwait(true);
 
         return scheduledTask;
     }
 
-    public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken) => await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync().ConfigureAwait(false);
+    public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken) => await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync().ConfigureAwait(true);
 
     public async Task<ScheduledTask> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {
-        var result = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(false);
+        var result = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(true);
         return new()
         {
             CreatedAt = result.CreatedAt,
@@ -76,38 +77,56 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         AND JSON_EXTRACT(PayloadJson, '$.isDeleted') is null
           ORDER BY JSON_EXTRACT(PayloadJson, '$.createdAt') ASC LIMIT @Offset, @PageSize";
 
-        using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
+        var tasks = new List<Task<ScheduledTaskMetadata>>(pageSize);
+        var taskIds = new List<string>(pageSize);
+        using (var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
             Offset = offset,
             PageSize = pageSize,
             TenantId = RequestContext.Get(RequestContextKeys.TenantId)
-        }, cancellationToken: cancellationToken)).ConfigureAwait(false);
-
-        var buffer = new List<ScheduledTask>(pageSize);
-        while (await reader.ReadAsync(cancellationToken).ConfigureAwait(false))
+        }, cancellationToken: cancellationToken)).ConfigureAwait(true))
         {
-            var scheduledTaskId = reader.GetGuid(0);
-            // TODO: Batch parallelize this
-            var value = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(false);
-
-            buffer.Add(new()
+            var c = this.clusterClient;
+            while (await reader.ReadAsync(cancellationToken).ConfigureAwait(true))
             {
-                ScheduledTaskId = scheduledTaskId,
-                CreatedAt = value.CreatedAt,
-                ModifiedAt = value.ModifiedAt,
-                Description = value.Description,
-                Name = value.Name,
-                IsEnabled = value.IsEnabled,
-                LastRunAt = value.LastRunAt,
-                NextRunAt = value.NextRunAt,
-                CronExpression = value.CronExpression,
-                TriggerType = value.TriggerType,
-                HttpTriggerProperties = value.HttpTriggerProperties,
-            });
+                var taskId = reader.GetString(0);
+                taskIds.Add(taskId);
+                tasks.Add(c.GetGrain<IScheduledTaskGrain>(taskId).GetAsync().AsTask());
+            }
+            await reader.CloseAsync().ConfigureAwait(true);
         }
 
+        var results = await Task.WhenAll(tasks).ConfigureAwait(true);
+        var buffer = new List<ScheduledTask>(results.Length);
+
+        for (var i = 0; i < results.Length; i++)
+        {
+            try
+            {
+                buffer.Add(new()
+                {
+                    ScheduledTaskId = Guid.Parse(taskIds[i]),
+                    CreatedAt = results[i].CreatedAt,
+                    ModifiedAt = results[i].ModifiedAt,
+                    Description = results[i].Description,
+                    Name = results[i].Name,
+                    IsEnabled = results[i].IsEnabled,
+                    LastRunAt = results[i].LastRunAt,
+                    NextRunAt = results[i].NextRunAt,
+                    CronExpression = results[i].CronExpression,
+                    TriggerType = results[i].TriggerType,
+                    HttpTriggerProperties = results[i].HttpTriggerProperties,
+                });
+            }
+            catch (Exception ex)
+            {
+                this.logger.GettingScheduledTasks(ex);
+                throw;
+            }
+        }
         return buffer;
     }
+
     public async Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
     {
         // TODO: Figure out connection pooling
@@ -121,10 +140,10 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
             TenantId = RequestContext.Get(RequestContextKeys.TenantId)
-        }, cancellationToken: cancellationToken)).ConfigureAwait(false);
+        }, cancellationToken: cancellationToken)).ConfigureAwait(true);
 
         var buffer = new List<ScheduledTask>(10);
-        while (await reader.ReadAsync(cancellationToken).ConfigureAwait(false))
+        while (await reader.ReadAsync(cancellationToken).ConfigureAwait(true))
         {
             return reader.GetInt32(0);
         }
@@ -148,7 +167,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             CronExpression = scheduledTask.CronExpression,
             TriggerType = scheduledTask.TriggerType,
             HttpTriggerProperties = scheduledTask.HttpTriggerProperties
-        }).ConfigureAwait(false);
+        }).ConfigureAwait(true);
 
         return scheduledTask;
     }

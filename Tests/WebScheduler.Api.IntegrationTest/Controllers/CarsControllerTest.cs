@@ -30,7 +30,7 @@
 //    {
 //        using var request = new HttpRequestMessage(HttpMethod.Options, "cars");
 
-//        var response = await this.client.SendAsync(request).ConfigureAwait(false);
+//        var response = await this.client.SendAsync(request).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(
@@ -43,7 +43,7 @@
 //    {
 //        using var request = new HttpRequestMessage(HttpMethod.Options, "cars/1");
 
-//        var response = await this.client.SendAsync(request).ConfigureAwait(false);
+//        var response = await this.client.SendAsync(request).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(
@@ -67,7 +67,7 @@
 //        this.CarRepositoryMock.Setup(x => x.GetAsync(1, It.IsAny<CancellationToken>())).ReturnsAsync(car);
 //        this.CarRepositoryMock.Setup(x => x.DeleteAsync(car, It.IsAny<CancellationToken>())).Returns(Task.CompletedTask);
 
-//        var response = await this.client.DeleteAsync(new Uri("/cars/1", UriKind.Relative)).ConfigureAwait(false);
+//        var response = await this.client.DeleteAsync(new Uri("/cars/1", UriKind.Relative)).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.NoContent, response.StatusCode);
 //    }
@@ -77,10 +77,10 @@
 //    {
 //        this.CarRepositoryMock.Setup(x => x.GetAsync(999, It.IsAny<CancellationToken>())).ReturnsAsync((Models.Car?)null);
 
-//        var response = await this.client.DeleteAsync(new Uri("/cars/999", UriKind.Relative)).ConfigureAwait(false);
+//        var response = await this.client.DeleteAsync(new Uri("/cars/999", UriKind.Relative)).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(false);
+//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(StatusCodes.Status404NotFound, problemDetails.Status);
 //    }
 
@@ -90,12 +90,12 @@
 //        var car = new Models.Car() { Modified = new DateTimeOffset(2000, 1, 2, 3, 4, 5, TimeSpan.FromHours(6)) };
 //        this.CarRepositoryMock.Setup(x => x.GetAsync(1, It.IsAny<CancellationToken>())).ReturnsAsync(car);
 
-//        var response = await this.client.GetAsync(new Uri("/cars/1", UriKind.Relative)).ConfigureAwait(false);
+//        var response = await this.client.GetAsync(new Uri("/cars/1", UriKind.Relative)).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(new DateTimeOffset(2000, 1, 2, 3, 4, 5, TimeSpan.FromHours(6)), response.Content.Headers.LastModified);
 //        Assert.Equal(ContentType.RestfulJson, response.Content.Headers.ContentType?.MediaType);
-//        var carViewModel = await response.Content.ReadAsAsync<Car>(this.formatters).ConfigureAwait(false);
+//        var carViewModel = await response.Content.ReadAsAsync<Car>(this.formatters).ConfigureAwait(true);
 //    }
 
 //    [Fact]
@@ -103,10 +103,10 @@
 //    {
 //        this.CarRepositoryMock.Setup(x => x.GetAsync(999, It.IsAny<CancellationToken>())).ReturnsAsync((Models.Car?)null);
 
-//        var response = await this.client.GetAsync(new Uri("/cars/999", UriKind.Relative)).ConfigureAwait(false);
+//        var response = await this.client.GetAsync(new Uri("/cars/999", UriKind.Relative)).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(false);
+//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(StatusCodes.Status404NotFound, problemDetails.Status);
 //    }
 
@@ -117,7 +117,7 @@
 //        using var request = new HttpRequestMessage(HttpMethod.Get, "/cars/1");
 //        request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(ContentType.Text));
 
-//        var response = await this.client.SendAsync(request).ConfigureAwait(false);
+//        var response = await this.client.SendAsync(request).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.NotAcceptable, response.StatusCode);
 //        // Note: ASP.NET Core should be automatically returning a ProblemDetails response but is returning an empty
@@ -132,7 +132,7 @@
 //        using var request = new HttpRequestMessage(HttpMethod.Get, "/cars/1");
 //        request.Headers.IfModifiedSince = new DateTimeOffset(2000, 1, 2, 0, 0, 0, TimeSpan.Zero);
 
-//        var response = await this.client.SendAsync(request).ConfigureAwait(false);
+//        var response = await this.client.SendAsync(request).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.NotModified, response.StatusCode);
 //    }
@@ -145,7 +145,7 @@
 //        using var request = new HttpRequestMessage(HttpMethod.Get, "/cars/1");
 //        request.Headers.IfModifiedSince = new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero);
 
-//        var response = await this.client.SendAsync(request).ConfigureAwait(false);
+//        var response = await this.client.SendAsync(request).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //    }
@@ -167,7 +167,7 @@
 //            .Setup(x => x.GetHasNextPageAsync(3, null, It.IsAny<CancellationToken>()))
 //            .ReturnsAsync(true);
 
-//        var response = await this.client.GetAsync(new Uri(path, UriKind.Relative)).ConfigureAwait(false);
+//        var response = await this.client.GetAsync(new Uri(path, UriKind.Relative)).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(ContentType.RestfulJson, response.Content.Headers.ContentType?.MediaType);
@@ -178,7 +178,7 @@
 //                expectedPageCount: 3,
 //                actualPageCount: 3,
 //                totalCount: 4)
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 //    }
 
 //    [Fact]
@@ -197,7 +197,7 @@
 
 //        var response = await this.client
 //            .GetAsync(new Uri($"/cars?First=3&After={Cursor.ToCursor(new DateTimeOffset(2000, 1, 3, 0, 0, 0, TimeSpan.Zero))}", UriKind.Relative))
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(ContentType.RestfulJson, response.Content.Headers.ContentType?.MediaType);
@@ -208,7 +208,7 @@
 //                expectedPageCount: 3,
 //                actualPageCount: 1,
 //                totalCount: 4)
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 //    }
 
 //    [Theory]
@@ -227,7 +227,7 @@
 //            .Setup(x => x.GetHasPreviousPageAsync(3, null, It.IsAny<CancellationToken>()))
 //            .ReturnsAsync(true);
 
-//        var response = await this.client.GetAsync(new Uri(path, UriKind.Relative)).ConfigureAwait(false);
+//        var response = await this.client.GetAsync(new Uri(path, UriKind.Relative)).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(ContentType.RestfulJson, response.Content.Headers.ContentType?.MediaType);
@@ -238,7 +238,7 @@
 //                expectedPageCount: 3,
 //                actualPageCount: 3,
 //                totalCount: 4)
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 //    }
 
 //    [Fact]
@@ -257,7 +257,7 @@
 
 //        var response = await this.client
 //            .GetAsync(new Uri($"/cars?Last=3&Before={Cursor.ToCursor(new DateTimeOffset(2000, 1, 2, 0, 0, 0, TimeSpan.Zero))}", UriKind.Relative))
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(ContentType.RestfulJson, response.Content.Headers.ContentType?.MediaType);
@@ -268,7 +268,7 @@
 //                expectedPageCount: 3,
 //                actualPageCount: 1,
 //                totalCount: 4)
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 //    }
 
 //    [Fact]
@@ -287,7 +287,7 @@
 
 //        var response = await this.client
 //            .GetAsync(new Uri($"/cars?First=2&After={Cursor.ToCursor(new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero))}", UriKind.Relative))
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(ContentType.RestfulJson, response.Content.Headers.ContentType?.MediaType);
@@ -298,7 +298,7 @@
 //                expectedPageCount: 2,
 //                actualPageCount: 2,
 //                totalCount: 4)
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 //    }
 
 //    [Fact]
@@ -316,21 +316,21 @@
 //            .Setup(x => x.AddAsync(It.IsAny<Models.Car>(), It.IsAny<CancellationToken>()))
 //            .ReturnsAsync(car);
 
-//        var response = await this.client.PostAsJsonAsync("cars", saveCar).ConfigureAwait(false);
+//        var response = await this.client.PostAsJsonAsync("cars", saveCar).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.Created, response.StatusCode);
 //        Assert.Equal(ContentType.RestfulJson, response.Content.Headers.ContentType?.MediaType);
-//        var carViewModel = await response.Content.ReadAsAsync<Car>(this.formatters).ConfigureAwait(false);
+//        var carViewModel = await response.Content.ReadAsAsync<Car>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(new Uri("http://localhost/cars/1"), response.Headers.Location);
 //    }
 
 //    [Fact]
 //    public async Task PostCar_Invalid_Returns400BadRequestAsync()
 //    {
-//        var response = await this.client.PostAsJsonAsync("cars", new SaveCar()).ConfigureAwait(false);
+//        var response = await this.client.PostAsJsonAsync("cars", new SaveCar()).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(false);
+//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(StatusCodes.Status400BadRequest, problemDetails.Status);
 //    }
 
@@ -342,10 +342,10 @@
 //            Content = new ObjectContent<SaveCar>(null!, new JsonMediaTypeFormatter(), ContentType.Json),
 //        };
 
-//        var response = await this.client.SendAsync(request).ConfigureAwait(false);
+//        var response = await this.client.SendAsync(request).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(false);
+//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(StatusCodes.Status400BadRequest, problemDetails.Status);
 //    }
 
@@ -357,10 +357,10 @@
 //            Content = new ObjectContent<SaveCar>(new SaveCar(), new JsonMediaTypeFormatter(), ContentType.Text),
 //        };
 
-//        var response = await this.client.SendAsync(request).ConfigureAwait(false);
+//        var response = await this.client.SendAsync(request).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.UnsupportedMediaType, response.StatusCode);
-//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(false);
+//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(StatusCodes.Status415UnsupportedMediaType, problemDetails.Status);
 //    }
 
@@ -380,11 +380,11 @@
 //        this.ClockServiceMock.SetupGet(x => x.UtcNow).Returns(new DateTimeOffset(2000, 1, 1, 0, 0, 0, TimeSpan.Zero));
 //        this.CarRepositoryMock.Setup(x => x.UpdateAsync(car, It.IsAny<CancellationToken>())).ReturnsAsync(car);
 
-//        var response = await this.client.PutAsJsonAsync("cars/1", saveCar).ConfigureAwait(false);
+//        var response = await this.client.PutAsJsonAsync("cars/1", saveCar).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
 //        Assert.Equal(ContentType.RestfulJson, response.Content.Headers.ContentType?.MediaType);
-//        var carViewModel = await response.Content.ReadAsAsync<Car>(this.formatters).ConfigureAwait(false);
+//        var carViewModel = await response.Content.ReadAsAsync<Car>(this.formatters).ConfigureAwait(true);
 //    }
 
 //    [Fact]
@@ -398,20 +398,20 @@
 //        };
 //        this.CarRepositoryMock.Setup(x => x.GetAsync(999, It.IsAny<CancellationToken>())).ReturnsAsync((Models.Car?)null);
 
-//        var response = await this.client.PutAsJsonAsync("cars/999", saveCar).ConfigureAwait(false);
+//        var response = await this.client.PutAsJsonAsync("cars/999", saveCar).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(false);
+//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(StatusCodes.Status404NotFound, problemDetails.Status);
 //    }
 
 //    [Fact]
 //    public async Task PutCar_Invalid_Returns400BadRequestAsync()
 //    {
-//        var response = await this.client.PutAsJsonAsync("cars/1", new SaveCar()).ConfigureAwait(false);
+//        var response = await this.client.PutAsJsonAsync("cars/1", new SaveCar()).ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
-//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(false);
+//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(StatusCodes.Status400BadRequest, problemDetails.Status);
 //    }
 
@@ -426,10 +426,10 @@
 
 //        var response = await this.client
 //            .PatchAsync(new Uri("cars/999", UriKind.Relative), content)
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.NotFound, response.StatusCode);
-//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(false);
+//        var problemDetails = await response.Content.ReadAsAsync<ProblemDetails>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal(StatusCodes.Status404NotFound, problemDetails.Status);
 //    }
 
@@ -445,7 +445,7 @@
 
 //        var response = await this.client
 //            .PatchAsync(new Uri("cars/1", UriKind.Relative), content)
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.BadRequest, response.StatusCode);
 //    }
@@ -464,10 +464,10 @@
 
 //        var response = await this.client
 //            .PatchAsync(new Uri("cars/1", UriKind.Relative), content)
-//            .ConfigureAwait(false);
+//            .ConfigureAwait(true);
 
 //        Assert.Equal(HttpStatusCode.OK, response.StatusCode);
-//        var carViewModel = await response.Content.ReadAsAsync<Car>(this.formatters).ConfigureAwait(false);
+//        var carViewModel = await response.Content.ReadAsAsync<Car>(this.formatters).ConfigureAwait(true);
 //        Assert.Equal("Civic Type-R", carViewModel.Model);
 //    }
 
@@ -488,7 +488,7 @@
 //        int actualPageCount,
 //        int totalCount)
 //    {
-//        var connection = await response.Content.ReadAsAsync<Connection<Car>>(this.formatters).ConfigureAwait(false);
+//        var connection = await response.Content.ReadAsAsync<Connection<Car>>(this.formatters).ConfigureAwait(true);
 
 //        Assert.Equal(actualPageCount, connection.Items.Count);
 //        Assert.Equal(actualPageCount, connection.PageInfo.Count);

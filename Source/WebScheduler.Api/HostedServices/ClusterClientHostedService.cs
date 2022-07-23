@@ -24,7 +24,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
                 _ = services.AddSingleton(loggerFactory);
                 _ = services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             })
-            //.AddClusterConnectionLostHandler(async (object sender, EventArgs e) => await this.ConnectionHandler().ConfigureAwait(false))
+            //.AddClusterConnectionLostHandler(async (object sender, EventArgs e) => await this.ConnectionHandler().ConfigureAwait(true))
             .UseAdoNetClustering(options =>
             {
                 options.Invariant = this.options.Storage.Invariant;
@@ -72,7 +72,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
 
                 try
                 {
-                    await Task.Delay(delay, cancellationToken).ConfigureAwait(false);
+                    await Task.Delay(delay, cancellationToken).ConfigureAwait(true);
                 }
                 catch (OperationCanceledException)
                 {
@@ -94,7 +94,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
 
         var cancellation = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         _ = cancellationToken.Register(() => cancellation.TrySetCanceled(cancellationToken));
-        _ = await Task.WhenAny(this.Client.Close(), cancellation.Task).ConfigureAwait(false);
+        _ = await Task.WhenAny(this.Client.Close(), cancellation.Task).ConfigureAwait(true);
     }
 
     public void Dispose()
