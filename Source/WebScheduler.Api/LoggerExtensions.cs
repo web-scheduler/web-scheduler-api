@@ -54,4 +54,10 @@ internal static partial class LoggerExtensions
         Level = LogLevel.Information,
         Message = "Silo shutting down gracefully.")]
     public static partial void ShuttingDownSiloGracefully(this ILogger logger);
+
+    [LoggerMessage(
+    EventId = 7002,
+    Level = LogLevel.Error,
+    Message = "Error getting scheduled tasks.")]
+    public static partial void GettingScheduledTasks(this ILogger logger, Exception exception);
 }

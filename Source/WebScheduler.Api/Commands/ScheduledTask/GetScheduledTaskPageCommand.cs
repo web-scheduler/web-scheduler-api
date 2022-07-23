@@ -29,9 +29,9 @@ public class GetScheduledTaskPageCommand
         var getScheduledTasksTask = this.scheduledTaskRepository.GetScheduledTasksAsync(pageOptions.Offset, pageOptions.PageSize ?? DefaultPageSize, cancellationToken);
         var totalCountTask = this.scheduledTaskRepository.GetTotalCountAsync(cancellationToken);
 
-        await Task.WhenAll(getScheduledTasksTask, totalCountTask).ConfigureAwait(false);
-        var scheduledTasks = await getScheduledTasksTask.ConfigureAwait(false);
-        var totalCount = await totalCountTask.ConfigureAwait(false);
+        await Task.WhenAll(getScheduledTasksTask, totalCountTask).ConfigureAwait(true);
+        var scheduledTasks = await getScheduledTasksTask.ConfigureAwait(true);
+        var totalCount = await totalCountTask.ConfigureAwait(true);
 
         if (scheduledTasks is null)
         {

@@ -28,7 +28,7 @@ public class GetScheduledTaskCommand
     {
         try
         {
-            var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(false);
+            var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(true);
 
             var httpContext = this.actionContextAccessor.ActionContext!.HttpContext;
             var ifModifiedSince = httpContext.Request.Headers.IfModifiedSince;

@@ -41,7 +41,7 @@ public class PostScheduledTaskCommand
 
         try
         {
-            scheduledTask = await this.scheduledTaskRepository.AddAsync(scheduledTask, cancellationToken).ConfigureAwait(false);
+            scheduledTask = await this.scheduledTaskRepository.AddAsync(scheduledTask, cancellationToken).ConfigureAwait(true);
             var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
             return new CreatedAtRouteResult(ScheduledTasksControllerRoute.GetScheduledTask, new
             {

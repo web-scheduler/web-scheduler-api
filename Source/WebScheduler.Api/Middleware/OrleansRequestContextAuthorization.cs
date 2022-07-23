@@ -17,6 +17,6 @@ public class OrleansRequestContextAuthorization
             RequestContext.Set(RequestContextKeys.TenantId, context.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.NameIdentifier)?.Value);
         }
         // Call the next delegate/middleware in the pipeline.
-        await this.next(context).ConfigureAwait(false);
+        await this.next(context).ConfigureAwait(true);
     }
 }
