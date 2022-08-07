@@ -11,7 +11,8 @@ using WebScheduler.Api.Policies;
 using IdentityServerHost.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.DataProtection;
-using WebScheduler.Api.Middleware;
+using WebScheduler.Api.Http.Middleware;
+using WebScheduler.Api.Core;
 
 /// <summary>
 /// The main start-up class for the application.

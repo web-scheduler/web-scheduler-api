@@ -9,8 +9,8 @@ using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using WebScheduler.Server.Options;
 using Orleans.Configuration;
+using WebScheduler.Api.Core.Options;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> extension methods which extend ASP.NET Core services.
@@ -30,6 +30,7 @@ internal static class CustomServiceCollectionExtensions
         services
             // ConfigureAndValidateSingleton registers IOptions<T> and also T as a singleton to the services collection.
             .ConfigureAndValidateSingleton<ApplicationOptions>(configuration)
+            .ConfigureAndValidateSingleton<WebSchedulerApiConfigurationOptions>(configuration)
             .ConfigureAndValidateSingleton<CacheProfileOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.CacheProfiles)))
             .ConfigureAndValidateSingleton<CompressionOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.Compression)))
             .ConfigureAndValidateSingleton<ForwardedHeadersOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.ForwardedHeaders)))
@@ -42,8 +43,8 @@ internal static class CustomServiceCollectionExtensions
             .ConfigureAndValidateSingleton<HostOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.Host)))
             .ConfigureAndValidateSingleton<RedisOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.Redis)))
             .ConfigureAndValidateSingleton<KestrelServerOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.Kestrel)))
-            .ConfigureAndValidateSingleton<ClusterOptions>(configuration.GetSection(nameof(ApplicationOptions.Cluster)))
-            .ConfigureAndValidateSingleton<StorageOptions>(configuration.GetSection(nameof(ApplicationOptions.Storage)));
+            .ConfigureAndValidateSingleton<ClusterOptions>(configuration.GetSection(nameof(WebSchedulerApiConfigurationOptions.Cluster)))
+            .ConfigureAndValidateSingleton<StorageOptions>(configuration.GetSection(nameof(WebSchedulerApiConfigurationOptions.Storage)));
 
     public static IServiceCollection AddCustomConfigureOptions(this IServiceCollection services) =>
         services

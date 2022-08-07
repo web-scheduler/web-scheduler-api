@@ -25,6 +25,9 @@
   </ItemGroup>
 
   <ItemGroup Label="Project References">
+    <ProjectReference Include="..\..\Source\WebScheduler.Api.Core\WebScheduler.Client.Core.csproj" />
+    <ProjectReference Include="..\..\Source\WebScheduler.Api.Http\WebScheduler.Client.Http.csproj" />
+    <ProjectReference Include="..\..\Source\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj" />
     <ProjectReference Include="..\..\Source\WebScheduler.Api\WebScheduler.Api.csproj" />
   </ItemGroup>
 
