@@ -133,7 +133,7 @@ jobs:
         run: dotnet nuget add source https://nuget.pkg.github.com/web-scheduler/web-scheduler-api/index.json --name GitHub --username web-scheduler-api --password ${{secrets.GITHUB_TOKEN}}
         shell: pwsh
       - name: "Dotnet NuGet Push"
-        run: dotnet nuget push .\**\*.nupkg --api-key ${{ github.token }} --source GitHub --skip-duplicate
+        run: dotnet nuget push .\**\*.nupkg --api-key ${{ secrets.GITHUB_TOKEN }} --source GitHub --skip-duplicate
         shell: pwsh
 
   push-nuget:
