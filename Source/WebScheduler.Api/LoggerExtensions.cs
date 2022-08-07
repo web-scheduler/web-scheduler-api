@@ -38,5 +38,4 @@ internal static partial class LoggerExtensions
         string environment,
         string runtime,
         string operatingSystem);
-
 }

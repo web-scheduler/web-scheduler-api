@@ -31,7 +31,6 @@ public class Program
 
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         new HostBuilder()
-
             .UseContentRoot(Directory.GetCurrentDirectory())
             .ConfigureHostConfiguration(
                 configurationBuilder => configurationBuilder.AddCustomBootstrapConfiguration(args))
@@ -55,6 +54,7 @@ public class Program
 
     private static void ConfigureWebHostBuilder(IWebHostBuilder webHostBuilder) =>
         webHostBuilder
+        .UseSetting(WebHostDefaults.ApplicationKey, typeof(Program).Assembly.FullName)
             .UseKestrel(
                 (builderContext, options) =>
                 {
@@ -63,8 +63,6 @@ public class Program
                         builderContext.Configuration.GetRequiredSection(nameof(ApplicationOptions.Kestrel)),
                         reloadOnChange: false);
                 })
-            // Used for IIS and IIS Express for in-process hosting. Use UseIISIntegration for out-of-process hosting.
-            .UseIIS()
             .UseStartup<Startup>();
 
     /// <summary>

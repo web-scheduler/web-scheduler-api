@@ -48,12 +48,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.Client" Version="3.6.3" />
-    <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.6.3" />
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" PrivateAssets="all" Version="3.6.3">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.Connections.Security" Version="3.6.3" />
+ 
     <PackageReference Include="MySql.Data" Version="8.0.30" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
@@ -78,7 +73,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\WebScheduler.Api.Http\WebScheduler.Client.Http.csproj" />
+    <ProjectReference Include="..\WebScheduler.Client.Http\WebScheduler.Client.Http.csproj" />
   </ItemGroup>
 
 </Project>
