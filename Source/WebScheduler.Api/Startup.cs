@@ -11,7 +11,7 @@ using WebScheduler.Api.Policies;
 using IdentityServerHost.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.DataProtection;
-using WebScheduler.Api.Middleware;
+using WebScheduler.Client.Http;
 
 /// <summary>
 /// The main start-up class for the application.
@@ -112,11 +112,7 @@ public class Startup
         .Services
         .AddCustomOptions(this.configuration)
         .AddCustomConfigureOptions()
-        .AddProjectCommands()
-        .AddProjectMappers()
-        .AddProjectRepositories()
-        .AddProjectServices()
-        .AddHostedServices();
+        .AddWebSchedulerHttpClient(this.configuration);
     }
 
     /// <summary>
@@ -137,7 +133,7 @@ public class Startup
                     .UseCors(CorsPolicyName.AllowAny)
 
             .UseAuthorization()
-            .UseMiddleware<OrleansRequestContextAuthorization>()
+            .UseWebScheduler()
             .UseResponseCaching()
             .UseResponseCompression()
             .UseIf(

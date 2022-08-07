@@ -1,11 +1,11 @@
 namespace WebScheduler.Api.ConfigureOptions;
 
-using WebScheduler.Api.ViewModels;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.Json.Serialization;
 using System.Text.Json;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
+using WebScheduler.Api.ViewModels;
 
 public class ConfigureJsonOptions : IConfigureOptions<JsonOptions>
 {

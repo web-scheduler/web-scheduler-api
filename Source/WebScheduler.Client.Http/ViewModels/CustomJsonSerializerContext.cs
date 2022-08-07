@@ -1,4 +1,4 @@
-namespace WebScheduler.Api.ViewModels;
+namespace WebScheduler.Client.Http.ViewModels;
 
 using System.Text.Json.Serialization;
 using WebScheduler.Abstractions.Grains.Scheduler;

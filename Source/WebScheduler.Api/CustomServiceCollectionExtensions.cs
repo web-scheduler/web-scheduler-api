@@ -9,8 +9,6 @@ using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
-using WebScheduler.Server.Options;
-using Orleans.Configuration;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> extension methods which extend ASP.NET Core services.
@@ -41,9 +39,7 @@ internal static class CustomServiceCollectionExtensions
                 })
             .ConfigureAndValidateSingleton<HostOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.Host)))
             .ConfigureAndValidateSingleton<RedisOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.Redis)))
-            .ConfigureAndValidateSingleton<KestrelServerOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.Kestrel)))
-            .ConfigureAndValidateSingleton<ClusterOptions>(configuration.GetSection(nameof(ApplicationOptions.Cluster)))
-            .ConfigureAndValidateSingleton<StorageOptions>(configuration.GetSection(nameof(ApplicationOptions.Storage)));
+            .ConfigureAndValidateSingleton<KestrelServerOptions>(configuration.GetRequiredSection(nameof(ApplicationOptions.Kestrel)));
 
     public static IServiceCollection AddCustomConfigureOptions(this IServiceCollection services) =>
         services

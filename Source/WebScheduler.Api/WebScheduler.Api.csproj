@@ -35,7 +35,6 @@
     <PackageReference Include="Boxed.AspNetCore" Version="8.0.0+build.457" />
     <PackageReference Include="Boxed.AspNetCore.Swagger" Version="10.0.0+build.460" />
     <PackageReference Include="Boxed.Mapping" Version="6.0.0+build.458" />
-    <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.Google" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="6.0.7" />
     <PackageReference Include="Microsoft.AspNetCore.DataProtection.EntityFrameworkCore" Version="6.0.7" />
@@ -49,12 +48,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.Client" Version="3.6.3" />
-    <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.6.3" />
-    <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" PrivateAssets="all" Version="3.6.3">
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.Connections.Security" Version="3.6.3" />
+ 
     <PackageReference Include="MySql.Data" Version="8.0.30" />
     <PackageReference Include="Microsoft.AspNetCore.Authentication.OpenIdConnect" Version="6.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="6.0.7">
@@ -76,12 +70,10 @@
     <PackageReference Include="Serilog.Enrichers.Span" Version="2.3.0+build.305" />
     <PackageReference Include="Serilog.Enrichers.Thread" Version="3.1.0" />
     <PackageReference Include="Serilog.Exceptions" Version="8.3.0+build.654" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.36" />
   </ItemGroup>
 
-  <ItemGroup Label="Project References">
-    <!--<ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />-->
-    <ProjectReference Include="..\WebScheduler.Api.Models\WebScheduler.Api.Models.csproj" />
+  <ItemGroup>
+    <ProjectReference Include="..\WebScheduler.Client.Http\WebScheduler.Client.Http.csproj" />
   </ItemGroup>
 
 </Project>
