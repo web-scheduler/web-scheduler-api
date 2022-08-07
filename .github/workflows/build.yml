@@ -142,7 +142,7 @@ jobs:
     if: github.event_name == 'release'
     environment:
       name: "NuGet"
-      url: https://www.nuget.org/packages/NuGetTemplate
+      url: https://www.nuget.org
     runs-on: ubuntu-latest
     steps:
       - name: "Download Artifact"
