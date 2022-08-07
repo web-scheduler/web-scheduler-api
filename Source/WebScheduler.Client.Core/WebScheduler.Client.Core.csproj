@@ -21,7 +21,7 @@
     <RepositoryUrl>https://github.com/web-scheduler/web-scheduler-api</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/web-scheduler/web-scheduler-api</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/web-scheduler/web-scheduler/releases-api</PackageReleaseNotes>
+    <PackageReleaseNotes>https://github.com/web-scheduler/web-scheduler-api/releases</PackageReleaseNotes>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
