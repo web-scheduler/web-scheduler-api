@@ -18,10 +18,10 @@
     <IsTrimmable>false</IsTrimmable>
     <Sign>false</Sign>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <RepositoryUrl>https://github.com/web-scheduler/web-scheduler</RepositoryUrl>
+    <RepositoryUrl>https://github.com/web-scheduler/web-scheduler-api</RepositoryUrl>
     <RepositoryType>git</RepositoryType>
-    <PackageProjectUrl>https://github.com/web-scheduler/web-scheduler</PackageProjectUrl>
-    <PackageReleaseNotes>https://github.com/web-scheduler/web-scheduler/releases</PackageReleaseNotes>
+    <PackageProjectUrl>https://github.com/web-scheduler/web-scheduler-api</PackageProjectUrl>
+    <PackageReleaseNotes>https://github.com/web-scheduler/web-scheduler/releases-api</PackageReleaseNotes>
 
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
