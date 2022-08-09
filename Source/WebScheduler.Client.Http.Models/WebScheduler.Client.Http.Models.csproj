@@ -27,7 +27,7 @@
   </PropertyGroup>
   <ItemGroup Label="Package References">
     <PackageReference Include="Cronos" Version="0.7.1" />
-    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.2.32" />
+    <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.3.44" />
     <PackageReference Include="WebScheduler.Abstractions" Version="0.1.38" />
   </ItemGroup>
   <ItemGroup Label="Project References" Condition="'$(Configuration)' == 'Debug'">
