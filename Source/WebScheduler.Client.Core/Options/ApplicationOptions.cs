@@ -7,9 +7,15 @@ using Orleans.Configuration;
 /// </summary>
 public class WebSchedulerClientConfigurationOptions
 {
+    /// <summary>
+    /// 
+    /// </summary>
     [Required]
     public ClusterOptions Cluster { get; set; } = default!;
 
+    /// <summary>
+    /// 
+    /// </summary>
     [Required]
     public StorageOptions Storage { get; set; } = default!;
 }

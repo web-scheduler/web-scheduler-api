@@ -7,13 +7,24 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 
+/// <summary>
+/// 
+/// </summary>
 public class ConfigureMvcOptions : IConfigureOptions<MvcOptions>
 {
     private readonly CacheProfileOptions cacheProfileOptions;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="cacheProfileOptions"></param>
     public ConfigureMvcOptions(CacheProfileOptions cacheProfileOptions) =>
         this.cacheProfileOptions = cacheProfileOptions;
 
+    /// <summary>
+    /// Invoked to configure a  instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(MvcOptions options)
     {
         // Controls how controller actions cache content from the appsettings.json file.

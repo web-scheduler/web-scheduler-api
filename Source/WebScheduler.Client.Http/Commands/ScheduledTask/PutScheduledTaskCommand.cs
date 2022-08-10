@@ -5,6 +5,9 @@ using Microsoft.AspNetCore.Mvc;
 using WebScheduler.Client.Http.Models.ViewModels;
 using WebScheduler.Client.Core.Repositories;
 
+/// <summary>
+/// Command
+/// </summary>
 public class PutScheduledTaskCommand
 {
     private readonly IScheduledTaskRepository scheduledTaskRepository;
@@ -12,6 +15,12 @@ public class PutScheduledTaskCommand
     private readonly IMapper<SaveScheduledTask, Core.Models.ScheduledTask> saveScheduledTaskToScheduledTaskMapper;
     private static readonly Random RandomNumber = new();
 
+    /// <summary>
+    /// Command
+    /// </summary>
+    /// <param name="scheduledTaskRepository"></param>
+    /// <param name="scheduledTaskToScheduledTaskMapper"></param>
+    /// <param name="saveScheduledTaskToScheduledTaskMapper"></param>
     public PutScheduledTaskCommand(
         IScheduledTaskRepository scheduledTaskRepository,
         IMapper<Core.Models.ScheduledTask, ScheduledTask> scheduledTaskToScheduledTaskMapper,
@@ -22,6 +31,12 @@ public class PutScheduledTaskCommand
         this.saveScheduledTaskToScheduledTaskMapper = saveScheduledTaskToScheduledTaskMapper;
     }
 
+    /// <summary>
+    /// Command
+    /// </summary>
+    /// <param name="scheduledTaskId"></param>
+    /// <param name="saveScheduledTask"></param>
+    /// <param name="cancellationToken"></param>
     public async Task<IActionResult> ExecuteAsync(Guid scheduledTaskId, SaveScheduledTask saveScheduledTask, CancellationToken cancellationToken)
     {
         var scheduledTask = this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask);

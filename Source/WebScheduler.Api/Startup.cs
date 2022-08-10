@@ -8,10 +8,10 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebScheduler.ConfigureOptions;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using WebScheduler.Api.Policies;
-using IdentityServerHost.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.DataProtection;
 using WebScheduler.Client.Http;
+using WebScheduler.Api.Data;
 
 /// <summary>
 /// The main start-up class for the application.

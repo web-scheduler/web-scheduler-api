@@ -8,6 +8,11 @@ using System.ComponentModel.DataAnnotations;
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = true)]
 public class RequiredIfAttribute : ValidationAttribute
 {
+    /// <summary>
+    /// ctor.
+    /// </summary>
+    /// <param name="propertyName">the property name</param>
+    /// <param name="expectedValue">the expected value</param>
     public RequiredIfAttribute(string propertyName, object expectedValue)
     {
         this.PropertyName = propertyName;
@@ -15,7 +20,14 @@ public class RequiredIfAttribute : ValidationAttribute
         this.innerAttribute = new RequiredAttribute();
     }
 
+    /// <summary>
+    /// The property name to be required.
+    /// </summary>
     public string PropertyName { get; }
+
+    /// <summary>
+    /// The expected value.
+    /// </summary>
     public object ExpectedValue { get; }
 
     private readonly RequiredAttribute innerAttribute;

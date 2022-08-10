@@ -4,9 +4,17 @@ using Boxed.Mapping;
 using WebScheduler.Abstractions.Grains.Scheduler;
 using WebScheduler.Client.Core.Models;
 
+/// <summary>
+/// Mapper for ScheduledTaskMetadata and ScheduledTask.
+/// </summary>
 public class ScheduledTaskMetaDataToScheduledTaskMapper : IMapper<GuidIdWrapper<ScheduledTaskMetadata>, ScheduledTask>, IMapper<ScheduledTask, GuidIdWrapper<ScheduledTaskMetadata>>
 {
     // TODO: this is broken
+    /// <summary>
+    /// Maps the specified source object into the destination object.
+    /// </summary>
+    /// <param name="source">The source object to map from.</param>
+    /// <param name="destination">The destination object to map to.</param>
     public void Map(GuidIdWrapper<ScheduledTaskMetadata> source, ScheduledTask destination)
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -25,6 +33,11 @@ public class ScheduledTaskMetaDataToScheduledTaskMapper : IMapper<GuidIdWrapper<
         destination.TriggerType = source.Value.TriggerType;
     }
 
+    /// <summary>
+    /// Maps the specified source object into the destination object.
+    /// </summary>
+    /// <param name="source">The source object to map from.</param>
+    /// <param name="destination">The destination object to map to.</param>
     public void Map(ScheduledTask source, GuidIdWrapper<ScheduledTaskMetadata> destination)
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -41,4 +54,10 @@ public class ScheduledTaskMetaDataToScheduledTaskMapper : IMapper<GuidIdWrapper<
     }
 }
 
+/// <summary>
+/// Wraps an value with a guid identifier
+/// </summary>
+/// <typeparam name="TValue">type to wrap</typeparam>
+/// <param name="Id">the id</param>
+/// <param name="Value">the value</param>
 public record GuidIdWrapper<TValue>(Guid Id, TValue Value);

@@ -1,6 +1,5 @@
 namespace WebScheduler.Client.Http.Constants;
-using WebScheduler.Api.Constants;
-
+#pragma warning disable CS1591 // Missing XML comment for publicly visible type or member
 public static class ScheduledTasksControllerRoute
 {
     public const string DeleteScheduledTask = ControllerName.ScheduledTasks + nameof(DeleteScheduledTask);
@@ -14,3 +13,4 @@ public static class ScheduledTasksControllerRoute
     public const string PostScheduledTask = ControllerName.ScheduledTasks + nameof(PostScheduledTask);
     public const string PutScheduledTask = ControllerName.ScheduledTasks + nameof(PutScheduledTask);
 }
+#pragma warning restore CS1591 // Missing XML comment for publicly visible type or member

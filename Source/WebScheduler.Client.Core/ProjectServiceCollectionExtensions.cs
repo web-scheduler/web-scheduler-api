@@ -24,6 +24,13 @@ using Orleans.Configuration;
 /// </remarks>
 public static class ProjectServiceCollectionExtensions
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="services"></param>
+    /// <param name="configuration"></param>
+    /// <param name="addClusterClient"></param>
+    /// <returns></returns>
     public static IServiceCollection AddWebScheduler(this IServiceCollection services, IConfiguration configuration, bool addClusterClient = false)
     {
         services

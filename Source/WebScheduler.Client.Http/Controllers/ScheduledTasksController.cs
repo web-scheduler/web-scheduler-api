@@ -1,5 +1,4 @@
 namespace WebScheduler.Client.Http.Controllers;
-using WebScheduler.Api.Constants;
 using Boxed.AspNetCore;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -11,6 +10,9 @@ using WebScheduler.Client.Http.Constants;
 using WebScheduler.Client.Http.Commands.ScheduledTask;
 using Microsoft.AspNetCore.Http;
 
+/// <summary>
+/// Scheduled task controller.
+/// </summary>
 [Route("[controller]")]
 [ApiController]
 [ApiVersion(ApiVersionName.V1)]

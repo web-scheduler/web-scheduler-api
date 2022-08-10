@@ -3,10 +3,15 @@ namespace WebScheduler.Api;
 using Serilog;
 using WebScheduler.Api.Options;
 
-#pragma warning disable RCS1102 // Make class static.
+/// <summary>
+/// TODO
+/// </summary>
 public class Program
-#pragma warning restore RCS1102 // Make class static.
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="args"></param>
     public static async Task<int> Main(string[] args)
     {
         IHost? host = null;
@@ -29,6 +34,10 @@ public class Program
         }
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="args"></param>
     public static IHostBuilder CreateHostBuilder(string[] args) =>
         new HostBuilder()
             .UseContentRoot(Directory.GetCurrentDirectory())

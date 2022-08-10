@@ -10,7 +10,14 @@ using Microsoft.Extensions.Options;
 /// </summary>
 public class ConfigureCorsOptions : IConfigureOptions<CorsOptions>
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public ConfigureCorsOptions() { }
+    /// <summary>
+    /// Invoked to configure a  instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(CorsOptions options) =>
         // Create named CORS policies here which you can consume using application.UseCors("PolicyName")
         // or a [EnableCors("PolicyName")] attribute on your controller or action.

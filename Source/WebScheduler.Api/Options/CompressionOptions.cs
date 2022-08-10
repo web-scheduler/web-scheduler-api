@@ -7,6 +7,9 @@ using System.ComponentModel.DataAnnotations;
 /// </summary>
 public class CompressionOptions
 {
+    /// <summary>
+    /// TODO
+    /// </summary>
     public CompressionOptions() => this.MimeTypes = new List<string>();
 
     /// <summary>

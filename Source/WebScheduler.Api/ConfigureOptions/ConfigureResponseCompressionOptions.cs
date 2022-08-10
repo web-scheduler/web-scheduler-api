@@ -16,9 +16,17 @@ public class ConfigureResponseCompressionOptions :
 {
     private readonly CompressionOptions compressionOptions;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="compressionOptions"></param>
     public ConfigureResponseCompressionOptions(CompressionOptions compressionOptions) =>
         this.compressionOptions = compressionOptions;
 
+    /// <summary>
+    /// Invoked to configure a  instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(ResponseCompressionOptions options)
     {
         // Add additional MIME types (other than the built in defaults) to enable GZIP compression for.
@@ -29,7 +37,15 @@ public class ConfigureResponseCompressionOptions :
         options.Providers.Add<GzipCompressionProvider>();
     }
 
+    /// <summary>
+    /// Invoked to configure a  instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(BrotliCompressionProviderOptions options) => options.Level = CompressionLevel.Optimal;
 
+    /// <summary>
+    /// Invoked to configure a  instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(GzipCompressionProviderOptions options) => options.Level = CompressionLevel.Optimal;
 }
