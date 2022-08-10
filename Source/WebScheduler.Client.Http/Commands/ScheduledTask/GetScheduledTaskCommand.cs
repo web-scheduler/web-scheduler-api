@@ -8,12 +8,21 @@ using WebScheduler.Abstractions.Grains.Scheduler;
 using Microsoft.AspNetCore.Http;
 using WebScheduler.Client.Core.Repositories;
 
+/// <summary>
+/// TODO
+/// </summary>
 public class GetScheduledTaskCommand
 {
     private readonly IActionContextAccessor actionContextAccessor;
     private readonly IScheduledTaskRepository scheduledTaskRepository;
     private readonly IMapper<Core.Models.ScheduledTask, Models.ViewModels.ScheduledTask> scheduledTaskMapper;
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="actionContextAccessor"></param>
+    /// <param name="scheduledTaskRepository"></param>
+    /// <param name="scheduledTaskMapper"></param>
     public GetScheduledTaskCommand(
         IActionContextAccessor actionContextAccessor,
         IScheduledTaskRepository scheduledTaskRepository,
@@ -24,6 +33,11 @@ public class GetScheduledTaskCommand
         this.scheduledTaskMapper = scheduledTaskMapper;
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="scheduledTaskId"></param>
+    /// <param name="cancellationToken"></param>
     public async Task<IActionResult> ExecuteAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {
         try

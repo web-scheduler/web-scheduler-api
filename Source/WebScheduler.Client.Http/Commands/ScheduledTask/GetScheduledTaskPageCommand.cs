@@ -6,6 +6,9 @@ using WebScheduler.Client.Http.Models.ViewModels;
 using Microsoft.AspNetCore.Http;
 using WebScheduler.Client.Core.Repositories;
 
+/// <summary>
+/// TODO
+/// </summary>
 public class GetScheduledTaskPageCommand
 {
     private const int DefaultPageSize = 10;
@@ -13,6 +16,12 @@ public class GetScheduledTaskPageCommand
     private readonly IMapper<Core.Models.ScheduledTask, ScheduledTask> scheduledTaskMapper;
     private readonly IHttpContextAccessor httpContextAccessor;
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="scheduledTaskRepository"></param>
+    /// <param name="scheduledTaskMapper"></param>
+    /// <param name="httpContextAccessor"></param>
     public GetScheduledTaskPageCommand(
         IScheduledTaskRepository scheduledTaskRepository,
         IMapper<Core.Models.ScheduledTask, ScheduledTask> scheduledTaskMapper,
@@ -23,6 +32,11 @@ public class GetScheduledTaskPageCommand
         this.httpContextAccessor = httpContextAccessor;
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="pageOptions"></param>
+    /// <param name="cancellationToken"></param>
     public async Task<IActionResult> ExecuteAsync(PageOptions pageOptions, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(pageOptions);

@@ -413,14 +413,6 @@ dotnet_naming_rule.parameters_rule.style                = camel_case_style
 dotnet_naming_rule.parameters_rule.severity             = warning
 
 ##########################################
-# Code Style
-##########################################
-
-# CS1591: Missing XML comment for publicly visible type or member.
-# Justification: We only need comments for members that will be exposed publicly in Swagger.
-dotnet_diagnostic.CS1591.severity = none
-
-##########################################
 # License
 ##########################################
 # The following applies as to the .editorconfig file ONLY, and is

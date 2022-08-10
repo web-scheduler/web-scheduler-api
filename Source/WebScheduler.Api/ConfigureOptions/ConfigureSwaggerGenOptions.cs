@@ -11,13 +11,24 @@ using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
+/// <summary>
+/// TODO
+/// </summary>
 public class ConfigureSwaggerGenOptions : IConfigureOptions<SwaggerGenOptions>
 {
     private readonly IApiVersionDescriptionProvider provider;
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="provider"></param>
     public ConfigureSwaggerGenOptions(IApiVersionDescriptionProvider provider) =>
         this.provider = provider;
 
+    /// <summary>
+    /// Invoked to configure a instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(SwaggerGenOptions options)
     {
         options.DescribeAllParametersInCamelCase();

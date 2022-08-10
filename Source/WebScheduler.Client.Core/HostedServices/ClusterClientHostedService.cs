@@ -10,11 +10,20 @@ using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
 
+/// <summary>
+/// Manages the <see cref="IClusterClient"/>.
+/// </summary>
 public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDisposable
 {
     private readonly ILogger<ClusterClientHostedService> logger;
     private readonly WebSchedulerClientConfigurationOptions options;
 
+    /// <summary>
+    /// Ctor
+    /// </summary>
+    /// <param name="loggerFactory">logger factory</param>
+    /// <param name="options">options</param>
+    /// <param name="clientBuilder">client builder</param>
     public ClusterClientHostedService(ILoggerFactory loggerFactory, IOptions<WebSchedulerClientConfigurationOptions> options, IClientBuilder clientBuilder)
     {
         this.logger = loggerFactory.CreateLogger<ClusterClientHostedService>();
@@ -27,7 +36,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
                 _ = services.AddSingleton(loggerFactory);
                 _ = services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             })
-            //.AddClusterConnectionLostHandler(async (object sender, EventArgs e) => await this.ConnectionHandler().ConfigureAwait(true))
+            // .AddClusterConnectionLostHandler(async (object sender, EventArgs e) => await this.ConnectionHandler().ConfigureAwait(true))
             .UseAdoNetClustering(options =>
             {
                 options.Invariant = this.options.Storage.Invariant;
@@ -43,7 +52,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
                    .AddApplicationPart(typeof(Abstractions.Grains.Scheduler.IScheduledTaskGrain).Assembly)
                    .WithReferences())
            .AddSimpleMessageStreamProvider(StreamProviderName.ScheduledTasks)
-            //.UseTls(
+            // .UseTls(
             //    options =>
             //    {
             //        // TODO: Configure a certificate.
@@ -55,8 +64,12 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
             .Build();
     }
 
+    /// <summary>
+    /// The client.
+    /// </summary>
     public IClusterClient Client { get; }
 
+    /// <inheritdoc/>
     public Task StartAsync(CancellationToken cancellationToken)
     {
         var attempt = 0;
@@ -91,26 +104,28 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
         });
     }
 
+    /// <inheritdoc/>
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         this.logger.ShuttingDownSiloGracefully();
-
+        await this.Client.Close().ConfigureAwait(true);
         var cancellation = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         _ = cancellationToken.Register(() => cancellation.TrySetCanceled(cancellationToken));
         _ = await Task.WhenAny(this.Client.Close(), cancellation.Task).ConfigureAwait(true);
     }
 
+    /// <inheritdoc/>
     public void Dispose()
     {
         GC.SuppressFinalize(this);
         this.Client?.Dispose();
     }
 
-#pragma warning disable VSTHRD110 // Observe result of async calls
+    /// <inheritdoc/>
     public ValueTask DisposeAsync()
     {
         GC.SuppressFinalize(this);
-        return this.Client?.DisposeAsync() ?? default;
+        return this.Client?.DisposeAsync() ??
+            default;
     }
-#pragma warning restore VSTHRD110 // Observe result of async calls
 }

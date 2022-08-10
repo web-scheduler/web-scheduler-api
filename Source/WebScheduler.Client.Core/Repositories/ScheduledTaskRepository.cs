@@ -9,11 +9,21 @@ using WebScheduler.Abstractions.Grains.Scheduler;
 using WebScheduler.Client.Core.Models;
 using WebScheduler.Client.Core.Options;
 
+/// <summary>
+/// Repository for <see cref="IScheduledTaskGrain"/>.
+/// </summary>
 public class ScheduledTaskRepository : IScheduledTaskRepository
 {
     private readonly IClusterClient clusterClient;
     private readonly StorageOptions storageOptions;
     private readonly ILogger<ScheduledTaskRepository> logger;
+
+    /// <summary>
+    /// ctor
+    /// </summary>
+    /// <param name="clusterClient">cluster client</param>
+    /// <param name="storageOptions">storage options</param>
+    /// <param name="logger">logger</param>
     public ScheduledTaskRepository(IClusterClient clusterClient, StorageOptions storageOptions, ILogger<ScheduledTaskRepository> logger)
     {
         this.clusterClient = clusterClient;
@@ -21,6 +31,12 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         this.logger = logger;
     }
 
+    /// <summary>
+    /// Adds a new scheduled task.
+    /// </summary>
+    /// <param name="scheduledTask">task to add</param>
+    /// <param name="cancellationToken">ct</param>
+    /// <returns>The newly created scheduled task.</returns>
     public async Task<ScheduledTask> AddAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(scheduledTask);
@@ -43,8 +59,19 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         return scheduledTask;
     }
 
+    /// <summary>
+    /// Deletes a scheduled task
+    /// </summary>
+    /// <param name="scheduledTask">scheduled task</param>
+    /// <param name="cancellationToken">ct</param>
     public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken) => await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync().ConfigureAwait(true);
 
+    /// <summary>
+    /// Gets a scheduled task
+    /// </summary>
+    /// <param name="scheduledTaskId">the id</param>
+    /// <param name="cancellationToken">ct</param>
+    /// <returns>the scheduled task</returns>
     public async Task<ScheduledTask> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {
         var result = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(true);
@@ -64,6 +91,13 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         };
     }
 
+    /// <summary>
+    /// Gets a list of scheduled task by tenant id.
+    /// </summary>
+    /// <param name="offset">offset of tasks</param>
+    /// <param name="pageSize">page size</param>
+    /// <param name="cancellationToken">ct</param>
+    /// <returns>a list of scheduled task</returns>
     public async Task<List<ScheduledTask>> GetScheduledTasksAsync(
         int offset,
         int pageSize,
@@ -128,6 +162,11 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         return buffer;
     }
 
+    /// <summary>
+    /// gets count of all scheduled task for a tenant id
+    /// </summary>
+    /// <param name="cancellationToken">ct</param>
+    /// <returns>the count</returns>
     public async Task<int> GetTotalCountAsync(CancellationToken cancellationToken)
     {
         // TODO: Figure out connection pooling
@@ -151,6 +190,12 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         return 0;
     }
 
+    /// <summary>
+    /// Updates a scheduled task
+    /// </summary>
+    /// <param name="scheduledTask">scheduled task</param>
+    /// <param name="cancellationToken">ct</param>
+    /// <returns>updated scheduled task</returns>
     public async Task<ScheduledTask> UpdateAsync(ScheduledTask scheduledTask, CancellationToken cancellationToken)
     {
         ArgumentNullException.ThrowIfNull(scheduledTask);

@@ -28,9 +28,24 @@ public class ScheduledTask
     /// </summary>
     public bool IsEnabled { get; set; }
 
+    /// <summary>
+    /// When the scheduled task was last run.
+    /// </summary>
     public DateTime? LastRunAt { get; set; }
+
+    /// <summary>
+    /// When the scheduled task will run next.
+    /// </summary>
     public DateTime? NextRunAt { get; set; }
+
+    /// <summary>
+    /// When the scheduled task was last modified.
+    /// </summary>
     public DateTime ModifiedAt { get; set; }
+
+    /// <summary>
+    /// When the scheduled task was created.
+    /// </summary>
     public DateTime CreatedAt { get; set; }
 
     /// <summary>

@@ -16,12 +16,20 @@ public class ConfigureStaticFileOptions : IConfigureOptions<StaticFileOptions>
 {
     private readonly CacheProfile? cacheProfile;
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="cacheProfileOptions"></param>
     public ConfigureStaticFileOptions(CacheProfileOptions cacheProfileOptions) =>
         this.cacheProfile = cacheProfileOptions
             .Where(x => string.Equals(x.Key, CacheProfileName.StaticFiles, StringComparison.Ordinal))
             .Select(x => x.Value)
             .SingleOrDefault();
 
+    /// <summary>
+    /// Invoked to configure a  instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(StaticFileOptions options) =>
         options.OnPrepareResponse = this.OnPrepareResponse;
 

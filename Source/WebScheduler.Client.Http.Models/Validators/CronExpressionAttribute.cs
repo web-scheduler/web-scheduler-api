@@ -9,8 +9,15 @@ using Cronos;
 [AttributeUsage(AttributeTargets.Property, AllowMultiple = false)]
 public class CronExpressionAttribute : ValidationAttribute
 {
+    /// <summary>
+    /// ctor
+    /// </summary>
+    /// <param name="cronFormat"></param>
     public CronExpressionAttribute(CronFormat cronFormat) => this.CronFormat = cronFormat;
 
+    /// <summary>
+    /// The cron format.
+    /// </summary>
     public CronFormat CronFormat { get; }
 
     /// <inheritdoc/>

@@ -22,6 +22,10 @@ public class ConfigureRequestLoggingOptions : IConfigureOptions<RequestLoggingOp
 
     private const string HealthCheckEndpointDisplayName = "Health checks";
 
+    /// <summary>
+    /// Invoked to configure a  instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(RequestLoggingOptions options)
     {
         options.EnrichDiagnosticContext = EnrichDiagnosticContext;

@@ -3,13 +3,25 @@ using Boxed.Mapping;
 using WebScheduler.Abstractions.Services;
 using WebScheduler.Client.Http.Models.ViewModels;
 
+/// <summary>
+/// 
+/// </summary>
 public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTask, SaveScheduledTask>, IMapper<SaveScheduledTask, Models.ScheduledTask>
 {
     private readonly IClockService clockService;
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="clockService"></param>
     public ScheduledTaskToSaveScheduledTaskMapper(IClockService clockService) =>
         this.clockService = clockService;
 
+    /// <summary>
+    /// Maps the specified source object into the destination object.
+    /// </summary>
+    /// <param name="source">The source object to map from.</param>
+    /// <param name="destination">The destination object to map to.</param>
     public void Map(Models.ScheduledTask source, SaveScheduledTask destination)
     {
         ArgumentNullException.ThrowIfNull(source);
@@ -24,6 +36,11 @@ public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTa
         destination.ScheduledTaskId = source.ScheduledTaskId;
     }
 
+    /// <summary>
+    /// Maps the specified source object into the destination object.
+    /// </summary>
+    /// <param name="source">The source object to map from.</param>
+    /// <param name="destination">The destination object to map to.</param>
     public void Map(SaveScheduledTask source, Models.ScheduledTask destination)
     {
         ArgumentNullException.ThrowIfNull(source);

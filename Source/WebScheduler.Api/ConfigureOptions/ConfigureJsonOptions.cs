@@ -7,13 +7,24 @@ using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc;
 using WebScheduler.Api.ViewModels;
 
+/// <summary>
+/// Configures json
+/// </summary>
 public class ConfigureJsonOptions : IConfigureOptions<JsonOptions>
 {
     private readonly IWebHostEnvironment webHostEnvironment;
 
+    /// <summary>
+    /// todo
+    /// </summary>
+    /// <param name="webHostEnvironment"></param>
     public ConfigureJsonOptions(IWebHostEnvironment webHostEnvironment) =>
         this.webHostEnvironment = webHostEnvironment;
 
+    /// <summary>
+    /// Invoked to configure an instance.
+    /// </summary>
+    /// <param name="options">The options instance to configure.</param>
     public void Configure(JsonOptions options)
     {
         var jsonSerializerOptions = options.JsonSerializerOptions;

@@ -9,6 +9,9 @@ using Microsoft.AspNetCore.Http;
 using WebScheduler.Client.Core.Repositories;
 using WebScheduler.Client.Http.Constants;
 
+/// <summary>
+/// 
+/// </summary>
 public class PostScheduledTaskCommand
 {
     private readonly IScheduledTaskRepository scheduledTaskRepository;
@@ -17,6 +20,13 @@ public class PostScheduledTaskCommand
     private readonly ILogger<PostScheduledTaskCommand> logger;
     private static readonly Random RandomNumber = new();
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="scheduledTaskRepository"></param>
+    /// <param name="scheduledTaskToScheduledTaskMapper"></param>
+    /// <param name="saveScheduledTaskToScheduledTaskMapper"></param>
+    /// <param name="logger"></param>
     public PostScheduledTaskCommand(
         IScheduledTaskRepository scheduledTaskRepository,
         IMapper<Client.Core.Models.ScheduledTask, ScheduledTask> scheduledTaskToScheduledTaskMapper,
@@ -29,6 +39,12 @@ public class PostScheduledTaskCommand
         this.logger = logger;
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="saveScheduledTask"></param>
+    /// <param name="cancellationToken"></param>
+    /// <returns></returns>
     public async Task<IActionResult> ExecuteAsync(SaveScheduledTask saveScheduledTask, CancellationToken cancellationToken)
     {
         var scheduledTask = this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask);

@@ -4,12 +4,22 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ActionConstraints;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 
+/// <summary>
+/// TODO
+/// </summary>
 public class EnvironmentController : Controller
 {
     private readonly IActionDescriptorCollectionProvider actionDescriptorCollectionProvider;
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="actionDescriptorCollectionProvider"></param>
     public EnvironmentController(IActionDescriptorCollectionProvider actionDescriptorCollectionProvider) => this.actionDescriptorCollectionProvider = actionDescriptorCollectionProvider;
 
+    /// <summary>
+    /// TODO
+    /// </summary>
     [HttpGet("routes", Name = "ApiEnvironmentGetAllRoutes")]
     public IActionResult GetAllRoutes()
     {

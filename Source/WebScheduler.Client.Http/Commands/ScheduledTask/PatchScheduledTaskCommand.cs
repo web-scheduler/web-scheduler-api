@@ -8,6 +8,9 @@ using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
 using WebScheduler.Client.Core.Repositories;
 using WebScheduler.Client.Http.Models.ViewModels;
 
+/// <summary>
+/// TODO
+/// </summary>
 public class PatchScheduledTaskCommand
 {
     private readonly IActionContextAccessor actionContextAccessor;
@@ -17,6 +20,15 @@ public class PatchScheduledTaskCommand
     private readonly IMapper<Core.Models.ScheduledTask, SaveScheduledTask> scheduledTaskToSaveScheduledTaskMapper;
     private readonly IMapper<SaveScheduledTask, Core.Models.ScheduledTask> saveScheduledTaskToScheduledTaskMapper;
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="actionContextAccessor"></param>
+    /// <param name="objectModelValidator"></param>
+    /// <param name="scheduledTaskRepository"></param>
+    /// <param name="scheduledTaskToScheduledTaskMapper"></param>
+    /// <param name="scheduledTaskToSaveScheduledTaskMapper"></param>
+    /// <param name="saveScheduledTaskToScheduledTaskMapper"></param>
     public PatchScheduledTaskCommand(
         IActionContextAccessor actionContextAccessor,
         IObjectModelValidator objectModelValidator,
@@ -33,6 +45,12 @@ public class PatchScheduledTaskCommand
         this.saveScheduledTaskToScheduledTaskMapper = saveScheduledTaskToScheduledTaskMapper;
     }
 
+    /// <summary>
+    /// TODO
+    /// </summary>
+    /// <param name="scheduledTaskId"></param>
+    /// <param name="patch"></param>
+    /// <param name="cancellationToken"></param>
     public async Task<IActionResult> ExecuteAsync(
         Guid scheduledTaskId,
         JsonPatchDocument<SaveScheduledTask> patch,
