@@ -94,7 +94,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         this.logger.ShuttingDownSiloGracefully();
-
+        await this.Client.Close();
         var cancellation = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         _ = cancellationToken.Register(() => cancellation.TrySetCanceled(cancellationToken));
         _ = await Task.WhenAny(this.Client.Close(), cancellation.Task).ConfigureAwait(true);
@@ -106,11 +106,10 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
         this.Client?.Dispose();
     }
 
-#pragma warning disable VSTHRD110 // Observe result of async calls
     public ValueTask DisposeAsync()
     {
         GC.SuppressFinalize(this);
-        return this.Client?.DisposeAsync() ?? default;
+        return this.Client?.DisposeAsync() ??
+            default;
     }
-#pragma warning restore VSTHRD110 // Observe result of async calls
 }

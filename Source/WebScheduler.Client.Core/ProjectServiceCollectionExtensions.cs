@@ -24,13 +24,21 @@ using Orleans.Configuration;
 /// </remarks>
 public static class ProjectServiceCollectionExtensions
 {
-    public static IServiceCollection AddWebScheduler(this IServiceCollection services, IConfiguration configuration) =>
-    services
+    public static IServiceCollection AddWebScheduler(this IServiceCollection services, IConfiguration configuration, bool addClusterClient = false)
+    {
+        services
         .AddCustomOptions(configuration)
         .AddProjectRepositories()
         .AddProjectServices()
-        .AddHostedServices()
         .AddProjectMappers();
+
+        if (addClusterClient)
+        {
+            services.AddClusterClient();
+        }
+
+        return services;
+    }
 
     internal static IServiceCollection AddProjectMappers(this IServiceCollection services) =>
         services
@@ -48,7 +56,7 @@ public static class ProjectServiceCollectionExtensions
         services
             .AddSingleton<IClockService, ClockService>();
 
-    internal static IServiceCollection AddHostedServices(this IServiceCollection services) =>
+    internal static IServiceCollection AddClusterClient(this IServiceCollection services) =>
      services
             .AddTransient<IClientBuilder, ClientBuilder>()
             .AddSingleton<ClusterClientHostedService>()
