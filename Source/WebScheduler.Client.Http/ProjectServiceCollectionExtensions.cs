@@ -26,7 +26,7 @@ public static class ProjectServiceCollectionExtensions
     public static IServiceCollection AddWebSchedulerHttpClient(this IServiceCollection services, Microsoft.Extensions.Configuration.IConfiguration configuration) =>
         services
             .AddWebScheduler(configuration)
-            .AddProjectCommands();
+            .AddProjectCommands(addClusterClient: true);
 
     internal static IServiceCollection AddProjectCommands(this IServiceCollection services) =>
         services
