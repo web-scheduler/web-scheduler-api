@@ -38,7 +38,7 @@
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" PrivateAssets="all" Version="3.6.4">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.Orleans.Connections.Security" Version="3.6.3" />
+    <PackageReference Include="Microsoft.Orleans.Connections.Security" Version="3.6.4" />
     <PackageReference Include="MySql.Data" Version="8.0.30" />
     <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.3.44" />
     <PackageReference Update="MinVer" Version="4.1.0" />
