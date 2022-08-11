@@ -112,7 +112,7 @@ public class Startup
         .Services
         .AddCustomOptions(this.configuration)
         .AddCustomConfigureOptions()
-        .AddWebSchedulerHttpClient(this.configuration);
+        .AddWebSchedulerHttpClient(this.configuration, true); // Since we deploy the API host outside of the silo, we need an IClusterClient.
     }
 
     /// <summary>
