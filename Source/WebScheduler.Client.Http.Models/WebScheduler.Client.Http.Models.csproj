@@ -28,7 +28,7 @@
   <ItemGroup Label="Package References">
     <PackageReference Include="Cronos" Version="0.7.1" />
     <PackageReference Update="Microsoft.VisualStudio.Threading.Analyzers" Version="17.3.44" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.42" />
+    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.43" />
   </ItemGroup>
   <ItemGroup Label="Project References" Condition="'$(Configuration)' == 'Debug'">
     <!--<ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />-->
