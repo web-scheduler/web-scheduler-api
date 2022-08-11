@@ -21,11 +21,12 @@ public static class ProjectServiceCollectionExtensions
     /// Adds WebScheduler HttpClient to an <see cref="IServiceCollection"/>.
     /// </summary>
     /// <param name="services">The <see cref="IServiceCollection"/> to add the service to.</param>
-    /// <param name="configuration"></param>
+    /// <param name="configuration">the configuration</param>
+    /// <param name="addClusterClient">if the cluster client should be registered.</param>
     /// <returns>A reference to this instance after the operation has completed.</returns>
-    public static IServiceCollection AddWebSchedulerHttpClient(this IServiceCollection services, Microsoft.Extensions.Configuration.IConfiguration configuration) =>
+    public static IServiceCollection AddWebSchedulerHttpClient(this IServiceCollection services, Microsoft.Extensions.Configuration.IConfiguration configuration, bool addClusterClient = false) =>
         services
-            .AddWebScheduler(configuration, addClusterClient: true)
+            .AddWebScheduler(configuration, addClusterClient)
             .AddProjectCommands();
 
     internal static IServiceCollection AddProjectCommands(this IServiceCollection services) =>
