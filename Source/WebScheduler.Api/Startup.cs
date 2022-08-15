@@ -92,7 +92,7 @@ public class Startup
                 };
                 options.Events = new JwtBearerEvents
                 {
-                    OnAuthenticationFailed = async (_) => await Task.FromResult(string.Empty).ConfigureAwait(true)
+                    OnAuthenticationFailed = async (_) => await Task.FromResult(string.Empty)
                 };
             });
 
@@ -129,8 +129,8 @@ public class Startup
                 x => x.UseServerTiming())
             .UseForwardedHeaders()
             .UseAuthentication()
-                    .UseRouting()
-                    .UseCors(CorsPolicyName.AllowAny)
+            .UseRouting()
+            .UseCors(CorsPolicyName.AllowAny)
 
             .UseAuthorization()
             .UseWebScheduler()
@@ -157,9 +157,5 @@ public class Startup
             .UseIf(
             this.webHostEnvironment.IsDevelopment(),
             x => x.UseSwaggerUI());
-
-        using var scope = app.ApplicationServices.CreateScope();
-        var db = scope.ServiceProvider.GetRequiredService<DataProtectionKeysDbContext>();
-        db.Database.Migrate();
     }
 }

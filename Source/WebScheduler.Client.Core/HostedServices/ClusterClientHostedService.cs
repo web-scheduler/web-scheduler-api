@@ -36,7 +36,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
                 _ = services.AddSingleton(loggerFactory);
                 _ = services.AddSingleton(typeof(ILogger<>), typeof(Logger<>));
             })
-            // .AddClusterConnectionLostHandler(async (object sender, EventArgs e) => await this.ConnectionHandler().ConfigureAwait(true))
+            // .AddClusterConnectionLostHandler(async (object sender, EventArgs e) => await this.ConnectionHandler().)
             .UseAdoNetClustering(options =>
             {
                 options.Invariant = this.options.Storage.Invariant;
@@ -88,7 +88,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
 
                 try
                 {
-                    await Task.Delay(delay, cancellationToken).ConfigureAwait(true);
+                    await Task.Delay(delay, cancellationToken);
                 }
                 catch (OperationCanceledException)
                 {
@@ -108,10 +108,10 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
     public async Task StopAsync(CancellationToken cancellationToken)
     {
         this.logger.ShuttingDownSiloGracefully();
-        await this.Client.Close().ConfigureAwait(true);
+        await this.Client.Close();
         var cancellation = new TaskCompletionSource<bool>(TaskCreationOptions.RunContinuationsAsynchronously);
         _ = cancellationToken.Register(() => cancellation.TrySetCanceled(cancellationToken));
-        _ = await Task.WhenAny(this.Client.Close(), cancellation.Task).ConfigureAwait(true);
+        _ = await Task.WhenAny(this.Client.Close(), cancellation.Task);
     }
 
     /// <inheritdoc/>

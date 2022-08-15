@@ -45,7 +45,7 @@ public class PutScheduledTaskCommand
         // Append a seconds to stagger the task times
         scheduledTask.CronExpression = $"{RandomNumber.Next(0, 59)} {scheduledTask.CronExpression}";
 
-        scheduledTask = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken).ConfigureAwait(true);
+        scheduledTask = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken);
         var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
 
         return new OkObjectResult(scheduledTaskViewModel);
