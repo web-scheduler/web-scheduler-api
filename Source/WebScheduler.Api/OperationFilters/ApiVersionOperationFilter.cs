@@ -31,12 +31,9 @@ public class ApiVersionOperationFilter : IOperationFilter
         foreach (var parameter in operation.Parameters)
         {
             var description = apiDescription.ParameterDescriptions
-                .First(x => string.Equals(x.Name, parameter.Name, StringComparison.OrdinalIgnoreCase));
+              .First(x => string.Equals(x.Name, parameter.Name, StringComparison.OrdinalIgnoreCase));
 
-            if (parameter.Description is null)
-            {
-                parameter.Description = description.ModelMetadata?.Description;
-            }
+            parameter.Description ??= description.ModelMetadata?.Description;
 
             if (parameter.Schema.Default is null && description.DefaultValue is not null)
             {

@@ -26,7 +26,7 @@ public class DeleteScheduledTaskCommand
     {
         try
         {
-            await this.scheduledTaskRepository.DeleteAsync(scheduledTaskId, cancellationToken).ConfigureAwait(true);
+            await this.scheduledTaskRepository.DeleteAsync(scheduledTaskId, cancellationToken);
 
             return new NoContentResult();
         }

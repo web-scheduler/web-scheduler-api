@@ -21,7 +21,7 @@ public class Program
             host = CreateHostBuilder(args).Build();
 
             host.LogApplicationStarted();
-            await host.RunAsync().ConfigureAwait(true);
+            await host.RunAsync();
             host.LogApplicationStopped();
 
             return 0;
