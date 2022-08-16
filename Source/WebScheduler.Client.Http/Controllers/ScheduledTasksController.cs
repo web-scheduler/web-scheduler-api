@@ -78,6 +78,11 @@ public class ScheduledTasksController : ControllerBase
         "A ScheduledTask with the specified unique identifier was not found.",
         typeof(ProblemDetails),
         ContentType.ProblemJson)]
+    [SwaggerResponse(
+        StatusCodes.Status500InternalServerError,
+        "Internal Error has occurred.",
+        typeof(ProblemDetails),
+        ContentType.ProblemJson)]
     public Task<IActionResult> DeleteAsync(
         [FromServices] DeleteScheduledTaskCommand command,
         Guid scheduledTaskId,
@@ -110,6 +115,11 @@ public class ScheduledTasksController : ControllerBase
     [SwaggerResponse(
         StatusCodes.Status406NotAcceptable,
         "The MIME type in the Accept HTTP header is not acceptable.",
+        typeof(ProblemDetails),
+        ContentType.ProblemJson)]
+    [SwaggerResponse(
+        StatusCodes.Status500InternalServerError,
+        "Internal Error has occurred.",
         typeof(ProblemDetails),
         ContentType.ProblemJson)]
     public Task<IActionResult> GetAsync(
@@ -147,6 +157,11 @@ public class ScheduledTasksController : ControllerBase
     [SwaggerResponse(
         StatusCodes.Status406NotAcceptable,
         "The MIME type in the Accept HTTP header is not acceptable.",
+        typeof(ProblemDetails),
+        ContentType.ProblemJson)]
+    [SwaggerResponse(
+        StatusCodes.Status500InternalServerError,
+        "Internal Error has occurred.",
         typeof(ProblemDetails),
         ContentType.ProblemJson)]
     public Task<IActionResult> GetPageAsync(
@@ -190,6 +205,11 @@ public class ScheduledTasksController : ControllerBase
         "The MIME type in the Content-Type HTTP header is unsupported.",
         typeof(ProblemDetails),
         ContentType.ProblemJson)]
+    [SwaggerResponse(
+        StatusCodes.Status500InternalServerError,
+        "Internal Error has occurred.",
+        typeof(ProblemDetails),
+        ContentType.ProblemJson)]
     public Task<IActionResult> PatchAsync(
         [FromServices] PatchScheduledTaskCommand command,
         Guid scheduledTaskId,
@@ -231,6 +251,11 @@ public class ScheduledTasksController : ControllerBase
         "The ScheduledTask with the specified id already exists.",
         typeof(ProblemDetails),
         ContentType.ProblemJson)]
+    [SwaggerResponse(
+        StatusCodes.Status500InternalServerError,
+        "Internal Error has occurred.",
+        typeof(ProblemDetails),
+        ContentType.ProblemJson)]
     public Task<IActionResult> PostAsync(
         [FromServices] PostScheduledTaskCommand command,
         [FromBody] SaveScheduledTask scheduledTask,
@@ -270,6 +295,11 @@ public class ScheduledTasksController : ControllerBase
     [SwaggerResponse(
         StatusCodes.Status415UnsupportedMediaType,
         "The MIME type in the Content-Type HTTP header is unsupported.",
+        typeof(ProblemDetails),
+        ContentType.ProblemJson)]
+    [SwaggerResponse(
+        StatusCodes.Status500InternalServerError,
+        "Internal Error has occurred.",
         typeof(ProblemDetails),
         ContentType.ProblemJson)]
     public Task<IActionResult> PutAsync(

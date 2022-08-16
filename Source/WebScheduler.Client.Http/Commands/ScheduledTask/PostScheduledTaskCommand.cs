@@ -44,7 +44,6 @@ public class PostScheduledTaskCommand
     /// </summary>
     /// <param name="saveScheduledTask"></param>
     /// <param name="cancellationToken"></param>
-
     public async Task<IActionResult> ExecuteAsync(SaveScheduledTask saveScheduledTask, CancellationToken cancellationToken)
     {
         try
