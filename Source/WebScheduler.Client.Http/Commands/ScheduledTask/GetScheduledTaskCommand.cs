@@ -7,12 +7,14 @@ using Microsoft.AspNetCore.Mvc.Infrastructure;
 using WebScheduler.Abstractions.Grains.Scheduler;
 using Microsoft.AspNetCore.Http;
 using WebScheduler.Client.Core.Repositories;
+using Microsoft.Extensions.Logging;
 
 /// <summary>
 /// TODO
 /// </summary>
 public class GetScheduledTaskCommand
 {
+    private readonly ILogger<GetScheduledTaskCommand> logger;
     private readonly IActionContextAccessor actionContextAccessor;
     private readonly IScheduledTaskRepository scheduledTaskRepository;
     private readonly IMapper<Core.Models.ScheduledTask, Models.ViewModels.ScheduledTask> scheduledTaskMapper;
@@ -20,14 +22,17 @@ public class GetScheduledTaskCommand
     /// <summary>
     /// TODO
     /// </summary>
+    /// <param name="logger"></param>
     /// <param name="actionContextAccessor"></param>
     /// <param name="scheduledTaskRepository"></param>
     /// <param name="scheduledTaskMapper"></param>
     public GetScheduledTaskCommand(
+        ILogger<GetScheduledTaskCommand> logger,
         IActionContextAccessor actionContextAccessor,
         IScheduledTaskRepository scheduledTaskRepository,
         IMapper<Core.Models.ScheduledTask, Models.ViewModels.ScheduledTask> scheduledTaskMapper)
     {
+        this.logger = logger;
         this.actionContextAccessor = actionContextAccessor;
         this.scheduledTaskRepository = scheduledTaskRepository;
         this.scheduledTaskMapper = scheduledTaskMapper;
@@ -58,9 +63,18 @@ public class GetScheduledTaskCommand
 
             return new OkObjectResult(scheduledTaskViewModel);
         }
+        catch (UnauthorizedAccessException)
+        {
+            return new UnauthorizedResult();
+        }
         catch (ScheduledTaskNotFoundException)
         {
             return new NotFoundResult();
+        }
+        catch (Exception ex)
+        {
+            this.logger.Exception(ex, ex.Message);
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
     }
 }

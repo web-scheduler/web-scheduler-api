@@ -6,8 +6,8 @@ using Orleans;
 using Orleans.Runtime;
 using WebScheduler.Abstractions.Constants;
 using WebScheduler.Abstractions.Grains.Scheduler;
-using WebScheduler.Client.Core.Models;
 using WebScheduler.Client.Core.Options;
+using ScheduledTask = Models.ScheduledTask;
 
 /// <summary>
 /// Repository for <see cref="IScheduledTaskGrain"/>.
@@ -42,7 +42,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         ArgumentNullException.ThrowIfNull(scheduledTask);
 
         var scheduledTaskGrain = this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ScheduledTaskId.ToString());
-        _ = await scheduledTaskGrain.CreateAsync(new ScheduledTaskMetadata()
+        var result = await scheduledTaskGrain.CreateAsync(new ScheduledTaskMetadata()
         {
             Description = scheduledTask.Description,
             IsEnabled = scheduledTask.IsEnabled,
@@ -56,7 +56,20 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             HttpTriggerProperties = scheduledTask.HttpTriggerProperties
         });
 
-        return scheduledTask;
+        return new()
+        {
+            CreatedAt = result.CreatedAt,
+            ModifiedAt = result.ModifiedAt,
+            Description = result.Description,
+            Name = result.Name,
+            IsEnabled = result.IsEnabled,
+            ScheduledTaskId = scheduledTask.ScheduledTaskId,
+            LastRunAt = result.LastRunAt,
+            NextRunAt = result.NextRunAt,
+            CronExpression = result.CronExpression,
+            TriggerType = result.TriggerType,
+            HttpTriggerProperties = result.HttpTriggerProperties,
+        };
     }
 
     /// <summary>
@@ -201,7 +214,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         ArgumentNullException.ThrowIfNull(scheduledTask);
 
         var scheduledTaskGrain = this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ScheduledTaskId.ToString());
-        _ = await scheduledTaskGrain.UpdateAsync(new ScheduledTaskMetadata()
+        var result = await scheduledTaskGrain.UpdateAsync(new ScheduledTaskMetadata()
         {
             Description = scheduledTask.Description,
             IsEnabled = scheduledTask.IsEnabled,
@@ -215,6 +228,19 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             HttpTriggerProperties = scheduledTask.HttpTriggerProperties
         });
 
-        return scheduledTask;
+        return new()
+        {
+            CreatedAt = result.CreatedAt,
+            ModifiedAt = result.ModifiedAt,
+            Description = result.Description,
+            Name = result.Name,
+            IsEnabled = result.IsEnabled,
+            ScheduledTaskId = scheduledTask.ScheduledTaskId,
+            LastRunAt = result.LastRunAt,
+            NextRunAt = result.NextRunAt,
+            CronExpression = result.CronExpression,
+            TriggerType = result.TriggerType,
+            HttpTriggerProperties = result.HttpTriggerProperties,
+        };
     }
 }
