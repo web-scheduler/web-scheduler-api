@@ -32,7 +32,7 @@ public static class ProjectServiceCollectionExtensions
     /// <param name="addClusterClient"></param>
     public static IServiceCollection AddWebScheduler(this IServiceCollection services, IConfiguration configuration, bool addClusterClient = false)
     {
-        services
+        _ = services
         .AddCustomOptions(configuration)
         .AddProjectRepositories()
         .AddProjectServices()
@@ -40,7 +40,7 @@ public static class ProjectServiceCollectionExtensions
 
         if (addClusterClient)
         {
-            services.AddClusterClient();
+            _ = services.AddClusterClient();
         }
 
         return services;

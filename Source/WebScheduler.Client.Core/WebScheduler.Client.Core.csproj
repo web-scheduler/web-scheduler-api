@@ -40,7 +40,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Orleans.Connections.Security" Version="3.6.5" />
     <PackageReference Include="MySql.Data" Version="8.0.30" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.43" />
+    <!--<PackageReference Include="WebScheduler.Abstractions" Version="0.1.43" />-->
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebScheduler.Client.Http.Models\WebScheduler.Client.Http.Models.csproj" />
