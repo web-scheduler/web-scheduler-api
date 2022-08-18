@@ -11,7 +11,7 @@ using Microsoft.Extensions.Options;
 public class ConfigureCorsOptions : IConfigureOptions<CorsOptions>
 {
     /// <summary>
-    /// 
+    ///  The ctor.
     /// </summary>
     public ConfigureCorsOptions() { }
     /// <summary>
@@ -24,7 +24,7 @@ public class ConfigureCorsOptions : IConfigureOptions<CorsOptions>
         options.AddPolicy(
             CorsPolicyName.AllowAny,
             x => x
-                .SetIsOriginAllowed(c => true)
+                .SetIsOriginAllowed(_ => true)
                 .AllowAnyMethod()
                 .AllowAnyHeader()
                 .AllowCredentials());

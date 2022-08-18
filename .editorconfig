@@ -482,6 +482,9 @@ csharp_style_unused_value_expression_statement_preference = discard_variable:sug
 csharp_indent_labels = no_change
 csharp_space_around_binary_operators = before_and_after
 
+# RCS1093: Remove file with no code.
+dotnet_diagnostic.RCS1093.severity = suggestion
+
 ##########################################
 # License
 ##########################################
@@ -516,3 +519,4 @@ csharp_space_around_binary_operators = before_and_after
 # FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR
 # OTHER DEALINGS IN THE SOFTWARE.
 ##########################################
+

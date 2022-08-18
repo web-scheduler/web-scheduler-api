@@ -4,7 +4,7 @@ using Boxed.Mapping;
 using WebScheduler.Client.Http.Models.ViewModels;
 
 /// <summary>
-/// 
+///
 /// </summary>
 public class ScheduledTaskToScheduledTaskMapper : IMapper<Models.ScheduledTask, ScheduledTask>
 {

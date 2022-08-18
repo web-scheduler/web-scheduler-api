@@ -12,7 +12,7 @@ public class ConfigureRedisCacheOptions : IConfigureOptions<RedisCacheOptions>
     private readonly RedisOptions redisOptions;
 
     /// <summary>
-    /// 
+    /// Ctor
     /// </summary>
     /// <param name="redisOptions"></param>
     public ConfigureRedisCacheOptions(RedisOptions redisOptions) =>
