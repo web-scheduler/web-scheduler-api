@@ -8,14 +8,14 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
 
 /// <summary>
-/// 
+/// Configures Mvc Options.
 /// </summary>
 public class ConfigureMvcOptions : IConfigureOptions<MvcOptions>
 {
     private readonly CacheProfileOptions cacheProfileOptions;
 
     /// <summary>
-    /// 
+    /// ctor
     /// </summary>
     /// <param name="cacheProfileOptions"></param>
     public ConfigureMvcOptions(CacheProfileOptions cacheProfileOptions) =>

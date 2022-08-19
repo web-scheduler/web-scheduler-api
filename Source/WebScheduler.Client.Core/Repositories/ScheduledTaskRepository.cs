@@ -6,8 +6,8 @@ using Orleans;
 using Orleans.Runtime;
 using WebScheduler.Abstractions.Constants;
 using WebScheduler.Abstractions.Grains.Scheduler;
-using WebScheduler.Client.Core.Models;
 using WebScheduler.Client.Core.Options;
+using ScheduledTask = Models.ScheduledTask;
 
 /// <summary>
 /// Repository for <see cref="IScheduledTaskGrain"/>.
@@ -42,7 +42,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         ArgumentNullException.ThrowIfNull(scheduledTask);
 
         var scheduledTaskGrain = this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ScheduledTaskId.ToString());
-        _ = await scheduledTaskGrain.CreateAsync(new ScheduledTaskMetadata()
+        var result = await scheduledTaskGrain.CreateAsync(new ScheduledTaskMetadata()
         {
             Description = scheduledTask.Description,
             IsEnabled = scheduledTask.IsEnabled,
@@ -54,9 +54,22 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             CronExpression = scheduledTask.CronExpression,
             TriggerType = scheduledTask.TriggerType,
             HttpTriggerProperties = scheduledTask.HttpTriggerProperties
-        }).ConfigureAwait(true);
+        });
 
-        return scheduledTask;
+        return new()
+        {
+            CreatedAt = result.CreatedAt,
+            ModifiedAt = result.ModifiedAt,
+            Description = result.Description,
+            Name = result.Name,
+            IsEnabled = result.IsEnabled,
+            ScheduledTaskId = scheduledTask.ScheduledTaskId,
+            LastRunAt = result.LastRunAt,
+            NextRunAt = result.NextRunAt,
+            CronExpression = result.CronExpression,
+            TriggerType = result.TriggerType,
+            HttpTriggerProperties = result.HttpTriggerProperties,
+        };
     }
 
     /// <summary>
@@ -64,7 +77,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
     /// </summary>
     /// <param name="scheduledTask">scheduled task</param>
     /// <param name="cancellationToken">ct</param>
-    public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken) => await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync().ConfigureAwait(true);
+    public async Task DeleteAsync(Guid scheduledTask, CancellationToken cancellationToken) => await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ToString()).DeleteAsync();
 
     /// <summary>
     /// Gets a scheduled task
@@ -74,7 +87,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
     /// <returns>the scheduled task</returns>
     public async Task<ScheduledTask> GetAsync(Guid scheduledTaskId, CancellationToken cancellationToken)
     {
-        var result = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync().ConfigureAwait(true);
+        var result = await this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTaskId.ToString()).GetAsync();
         return new()
         {
             CreatedAt = result.CreatedAt,
@@ -119,19 +132,19 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             Offset = offset,
             PageSize = pageSize,
             TenantId = RequestContext.Get(RequestContextKeys.TenantId)
-        }, cancellationToken: cancellationToken)).ConfigureAwait(true))
+        }, cancellationToken: cancellationToken)))
         {
             var c = this.clusterClient;
-            while (await reader.ReadAsync(cancellationToken).ConfigureAwait(true))
+            while (await reader.ReadAsync(cancellationToken))
             {
                 var taskId = reader.GetString(0);
                 taskIds.Add(taskId);
                 tasks.Add(c.GetGrain<IScheduledTaskGrain>(taskId).GetAsync().AsTask());
             }
-            await reader.CloseAsync().ConfigureAwait(true);
+            await reader.CloseAsync();
         }
 
-        var results = await Task.WhenAll(tasks).ConfigureAwait(true);
+        var results = await Task.WhenAll(tasks);
         var buffer = new List<ScheduledTask>(results.Length);
 
         for (var i = 0; i < results.Length; i++)
@@ -180,10 +193,10 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
         {
             TenantId = RequestContext.Get(RequestContextKeys.TenantId)
-        }, cancellationToken: cancellationToken)).ConfigureAwait(true);
+        }, cancellationToken: cancellationToken));
 
         var buffer = new List<ScheduledTask>(10);
-        while (await reader.ReadAsync(cancellationToken).ConfigureAwait(true))
+        while (await reader.ReadAsync(cancellationToken))
         {
             return reader.GetInt32(0);
         }
@@ -201,7 +214,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         ArgumentNullException.ThrowIfNull(scheduledTask);
 
         var scheduledTaskGrain = this.clusterClient.GetGrain<IScheduledTaskGrain>(scheduledTask.ScheduledTaskId.ToString());
-        _ = await scheduledTaskGrain.UpdateAsync(new ScheduledTaskMetadata()
+        var result = await scheduledTaskGrain.UpdateAsync(new ScheduledTaskMetadata()
         {
             Description = scheduledTask.Description,
             IsEnabled = scheduledTask.IsEnabled,
@@ -213,8 +226,21 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             CronExpression = scheduledTask.CronExpression,
             TriggerType = scheduledTask.TriggerType,
             HttpTriggerProperties = scheduledTask.HttpTriggerProperties
-        }).ConfigureAwait(true);
+        });
 
-        return scheduledTask;
+        return new()
+        {
+            CreatedAt = result.CreatedAt,
+            ModifiedAt = result.ModifiedAt,
+            Description = result.Description,
+            Name = result.Name,
+            IsEnabled = result.IsEnabled,
+            ScheduledTaskId = scheduledTask.ScheduledTaskId,
+            LastRunAt = result.LastRunAt,
+            NextRunAt = result.NextRunAt,
+            CronExpression = result.CronExpression,
+            TriggerType = result.TriggerType,
+            HttpTriggerProperties = result.HttpTriggerProperties,
+        };
     }
 }

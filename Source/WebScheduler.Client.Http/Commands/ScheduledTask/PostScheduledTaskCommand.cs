@@ -10,7 +10,7 @@ using WebScheduler.Client.Core.Repositories;
 using WebScheduler.Client.Http.Constants;
 
 /// <summary>
-/// 
+/// TODo
 /// </summary>
 public class PostScheduledTaskCommand
 {
@@ -21,7 +21,7 @@ public class PostScheduledTaskCommand
     private static readonly Random RandomNumber = new();
 
     /// <summary>
-    /// 
+    /// TODO
     /// </summary>
     /// <param name="scheduledTaskRepository"></param>
     /// <param name="scheduledTaskToScheduledTaskMapper"></param>
@@ -40,26 +40,25 @@ public class PostScheduledTaskCommand
     }
 
     /// <summary>
-    /// 
+    /// TODO
     /// </summary>
     /// <param name="saveScheduledTask"></param>
     /// <param name="cancellationToken"></param>
-    /// <returns></returns>
     public async Task<IActionResult> ExecuteAsync(SaveScheduledTask saveScheduledTask, CancellationToken cancellationToken)
     {
-        var scheduledTask = this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask);
-
-        if (scheduledTask.ScheduledTaskId == Guid.Empty)
-        {
-            scheduledTask.ScheduledTaskId = Guid.NewGuid();
-        }
-
-        // Append a seconds to stagger the task times
-        scheduledTask.CronExpression = $"{RandomNumber.Next(0, 59)} {scheduledTask.CronExpression}";
-
         try
         {
-            scheduledTask = await this.scheduledTaskRepository.AddAsync(scheduledTask, cancellationToken).ConfigureAwait(true);
+            var scheduledTask = this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask);
+
+            if (scheduledTask.ScheduledTaskId == Guid.Empty)
+            {
+                scheduledTask.ScheduledTaskId = Guid.NewGuid();
+            }
+
+            // Append a seconds to stagger the task times
+            scheduledTask.CronExpression = $"{RandomNumber.Next(0, 59)} {scheduledTask.CronExpression}";
+
+            scheduledTask = await this.scheduledTaskRepository.AddAsync(scheduledTask, cancellationToken);
             var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
             return new CreatedAtRouteResult(ScheduledTasksControllerRoute.GetScheduledTask, new
             {
@@ -69,6 +68,14 @@ public class PostScheduledTaskCommand
         catch (ScheduledTaskAlreadyExistsException scheduledTaskAlreadyExistsException)
         {
             return new ConflictObjectResult(scheduledTaskAlreadyExistsException.Message);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return new UnauthorizedResult();
+        }
+        catch (ScheduledTaskNotFoundException)
+        {
+            return new NotFoundResult();
         }
         catch (Exception ex)
         {

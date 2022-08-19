@@ -4,28 +4,34 @@ using Boxed.Mapping;
 using Microsoft.AspNetCore.Mvc;
 using WebScheduler.Client.Http.Models.ViewModels;
 using WebScheduler.Client.Core.Repositories;
+using Microsoft.AspNetCore.Http;
+using WebScheduler.Abstractions.Grains.Scheduler;
+using Microsoft.Extensions.Logging;
 
 /// <summary>
 /// Command
 /// </summary>
 public class PutScheduledTaskCommand
 {
+    private readonly ILogger<PutScheduledTaskCommand> logger;
     private readonly IScheduledTaskRepository scheduledTaskRepository;
     private readonly IMapper<Core.Models.ScheduledTask, ScheduledTask> scheduledTaskToScheduledTaskMapper;
     private readonly IMapper<SaveScheduledTask, Core.Models.ScheduledTask> saveScheduledTaskToScheduledTaskMapper;
-    private static readonly Random RandomNumber = new();
 
     /// <summary>
     /// Command
     /// </summary>
+    /// <param name="logger"></param>
     /// <param name="scheduledTaskRepository"></param>
     /// <param name="scheduledTaskToScheduledTaskMapper"></param>
     /// <param name="saveScheduledTaskToScheduledTaskMapper"></param>
     public PutScheduledTaskCommand(
+        ILogger<PutScheduledTaskCommand> logger,
         IScheduledTaskRepository scheduledTaskRepository,
         IMapper<Core.Models.ScheduledTask, ScheduledTask> scheduledTaskToScheduledTaskMapper,
         IMapper<SaveScheduledTask, Core.Models.ScheduledTask> saveScheduledTaskToScheduledTaskMapper)
     {
+        this.logger = logger;
         this.scheduledTaskRepository = scheduledTaskRepository;
         this.scheduledTaskToScheduledTaskMapper = scheduledTaskToScheduledTaskMapper;
         this.saveScheduledTaskToScheduledTaskMapper = saveScheduledTaskToScheduledTaskMapper;
@@ -39,15 +45,35 @@ public class PutScheduledTaskCommand
     /// <param name="cancellationToken"></param>
     public async Task<IActionResult> ExecuteAsync(Guid scheduledTaskId, SaveScheduledTask saveScheduledTask, CancellationToken cancellationToken)
     {
-        var scheduledTask = this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask);
-        scheduledTask.ScheduledTaskId = scheduledTaskId;
+        try
+        {
+            var scheduledTask = this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask);
+            scheduledTask.ScheduledTaskId = scheduledTaskId;
 
-        // Append a seconds to stagger the task times
-        scheduledTask.CronExpression = $"{RandomNumber.Next(0, 59)} {scheduledTask.CronExpression}";
+            // preserve current seconds component
+            var currentTask = await this.scheduledTaskRepository.GetAsync(scheduledTask.ScheduledTaskId, cancellationToken);
+            var currentSecondsComponent = currentTask.CronExpression[..currentTask.CronExpression.IndexOf(' ')];
 
-        scheduledTask = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken).ConfigureAwait(true);
-        var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
+            // Append a seconds to stagger the task times
+            scheduledTask.CronExpression = $"{currentSecondsComponent} {scheduledTask.CronExpression}";
 
-        return new OkObjectResult(scheduledTaskViewModel);
+            scheduledTask = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken);
+            var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
+
+            return new OkObjectResult(scheduledTaskViewModel);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return new UnauthorizedResult();
+        }
+        catch (ScheduledTaskNotFoundException)
+        {
+            return new NotFoundResult();
+        }
+        catch (Exception ex)
+        {
+            this.logger.Exception(ex, ex.Message);
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
+        }
     }
 }

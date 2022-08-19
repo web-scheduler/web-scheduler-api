@@ -17,7 +17,7 @@ public class ConfigureResponseCompressionOptions :
     private readonly CompressionOptions compressionOptions;
 
     /// <summary>
-    /// 
+    /// Ctor
     /// </summary>
     /// <param name="compressionOptions"></param>
     public ConfigureResponseCompressionOptions(CompressionOptions compressionOptions) =>

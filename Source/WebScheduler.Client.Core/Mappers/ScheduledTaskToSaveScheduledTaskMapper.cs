@@ -4,14 +4,14 @@ using WebScheduler.Abstractions.Services;
 using WebScheduler.Client.Http.Models.ViewModels;
 
 /// <summary>
-/// 
+/// Model for saving scheduled tasks.
 /// </summary>
 public class ScheduledTaskToSaveScheduledTaskMapper : IMapper<Models.ScheduledTask, SaveScheduledTask>, IMapper<SaveScheduledTask, Models.ScheduledTask>
 {
     private readonly IClockService clockService;
 
     /// <summary>
-    /// 
+    /// ctor
     /// </summary>
     /// <param name="clockService"></param>
     public ScheduledTaskToSaveScheduledTaskMapper(IClockService clockService) =>

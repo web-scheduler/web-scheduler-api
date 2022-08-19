@@ -1,10 +1,13 @@
 namespace WebScheduler.Client.Http.Commands.ScheduledTask;
 
 using Boxed.Mapping;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
 using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.Extensions.Logging;
+using WebScheduler.Abstractions.Grains.Scheduler;
 using WebScheduler.Client.Core.Repositories;
 using WebScheduler.Client.Http.Models.ViewModels;
 
@@ -13,6 +16,7 @@ using WebScheduler.Client.Http.Models.ViewModels;
 /// </summary>
 public class PatchScheduledTaskCommand
 {
+    private readonly ILogger<PatchScheduledTaskCommand> logger;
     private readonly IActionContextAccessor actionContextAccessor;
     private readonly IObjectModelValidator objectModelValidator;
     private readonly IScheduledTaskRepository scheduledTaskRepository;
@@ -23,6 +27,7 @@ public class PatchScheduledTaskCommand
     /// <summary>
     /// TODO
     /// </summary>
+    /// <param name="logger"></param>
     /// <param name="actionContextAccessor"></param>
     /// <param name="objectModelValidator"></param>
     /// <param name="scheduledTaskRepository"></param>
@@ -30,6 +35,7 @@ public class PatchScheduledTaskCommand
     /// <param name="scheduledTaskToSaveScheduledTaskMapper"></param>
     /// <param name="saveScheduledTaskToScheduledTaskMapper"></param>
     public PatchScheduledTaskCommand(
+        ILogger<PatchScheduledTaskCommand> logger,
         IActionContextAccessor actionContextAccessor,
         IObjectModelValidator objectModelValidator,
         IScheduledTaskRepository scheduledTaskRepository,
@@ -37,6 +43,7 @@ public class PatchScheduledTaskCommand
         IMapper<Core.Models.ScheduledTask, SaveScheduledTask> scheduledTaskToSaveScheduledTaskMapper,
         IMapper<SaveScheduledTask, Core.Models.ScheduledTask> saveScheduledTaskToScheduledTaskMapper)
     {
+        this.logger = logger;
         this.actionContextAccessor = actionContextAccessor;
         this.objectModelValidator = objectModelValidator;
         this.scheduledTaskRepository = scheduledTaskRepository;
@@ -56,39 +63,55 @@ public class PatchScheduledTaskCommand
         JsonPatchDocument<SaveScheduledTask> patch,
         CancellationToken cancellationToken)
     {
-        var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken).ConfigureAwait(true);
-        if (scheduledTask is null)
+        try
+        {
+            var scheduledTask = await this.scheduledTaskRepository.GetAsync(scheduledTaskId, cancellationToken);
+            if (scheduledTask is null)
+            {
+                return new NotFoundResult();
+            }
+            var saveScheduledTask = this.scheduledTaskToSaveScheduledTaskMapper.Map(scheduledTask);
+            var modelState = this.actionContextAccessor.ActionContext!.ModelState;
+            patch.ApplyTo(saveScheduledTask, modelState);
+
+            this.objectModelValidator.Validate(
+                this.actionContextAccessor.ActionContext,
+                validationState: null,
+                prefix: string.Empty,
+                model: saveScheduledTask);
+
+            if (!modelState.IsValid)
+            {
+                return new BadRequestObjectResult(modelState);
+            }
+
+            // Preserve current seconds
+            var currentSeconds = scheduledTask.CronExpression[..scheduledTask.CronExpression.IndexOf(' ')];
+
+            this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask, scheduledTask);
+
+            if (scheduledTask.CronExpression[(currentSeconds.Length + 1)..] != saveScheduledTask.CronExpression)
+            {
+                scheduledTask.CronExpression = $"{currentSeconds} {saveScheduledTask.CronExpression}";
+            }
+
+            _ = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken);
+            var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
+
+            return new OkObjectResult(scheduledTaskViewModel);
+        }
+        catch (UnauthorizedAccessException)
+        {
+            return new UnauthorizedResult();
+        }
+        catch (ScheduledTaskNotFoundException)
         {
             return new NotFoundResult();
         }
-        var saveScheduledTask = this.scheduledTaskToSaveScheduledTaskMapper.Map(scheduledTask);
-        var modelState = this.actionContextAccessor.ActionContext!.ModelState;
-        patch.ApplyTo(saveScheduledTask, modelState);
-
-        this.objectModelValidator.Validate(
-            this.actionContextAccessor.ActionContext,
-            validationState: null,
-            prefix: string.Empty,
-            model: saveScheduledTask);
-
-        if (!modelState.IsValid)
+        catch (Exception ex)
         {
-            return new BadRequestObjectResult(modelState);
+            this.logger.Exception(ex, ex.Message);
+            return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
-
-        // Preserve current seconds
-        var currentSeconds = scheduledTask.CronExpression[..scheduledTask.CronExpression.IndexOf(' ')];
-
-        this.saveScheduledTaskToScheduledTaskMapper.Map(saveScheduledTask, scheduledTask);
-
-        if (scheduledTask.CronExpression[(currentSeconds.Length + 1)..] != saveScheduledTask.CronExpression)
-        {
-            scheduledTask.CronExpression = $"{currentSeconds} {saveScheduledTask.CronExpression}";
-        }
-
-        _ = await this.scheduledTaskRepository.UpdateAsync(scheduledTask, cancellationToken).ConfigureAwait(true);
-        var scheduledTaskViewModel = this.scheduledTaskToScheduledTaskMapper.Map(scheduledTask);
-
-        return new OkObjectResult(scheduledTaskViewModel);
     }
 }
