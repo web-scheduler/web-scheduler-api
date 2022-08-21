@@ -8,7 +8,7 @@
   <PropertyGroup Label="Package">
     <Authors>Elan Hasson</Authors>
     <Company>Elan Hasson</Company>
-    <Product>Web Scheduler Api Core</Product>
+    <Product>Web Scheduler API Core</Product>
     <Description>The API Core for the Web Scheduler</Description>
     <Copyright>Copyright © Elan Hasson. All rights Reserved</Copyright>
     <Description>The core client library for the WebScheduler server.</Description>
