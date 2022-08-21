@@ -8,11 +8,10 @@
   <PropertyGroup Label="Package">
     <Authors>Elan Hasson</Authors>
     <Company>Elan Hasson</Company>
-    <Product>Web Scheduler Api Core</Product>
+    <Product>Web Scheduler API Core</Product>
     <Description>The API Core for the Web Scheduler</Description>
     <Copyright>Copyright © Elan Hasson. All rights Reserved</Copyright>
-  </PropertyGroup>
-  <PropertyGroup>
+    <Description>The core client library for the WebScheduler server.</Description>
     <!-- Workaround to build this project: https://github.com/dotnet/templating/issues/1438 -->
     <GitHub>true</GitHub>
     <IsTrimmable>false</IsTrimmable>
@@ -22,7 +21,6 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/web-scheduler/web-scheduler-api</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/web-scheduler/web-scheduler-api/releases</PackageReleaseNotes>
-
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
     <PackageTags>orleans;cron;scheduler</PackageTags>
@@ -40,7 +38,7 @@
     </PackageReference>
     <PackageReference Include="Microsoft.Orleans.Connections.Security" Version="3.6.5" />
     <PackageReference Include="MySql.Data" Version="8.0.30" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.45" />
+    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.46" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\WebScheduler.Client.Http.Models\WebScheduler.Client.Http.Models.csproj" />
