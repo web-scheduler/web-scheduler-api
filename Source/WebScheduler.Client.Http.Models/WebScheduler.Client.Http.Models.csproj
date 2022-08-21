@@ -20,14 +20,13 @@
     <RepositoryType>git</RepositoryType>
     <PackageProjectUrl>https://github.com/web-scheduler/web-scheduler-api</PackageProjectUrl>
     <PackageReleaseNotes>https://github.com/web-scheduler/web-scheduler-api/releases</PackageReleaseNotes>
-
+    <Description>The view models for the WebScheduler.Client.Http API endpoints.</Description>
     <PackageLicenseExpression>MIT</PackageLicenseExpression>
     <PackageRequireLicenseAcceptance>true</PackageRequireLicenseAcceptance>
-
   </PropertyGroup>
   <ItemGroup Label="Package References">
     <PackageReference Include="Cronos" Version="0.7.1" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.45" />
+    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.46" />
   </ItemGroup>
   <ItemGroup Label="Project References" Condition="'$(Configuration)' == 'Debug'">
     <!--<ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />-->
