@@ -1,10 +1,10 @@
 namespace WebScheduler.Client.Http;
 
+using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using WebScheduler.Api.Commands.ScheduledTask;
-using WebScheduler.Client.Http.Commands.ScheduledTask;
 using WebScheduler.Client.Core;
-using Microsoft.AspNetCore.Builder;
+using WebScheduler.Client.Http.Commands.ScheduledTask;
 using WebScheduler.Client.Http.Middleware;
 
 /// <summary>

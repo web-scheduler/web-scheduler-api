@@ -1,10 +1,10 @@
 namespace WebScheduler.Api.ConfigureOptions;
 
-using Microsoft.AspNetCore.Hosting;
-using System.Text.Json.Serialization;
 using System.Text.Json;
-using Microsoft.Extensions.Options;
+using System.Text.Json.Serialization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 using WebScheduler.Api.ViewModels;
 
 /// <summary>

@@ -1,18 +1,18 @@
 namespace WebScheduler.Client.Core;
 using Boxed.Mapping;
-using Orleans;
-using WebScheduler.Abstractions.Services;
-using WebScheduler.Abstractions.Grains.Scheduler;
-using WebScheduler.Client.Http.Models.ViewModels;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Options;
+using Orleans;
+using Orleans.Configuration;
+using WebScheduler.Abstractions.Grains.Scheduler;
+using WebScheduler.Abstractions.Services;
 using WebScheduler.Client.Core.HostedServices;
 using WebScheduler.Client.Core.Mappers;
-using WebScheduler.Client.Core.Repositories;
-using Microsoft.Extensions.Configuration;
 using WebScheduler.Client.Core.Options;
-using Microsoft.Extensions.Options;
-using Orleans.Configuration;
+using WebScheduler.Client.Core.Repositories;
+using WebScheduler.Client.Http.Models.ViewModels;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> extension methods add project services.

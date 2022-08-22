@@ -1,8 +1,8 @@
 namespace WebScheduler.Api.ConfigureOptions;
 
-using WebScheduler.Api.Constants;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.Extensions.Options;
+using WebScheduler.Api.Constants;
 
 /// <summary>
 /// Configures cross-origin resource sharing (CORS) policies.

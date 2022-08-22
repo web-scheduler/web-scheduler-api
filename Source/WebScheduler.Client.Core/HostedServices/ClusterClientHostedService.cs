@@ -1,7 +1,5 @@
 namespace WebScheduler.Client.Core.HostedServices;
 
-using WebScheduler.Abstractions.Constants;
-using WebScheduler.Client.Core.Options;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -9,6 +7,7 @@ using Microsoft.Extensions.Options;
 using Orleans;
 using Orleans.Configuration;
 using Orleans.Hosting;
+using WebScheduler.Client.Core.Options;
 
 /// <summary>
 /// Manages the <see cref="IClusterClient"/>.

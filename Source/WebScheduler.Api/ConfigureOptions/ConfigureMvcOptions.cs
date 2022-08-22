@@ -1,11 +1,11 @@
 namespace WebScheduler.Api.ConfigureOptions;
 
-using WebScheduler.Api.Options;
 using Boxed.AspNetCore;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.Extensions.Options;
+using WebScheduler.Api.Options;
 
 /// <summary>
 /// Configures Mvc Options.

@@ -1,17 +1,17 @@
 namespace WebScheduler.Api;
 
-using Serilog;
-using WebScheduler.Api.Constants;
 using Boxed.AspNetCore;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.AspNetCore.Mvc.Infrastructure;
-using WebScheduler.ConfigureOptions;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using WebScheduler.Api.Policies;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.AspNetCore.DataProtection;
-using WebScheduler.Client.Http;
+using Serilog;
+using WebScheduler.Api.Constants;
 using WebScheduler.Api.Data;
+using WebScheduler.Api.Policies;
+using WebScheduler.Client.Http;
+using WebScheduler.ConfigureOptions;
 
 /// <summary>
 /// The main start-up class for the application.

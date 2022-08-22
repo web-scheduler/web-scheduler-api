@@ -1,4 +1,4 @@
-﻿namespace WebScheduler.Api.Constants;
+namespace WebScheduler.Api.Constants;
 
 /// <summary>
 /// TODO

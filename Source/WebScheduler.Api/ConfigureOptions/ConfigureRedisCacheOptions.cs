@@ -1,8 +1,8 @@
 namespace WebScheduler.Api.ConfigureOptions;
 
-using WebScheduler.Api.Options;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Microsoft.Extensions.Options;
+using WebScheduler.Api.Options;
 
 /// <summary>
 /// Configures Redis based distributed caching for the application.
