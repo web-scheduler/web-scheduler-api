@@ -1,14 +1,14 @@
 namespace WebScheduler.Api;
 
-using WebScheduler.Api.ConfigureOptions;
-using WebScheduler.Api.Constants;
-using WebScheduler.Api.Options;
 using Boxed.AspNetCore;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
 using Microsoft.Extensions.Options;
 using OpenTelemetry.Exporter;
 using OpenTelemetry.Resources;
 using OpenTelemetry.Trace;
+using WebScheduler.Api.ConfigureOptions;
+using WebScheduler.Api.Constants;
+using WebScheduler.Api.Options;
 
 /// <summary>
 /// <see cref="IServiceCollection"/> extension methods which extend ASP.NET Core services.

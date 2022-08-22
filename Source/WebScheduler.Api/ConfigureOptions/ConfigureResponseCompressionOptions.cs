@@ -1,9 +1,9 @@
 namespace WebScheduler.Api.ConfigureOptions;
 
 using System.IO.Compression;
-using WebScheduler.Api.Options;
 using Microsoft.AspNetCore.ResponseCompression;
 using Microsoft.Extensions.Options;
+using WebScheduler.Api.Options;
 
 /// <summary>
 /// Configures dynamic GZIP and Brotli response compression. This is turned off for HTTPS requests by default to avoid

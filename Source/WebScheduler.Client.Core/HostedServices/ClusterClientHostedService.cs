@@ -30,6 +30,7 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
         this.options = options.Value;
 
         this.Client = clientBuilder
+            .Configure<StatisticsOptions>(options => options.LogWriteInterval = TimeSpan.FromMilliseconds(-1)) // Disable Statistics output to logging from Orleans
             .ConfigureServices(services =>
             {
                 // Add logging from the host's container.
@@ -51,16 +52,8 @@ public class ClusterClientHostedService : IHostedService, IAsyncDisposable, IDis
                parts => parts
                    .AddApplicationPart(typeof(Abstractions.Grains.Scheduler.IScheduledTaskGrain).Assembly)
                    .WithReferences())
-           .AddSimpleMessageStreamProvider(StreamProviderName.ScheduledTasks)
-            // .UseTls(
-            //    options =>
-            //    {
-            //        // TODO: Configure a certificate.
-            //        options.LocalCertificate = null;
+            .Configure<StatisticsOptions>(options => options.LogWriteInterval = TimeSpan.FromMilliseconds(-1)) // Disable Statistics output to logging from Orleans
 
-            //        // TODO: Do not allow any remote certificates in production.
-            //        options.AllowAnyRemoteCertificate();
-            //    })
             .Build();
     }
 

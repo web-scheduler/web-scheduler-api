@@ -1,11 +1,11 @@
 namespace WebScheduler.Api.ConfigureOptions;
 
-using WebScheduler.Api.Constants;
-using WebScheduler.Api.Options;
 using Boxed.AspNetCore;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.StaticFiles;
 using Microsoft.Extensions.Options;
+using WebScheduler.Api.Constants;
+using WebScheduler.Api.Options;
 
 /// <summary>
 /// Configures the static files middleware to add the Cache-Control and Pragma HTTP headers. The cache duration is

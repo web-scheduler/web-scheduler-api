@@ -2,7 +2,6 @@
 namespace WebScheduler.Api;
 #pragma warning restore IDE0130 // Namespace does not match folder structure
 
-using WebScheduler.Api.OperationFilters;
 using Boxed.AspNetCore.Swagger;
 using Boxed.AspNetCore.Swagger.OperationFilters;
 using Boxed.AspNetCore.Swagger.SchemaFilters;
@@ -10,6 +9,7 @@ using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Options;
 using Microsoft.OpenApi.Models;
 using Swashbuckle.AspNetCore.SwaggerGen;
+using WebScheduler.Api.OperationFilters;
 
 /// <summary>
 /// TODO
