@@ -30,7 +30,7 @@
   </PropertyGroup>
   <ItemGroup Label="Package References">
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="6.0.8" />
-    <PackageReference Include="Boxed.AspNetCore" Version="8.0.0+build.457" />
+    <PackageReference Include="Boxed.AspNetCore" Version="8.1.2+build.669" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.4.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
