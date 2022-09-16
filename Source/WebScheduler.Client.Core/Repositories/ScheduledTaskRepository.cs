@@ -120,7 +120,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
         // TODO: after everything migrates, delete the or clause for ScheduledTaskMetadata
-        const string sql = @"SELECT GrainIdExtensionString FROM OrleansStorage WHERE  JSON_EXTRACT(PayloadJson, '$.tenantId') = @TenantId AND IFNULL(JSON_EXTRACT(PayloadJson, '$.isDeleted'), 0)=0
+        const string sql = @"SELECT GrainIdExtensionString FROM OrleansStorage WHERE  (JSON_EXTRACT(PayloadJson, '$.tenantId') = @TenantId OR JSON_EXTRACT(PayloadJson, '$.tenantIdString') = @TenantId) AND IFNULL(JSON_EXTRACT(PayloadJson, '$.isDeleted'), 0)=0
         AND GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskState'
         AND JSON_EXTRACT(PayloadJson, '$.isDeleted') is null
           ORDER BY JSON_EXTRACT(PayloadJson, '$.createdAt') ASC LIMIT @Offset, @PageSize";
@@ -186,7 +186,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
         const string sql = @"SELECT COUNT(*) from OrleansStorage
-         WHERE  JSON_EXTRACT(PayloadJson, '$.tenantId') = @TenantId AND IFNULL(JSON_EXTRACT(PayloadJson, '$.isDeleted'), 0)=0
+         WHERE  (JSON_EXTRACT(PayloadJson, '$.tenantId') = @TenantId OR JSON_EXTRACT(PayloadJson, '$.tenantIdString') = @TenantId)  AND IFNULL(JSON_EXTRACT(PayloadJson, '$.isDeleted'), 0)=0
         AND GrainTypeString='WebScheduler.Grains.Scheduler.ScheduledTaskGrain,WebScheduler.Grains.ScheduledTaskState'
         AND JSON_EXTRACT(PayloadJson, '$.isDeleted') is null";
 
