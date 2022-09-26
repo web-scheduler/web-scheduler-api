@@ -26,7 +26,7 @@
   </PropertyGroup>
   <ItemGroup Label="Package References">
     <PackageReference Include="Cronos" Version="0.7.1" />
-    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.56" />
+    <PackageReference Include="WebScheduler.Abstractions" Version="0.1.57" />
   </ItemGroup>
   <ItemGroup Label="Project References" Condition="'$(Configuration)' == 'Debug'">
     <!--<ProjectReference Include="..\..\..\web-scheduler\Source\WebScheduler.Abstractions\WebScheduler.Abstractions.csproj" />-->
