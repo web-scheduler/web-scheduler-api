@@ -133,7 +133,7 @@ Task("DockerBuild")
 
         System.IO.Directory.CreateDirectory(ArtifactsDirectory);
         System.IO.File.WriteAllText(System.IO.Path.Join(ArtifactsDirectory, "DOCKER_TAG"), $"{version}");
-        StartProcess(
+        var exitCode = StartProcess(
             "docker",
             new ProcessArgumentBuilder()
                 .Append("buildx")
@@ -150,8 +150,13 @@ Task("DockerBuild")
                 .Append(".")
                 .RenderSafe());
 
+            if (exitCode != 0)
+            {
+                throw new Exception($"Docker build failed with non zero exit code {exitCode}.");
+            }
+
         // If you'd rather not use buildx, then you can uncomment these lines instead.
-        // StartProcess(
+        // var exitCode = StartProcess(
         //     "docker",
         //     new ProcessArgumentBuilder()
         //         .Append("build")
@@ -163,13 +168,22 @@ Task("DockerBuild")
         //         .AppendSwitchQuoted("--file", dockerfile.ToString())
         //         .Append(".")
         //         .RenderSafe());
+        // if (exitCode != 0)
+        // {
+        //     throw new Exception($"Docker build failed with non zero exit code {exitCode}.");
+        // }
+        //
         // if (push)
         // {
-        //     StartProcess(
+        //     var pushExitCode = StartProcess(
         //         "docker",
         //         new ProcessArgumentBuilder()
         //             .AppendSwitchQuoted("push", $"{tag}:{version}")
         //             .RenderSafe());
+        //     if (pushExitCode != 0)
+        //     {
+        //         throw new Exception($"Docker build failed with non zero exit code {pushExitCode}.");
+        //     }
         // }
 
         string GetVersion()
@@ -178,7 +192,7 @@ Task("DockerBuild")
             var directoryBuildPropsDocument = System.Xml.Linq.XDocument.Load(directoryBuildPropsFilePath);
             var preReleasePhase = directoryBuildPropsDocument.Descendants("MinVerDefaultPreReleasePhase").Single().Value;
 
-            StartProcess(
+            var exitCode = StartProcess(
                 "dotnet",
                 new ProcessSettings()
                     .WithArguments(x => x
@@ -186,17 +200,29 @@ Task("DockerBuild")
                        // .AppendSwitch("--default-pre-release-phase", preReleasePhase)
                     .SetRedirectStandardOutput(true),
                     out var versionLines);
+
+            if (exitCode != 0)
+            {
+                throw new Exception($"dotnet minver failed with non zero exit code {exitCode}.");
+            }
+
             return versionLines.LastOrDefault();
         }
 
         string GetGitCommitSha()
         {
-            StartProcess(
+            var exitCode = StartProcess(
                 "git",
                 new ProcessSettings()
                     .WithArguments(x => x.Append("rev-parse HEAD"))
                     .SetRedirectStandardOutput(true),
                 out var shaLines);
+
+            if (exitCode != 0)
+            {
+                throw new Exception($"git rev-parse failed with non zero exit code {exitCode}.");
+            }
+
             return shaLines.LastOrDefault();
         }
     });
