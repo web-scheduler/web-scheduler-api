@@ -6,7 +6,7 @@
 # Base image used by Visual Studio at development time
 # (See https://docs.microsoft.com/en-us/visualstudio/containers/container-msbuild-properties)
  
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-alpine-amd64 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-alpine3.17-amd64 AS base
 
 # Open Container Initiative (OCI) labels (See https://github.com/opencontainers/image-spec/blob/master/annotations.md).
 LABEL org.opencontainers.image.title="Web Scheduler API" \
@@ -31,7 +31,7 @@ EXPOSE 80
 
 # SDK image used to build and publish the application
 
-FROM mcr.microsoft.com/dotnet/sdk:6.0-alpine-amd64 AS sdk
+FROM mcr.microsoft.com/dotnet/sdk:7.0-alpine3.17-amd64 AS sdk
 
 # To use the debug build configuration pass --build-arg Configuration=Debug
 ARG Configuration=Release
