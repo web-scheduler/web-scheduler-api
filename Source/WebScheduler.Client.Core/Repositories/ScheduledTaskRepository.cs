@@ -128,7 +128,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
                 AND IsScheduledTaskDeleted = false
                 AND GrainTypeHash=2108290596
             ORDER BY ScheduledTaskCreatedAt ASC
-            LIMIT @Offset, @PageSize;
+            LIMIT @Offset, @PageSize";
         """;
 
         var tasks = new List<Task<ScheduledTaskMetadata>>(pageSize);
@@ -197,9 +197,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
             WHERE  
                 TenantId = @TenantId
                 AND IsScheduledTaskDeleted = false
-                AND GrainTypeHash=2108290596
-            ORDER BY ScheduledTaskCreatedAt ASC
-            LIMIT @Offset, @PageSize;
+                AND GrainTypeHash=2108290596;
         """;
 
         using var reader = await dbConnection.ExecuteReaderAsync(new CommandDefinition(sql, new
