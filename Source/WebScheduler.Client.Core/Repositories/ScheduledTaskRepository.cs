@@ -116,7 +116,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         int pageSize,
        CancellationToken cancellationToken)
     {
-        // TODO: Figure out connection pooling
+        // TODO: Figure out connection poolingg
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
         // TODO: after everything migrates, delete the or clause for ScheduledTaskMetadata
@@ -128,7 +128,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
                 AND IsScheduledTaskDeleted = false
                 AND GrainTypeHash=2108290596
             ORDER BY ScheduledTaskCreatedAt ASC
-            LIMIT @Offset, @PageSize";
+            LIMIT @Offset, @PageSize;
         """;
 
         var tasks = new List<Task<ScheduledTaskMetadata>>(pageSize);
