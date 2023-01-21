@@ -116,7 +116,7 @@ public class ScheduledTaskRepository : IScheduledTaskRepository
         int pageSize,
        CancellationToken cancellationToken)
     {
-        // TODO: Figure out connection poolingg
+        // TODO: Figure out connection pooling
         using var dbConnection = new MySqlConnection(this.storageOptions.ConnectionString);
 
         // TODO: after everything migrates, delete the or clause for ScheduledTaskMetadata
