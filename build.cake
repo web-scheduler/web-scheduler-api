@@ -190,7 +190,7 @@ Task("DockerBuild")
         {
             var directoryBuildPropsFilePath = GetFiles("Directory.Build.props").Single().ToString();
             var directoryBuildPropsDocument = System.Xml.Linq.XDocument.Load(directoryBuildPropsFilePath);
-            var preReleasePhase = directoryBuildPropsDocument.Descendants("MinVerDefaultPreReleasePhase").Single().Value;
+            var preReleasePhase = directoryBuildPropsDocument.Descendants("MinVerDefaultPreReleaseIdentifiers").Single().Value;
 
             var exitCode = StartProcess(
                 "dotnet",
