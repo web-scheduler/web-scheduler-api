@@ -73,9 +73,31 @@ internal static class CustomServiceCollectionExtensions
     /// <param name="webHostEnvironment">The environment the application is running under.</param>
     /// <returns>The services with open telemetry added.</returns>
     public static IServiceCollection AddCustomOpenTelemetryTracing(this IServiceCollection services, IWebHostEnvironment webHostEnvironment) =>
-        services.AddOpenTelemetryTracing(
+        services.AddOpenTelemetry().WithTracing(
             builder =>
             {
+                static string GetHttpFlavor(string protocol)
+                {
+                    if (HttpProtocol.IsHttp10(protocol))
+                    {
+                        return OpenTelemetryHttpFlavour.Http10;
+                    }
+                    else if (HttpProtocol.IsHttp11(protocol))
+                    {
+                        return OpenTelemetryHttpFlavour.Http11;
+                    }
+                    else if (HttpProtocol.IsHttp2(protocol))
+                    {
+                        return OpenTelemetryHttpFlavour.Http20;
+                    }
+                    else if (HttpProtocol.IsHttp3(protocol))
+                    {
+                        return OpenTelemetryHttpFlavour.Http30;
+                    }
+
+                    throw new InvalidOperationException($"Protocol {protocol} not recognized.");
+                }
+
                 _ = builder
                     .SetResourceBuilder(ResourceBuilder
                         .CreateEmpty()
@@ -89,59 +111,31 @@ internal static class CustomServiceCollectionExtensions
                                 new(OpenTelemetryAttributeName.Host.Name, Environment.MachineName),
                             })
                         .AddEnvironmentVariableDetector())
-                    .AddAspNetCoreInstrumentation(
-                        options =>
+                        .AddAspNetCoreInstrumentation(options =>
                         {
+                            options.RecordException = true;
+
                             // Enrich spans with additional request and response meta data.
                             // See https://github.com/open-telemetry/opentelemetry-specification/blob/master/specification/trace/semantic_conventions/http.md
-                            options.Enrich = (activity, eventName, obj) =>
+                            options.EnrichWithHttpRequest = (activity, request) =>
                             {
-                                if (obj is HttpRequest request)
-                                {
-                                    var context = request.HttpContext;
-                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.Flavor, GetHttpFlavour(request.Protocol));
-                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.Scheme, request.Scheme);
-                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.ClientIP, context.Connection.RemoteIpAddress);
-                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.RequestContentLength, request.ContentLength);
-                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.RequestContentType, request.ContentType);
+                                var context = request.HttpContext;
+                                activity.SetTag(OpenTelemetryAttributeName.Http.Flavor, GetHttpFlavor(request.Protocol))
+                                        .SetTag(OpenTelemetryAttributeName.Http.Scheme, request.Scheme)
+                                        .SetTag(OpenTelemetryAttributeName.Http.ClientIP, context.Connection.RemoteIpAddress)
+                                        .SetTag(OpenTelemetryAttributeName.Http.RequestContentLength, request.ContentLength)
+                                        .SetTag(OpenTelemetryAttributeName.Http.RequestContentType, request.ContentType);
 
-                                    var user = context.User;
-                                    if (user.Identity?.Name is not null)
-                                    {
-                                        _ = activity.AddTag(OpenTelemetryAttributeName.EndUser.Id, user.Identity.Name);
-                                        _ = activity.AddTag(OpenTelemetryAttributeName.EndUser.Scope, string.Join(',', user.Claims.Select(x => x.Value)));
-                                    }
-                                }
-                                else if (obj is HttpResponse response)
+                                var user = context.User;
+                                if (user.Identity?.Name is not null)
                                 {
-                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentLength, response.ContentLength);
-                                    _ = activity.AddTag(OpenTelemetryAttributeName.Http.ResponseContentType, response.ContentType);
-                                }
-
-                                static string GetHttpFlavour(string protocol)
-                                {
-                                    if (HttpProtocol.IsHttp10(protocol))
-                                    {
-                                        return OpenTelemetryHttpFlavour.Http10;
-                                    }
-                                    else if (HttpProtocol.IsHttp11(protocol))
-                                    {
-                                        return OpenTelemetryHttpFlavour.Http11;
-                                    }
-                                    else if (HttpProtocol.IsHttp2(protocol))
-                                    {
-                                        return OpenTelemetryHttpFlavour.Http20;
-                                    }
-                                    else if (HttpProtocol.IsHttp3(protocol))
-                                    {
-                                        return OpenTelemetryHttpFlavour.Http30;
-                                    }
-
-                                    throw new InvalidOperationException($"Protocol {protocol} not recognised.");
+                                    activity.SetTag(OpenTelemetryAttributeName.EndUser.Id, user.Identity.Name)
+                                        .SetTag(OpenTelemetryAttributeName.EndUser.Scope, string.Join(',', user.Claims.Select(x => x.Value)));
                                 }
                             };
 
-                            options.RecordException = true;
+                            options.EnrichWithHttpResponse = (activity, response) => activity.SetTag(OpenTelemetryAttributeName.Http.ResponseContentLength, response.ContentLength)
+                                        .SetTag(OpenTelemetryAttributeName.Http.ResponseContentType, response.ContentType);
                         });
                 _ = builder.AddRedisInstrumentation();
 
@@ -155,5 +149,5 @@ internal static class CustomServiceCollectionExtensions
                 //       E.g. Add the OpenTelemetry.Instrumentation.Http package to instrument calls to HttpClient.
                 // TODO: Add OpenTelemetry.Exporter.* NuGet packages and configure them here to export open telemetry span data.
                 //       E.g. Add the OpenTelemetry.Exporter.OpenTelemetryProtocol package to export span data to Jaeger.
-            });
+            }).Services;
 }
