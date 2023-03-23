@@ -34,7 +34,7 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
     <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="6.5.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.Versioning.ApiExplorer" Version="5.0.0" />
-    <PackageReference Include="Microsoft.Orleans.Client" Version="3.6.5" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="7.1.1" />
     <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.6.5" />
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" PrivateAssets="all" Version="3.6.5">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
