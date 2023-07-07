@@ -31,7 +31,7 @@
     <PackageReference Include="Dapper" Version="2.0.123" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="7.0.1" />
     <PackageReference Include="Microsoft.Extensions.Options.DataAnnotations" Version="7.0.0" />
-    <PackageReference Include="Microsoft.Orleans.Client" Version="3.7.0" />
+    <PackageReference Include="Microsoft.Orleans.Client" Version="7.2.0" />
     <PackageReference Include="Microsoft.Orleans.Clustering.AdoNet" Version="3.7.0" />
     <PackageReference Include="Microsoft.Orleans.CodeGenerator.MSBuild" PrivateAssets="all" Version="3.7.0">
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
