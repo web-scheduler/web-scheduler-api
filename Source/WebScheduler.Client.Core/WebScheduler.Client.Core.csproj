@@ -37,7 +37,7 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.Orleans.Connections.Security" Version="3.7.0" />
-    <PackageReference Include="MySql.Data" Version="8.0.33" />
+    <PackageReference Include="MySql.Data" Version="8.1.0" />
     <PackageReference Include="WebScheduler.Abstractions" Version="0.1.61" />
   </ItemGroup>
   <ItemGroup>
